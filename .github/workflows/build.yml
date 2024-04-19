@@ -10,7 +10,7 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install --include=dev
+      - run: npm install -g eslint
       - run: npm run lint
 
   run-build:
@@ -20,5 +20,5 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install --include=dev
+      - run: npm install -g vue-tsc vite
       - run: npm run build
