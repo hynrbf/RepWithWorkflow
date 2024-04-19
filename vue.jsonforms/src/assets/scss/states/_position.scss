@@ -1,0 +1,26 @@
+.is-sticky-top {
+    position: sticky;
+    top: 0;
+}
+
+.is-zindex-base {
+    z-index: 1;
+}
+
+@mixin position($property, $value, $unit: px) {
+    $property-name: if($property == 't', 'top', 
+                    if($property == 'l', 'left', 
+                    if($property == 'b', 'bottom', 
+                    if($property == 'r', 'right', $property))));
+
+    .#{$property}-#{$value + $unit} {
+        #{$property-name}: $value + $unit !important;
+    }
+}
+
+@for $i from 1 through 100 {
+    @include position(t, $i);
+    @include position(l, $i);
+    @include position(b, $i);
+    @include position(r, $i);
+}

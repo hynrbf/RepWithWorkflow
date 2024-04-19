@@ -1,0 +1,41 @@
+.PageTitle {
+  :deep(h1) {
+    margin-bottom: 0 !important;
+  }
+}
+
+.OutletTable {
+  :deep(.k-table-td:not(:first-child)),
+  :deep(.k-table-th:not(:first-child)) {
+    text-align: center;
+  }
+
+  :deep(.k-label) {
+    width: 100%;
+  }
+
+  :deep(.k-table-th:nth-child(5) .k-column-title),
+  :deep(.k-table-th:nth-child(6) .k-column-title)
+  {
+    margin: 0 auto;
+  }
+
+  :deep(.k-table-th:nth-child(5) .k-label),
+  :deep(.k-table-th:nth-child(6) .k-label)
+  {
+    width: 100%;
+    text-align: right;
+  }
+
+  :deep(.k-grid-content) {
+    overflow: auto;
+  }
+}
+
+.PromotionTable {
+  :deep(.k-table-th:nth-child(1)),
+    :deep(.k-table-td:nth-child(1)) {
+    width: 40px;
+  }
+}
+

@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="lock-rotation-10" clip-path="url(#clip0_47_146110)">
+<g id="lock-rotation">
+<path id="Ellipse 1115" d="M18.3589 11.9826C17.4641 15.7707 14.061 18.5897 9.99944 18.5897C5.25571 18.5897 1.41016 14.7442 1.41016 10.0004C1.41016 5.25669 5.25571 1.41113 9.99944 1.41113C13.3132 1.41113 16.1887 3.28771 17.6212 6.03613" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector" d="M18.5887 3.39355V6.69713H15.2852" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 2567" d="M7.02734 12.9735V10.3306C7.02734 9.96574 7.32316 9.66992 7.68806 9.66992H12.3131C12.678 9.66992 12.9738 9.96574 12.9738 10.3306V12.9735C12.9738 13.3384 12.678 13.6342 12.3131 13.6342H7.68806C7.32316 13.6342 7.02734 13.3384 7.02734 12.9735Z" stroke="black" stroke-width="1.5" stroke-linejoin="round"/>
+<path id="Vector 2568" d="M8.01562 9.66978V8.34835C8.01562 7.25364 8.90306 6.36621 9.99777 6.36621C11.0925 6.36621 11.9799 7.25364 11.9799 8.34835V9.66978" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_146110">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

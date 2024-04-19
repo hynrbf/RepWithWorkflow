@@ -1,0 +1,13 @@
+.DisclosurePanel {
+    &.is-anchored {
+        border-color: var(--color-primary);
+        border-width: 2px;
+    }
+}
+
+.stationery-modal {
+    width: 600px;
+    height: 308px;
+}
+
+

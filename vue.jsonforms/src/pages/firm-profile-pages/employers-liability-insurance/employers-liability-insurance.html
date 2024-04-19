@@ -1,0 +1,800 @@
+<KendoLoadingComponent
+        :isLoading="isLoading"
+        :isShowSavingText="isShowSavingText"
+/>
+
+<KendoAlertDialog ref="kendoAlertDialog"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        title="Employers' Liability Insurance (ELI)"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.employersLiabilityRoute)"
+>
+    <template #description>
+        <p>{{ $t("employersLiabilityInsurancePage-pageDescription", {firmName: firmName}) }}</p>
+        <p>
+            {{
+                $t("employersLiabilityInsurancePage-informationText", {
+                    firmName: firmName
+                })
+            }}
+        </p>
+        <ul>
+            <li>
+        <span class="links_name"
+        >{{ $t("employersLiabilityInsurancePage-informationText1") }}</span
+        >
+            </li>
+            <li>
+        <span class="links_name"
+        >{{
+                $t("employersLiabilityInsurancePage-informationText2", {
+                    firmName:
+                    firmName
+                })
+            }}</span
+        >
+            </li>
+            <li>
+        <span class="links_name"
+        >{{
+                $t("employersLiabilityInsurancePage-informationText3", {
+                    firmName:
+                    firmName
+                })
+            }}</span
+        >
+            </li>
+            <li>
+        <span class="links_name"
+        >{{
+                $t("employersLiabilityInsurancePage-informationText4", {
+                    firmName:
+                    firmName
+                })
+            }}</span
+        >
+            </li>
+        </ul>
+    </template>
+</KendoPageTitleComponent>
+
+<KendoForm>
+    <FormElement ref="formElement">
+        <ScrollableTabComponent
+                v-model:items="eliTabs"
+                addable
+                removable
+                @add="addEmployerLiabilityInsuranceItem"
+                @remove="removeEmployerLiabilityInsuranceItem"
+        >
+            <template v-for="item in employerLiabilityInsurancesItem"
+                      :key="`tab-content-${item.id}`"
+                      #[`content(eli-${item.id})`]="{ index }">
+                <CollapsiblePanelComponent
+                        :items="[{
+                            id: `eli-details-${index}`,
+                            title: $t('employersLiabilityInsurancePage-formTitleText'),
+                            content: '',
+                            active: true,
+                          }]">
+                    <template #title>
+                        {{ $t("employersLiabilityInsurancePage-formTitleText") }} {{
+                            item.employerLiability?.insurer?.firmName ? `:
+              ${item.employerLiability.insurer.firmName}` : "&lt;Insurer Name&gt;"
+                        }}
+                    </template>
+
+                    <template #before-content>
+                        <NavPillComponent
+                                :items="makeEliNav(index)"
+                                class="EliNavPill"
+                                v-sticky="{
+                                    parentSelector: '.CollapsiblePanel-body',
+                                    stickyClass: 'is-bg-white is-zindex-base',
+                                    marginTop: 54,
+                                    delay: 1e3
+                                  }"
+                                anchorable
+                        >
+                        </NavPillComponent>
+                    </template>
+
+                    <template #content>
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `eli-details-${index}`,
+                                    title: $t('employersLiabilityInsurancePage-insurerDetails'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <div class="row gy-3">
+                                    <KendoFirmFinderComponentAsync
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `-${item.id}` +'-insurerName')"
+                                            companyNameLabel="Insurer Name"
+                                            companyNamePlaceholder="Insurer Name"
+                                            isValueReactive
+                                            :isInitializing="isInitializing"
+                                            :company="item?.employerLiability?.insurer"
+                                            :companyName="item?.employerLiability?.insurer?.firmName"
+                                            :companyNumber="item?.employerLiability?.insurer?.companyNumber ?? 'NONE'"
+                                            :firmReferenceNumber="item?.employerLiability?.insurer?.firmReferenceNumber"
+                                            @onCompanyDetailUpdated="((insurer) => onInsurerUpdated(item.employerLiability, insurer))"
+                                    />
+
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-insurerAddress')"
+                                            :value="item.employerLiability.insurerRegisteredAddress"
+                                            @onValueChange="((value: string) => onEliRegisteredAddressChanged(value, item.employerLiability))"
+                                            :name="`registeredAddress-${index}`"
+                                            label="Registered Address"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoPostCodeInputWithSameAsComponent
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-tradingAddress')"
+                                            :name="`tradingAddress-${index}`"
+                                            label="Trading Address"
+                                            :value="item.employerLiability.insurerTradingAddress"
+                                            isShowCheckBox
+                                            :isChecked="isTradingSameAsRegisteredAddress"
+                                            @onValueChange="((value: string) => onEliTradingAddressChanged(value, item.employerLiability))"
+                                            @onToggle="() => { onToggleHandler(item.employerLiability); }"
+                                            :sameAsLabel="$t('same-as-registered-address')"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-emailAddress')"
+                                            label="Email Address"
+                                            name="emailAddress"
+                                            :value="item.employerLiability.insurerEmailAddress"
+                                            @onValueChange="(value: string) => item.employerLiability.insurerEmailAddress = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-contactNumber')"
+                                            name="contactNumber"
+                                            label="Contact Number"
+                                            :value="item.employerLiability.insurerContactNumber"
+                                            @onValueChange="(value: ContactNumber) => item.employerLiability.insurerContactNumber = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-Website')"
+                                            label="Website"
+                                            name="website"
+                                            type="url"
+                                            :value="item.employerLiability.insurerWebsite"
+                                            @onValueChange="(value: string) => item.employerLiability.insurerWebsite = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `broker-details-${index}`,
+                                    title: $t('employersLiabilityInsurancePage-brokerDetails'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <ToggleButtonComponent
+                                        v-model="item.employerLiability.isBrokerResponsible"
+                                        reverse
+                                        wide
+                                        class="mb-3"
+                                >
+                                    <template #text>
+                                        <span class="font-weight-semi-bold">
+                                          Is a Broker responsible for the arranging or
+                                          administration of this policy?
+                                        </span>
+                                    </template>
+                                </ToggleButtonComponent>
+
+                                <ToggleButtonComponent
+                                        v-if="item.employerLiability.isBrokerResponsible"
+                                        v-model="item.employerLiability.isBrokerCompany"
+                                        reverse
+                                        wide
+                                        on-label="Company"
+                                        off-label="Sole Trader"
+                                        class="mb-3"
+                                >
+                                    <template #text>
+                    <span class="font-weight-semi-bold">
+                      Is the Broker a Company or a Sole Trader?
+                    </span>
+                                    </template>
+                                </ToggleButtonComponent>
+
+                                <div v-if="item.employerLiability.isBrokerResponsible && item.employerLiability.isBrokerCompany"
+                                     class="row gy-3">
+                                    <KendoFirmFinderComponentAsync
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-brokerName')"
+                                            companyNameLabel="Broker Name"
+                                            companyNamePlaceholder="Broker Name"
+                                            :isInitializing="isInitializing"
+                                            isValueReactive
+                                            :company="item?.employerLiability?.broker"
+                                            :companyName="item?.employerLiability?.broker?.firmName"
+                                            :companyNumber="item?.employerLiability?.broker?.companyNumber"
+                                            :firmReferenceNumber="item?.employerLiability?.broker?.firmReferenceNumber"
+                                            @onCompanyDetailUpdated="((broker) => onBrokerUpdated(item.employerLiability, broker))"
+                                    />
+
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerRegisteredAddress')"
+                                            :value="item.employerLiability.brokerRegisteredAddress"
+                                            @onValueChange="(value: string) => item.employerLiability.brokerRegisteredAddress = value"
+                                            :name="`brokerRegisteredAddress-${index}`"
+                                            label="Registered Address"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoPostCodeInputWithSameAsComponent
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerTradingAddress')"
+                                            name="brokerTradingAddress"
+                                            label="Trading Address"
+                                            :value="item.employerLiability.brokerTradingAddress"
+                                            isShowCheckBox
+                                            :isChecked="item.employerLiability.brokerIsTradingSameAsRegisteredAddress"
+                                            @onValueChange="item.employerLiability.brokerTradingAddress = $event"
+                                            @onToggle="
+                                              () => {
+                                                item.employerLiability.brokerIsTradingSameAsRegisteredAddress =
+                                                  !item.employerLiability.brokerIsTradingSameAsRegisteredAddress;
+
+                                                if (item.employerLiability.brokerIsTradingSameAsRegisteredAddress) {
+                                                  item.employerLiability.brokerTradingAddress = item.employerLiability.brokerRegisteredAddress;
+                                                } else {
+                                                  item.employerLiability.brokerTradingAddress = '';
+                                                }
+                                              }
+                                            "
+                                            :sameAsLabel="$t('same-as-registered-address')"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerEmailAddress')"
+                                            label="Email Address"
+                                            name="brokerEmailAddress"
+                                            :value="item.employerLiability.brokerEmailAddress"
+                                            @onValueChange="(value: string) => item.employerLiability.brokerEmailAddress = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerContactNumber')"
+                                            name="brokerContactNumber"
+                                            label="Contact Number"
+                                            :value="item.employerLiability.brokerContactNumber"
+                                            @onValueChange="(value: ContactNumber) => item.employerLiability.brokerContactNumber = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerWebsite')"
+                                            label="Website"
+                                            name="brokerWebsite"
+                                            type="url"
+                                            :value="item.employerLiability.brokerWebsite"
+                                            @onValueChange="(value: string) => item.employerLiability.brokerWebsite = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+
+                                <div
+                                        v-if="item.employerLiability.isBrokerResponsible && item.employerLiability.isBrokerCompany === false"
+                                        class="row gy-3"
+                                >
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerForename')"
+                                            name="brokerForename"
+                                            label="Forename(s)"
+                                            v-model="item.employerLiability.forename"
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
+                                            :isDataLoadedCompletely="true"
+                                    />
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerSurname')"
+                                            name="brokerSurname"
+                                            label="Surname"
+                                            v-model="item.employerLiability.surname"
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
+                                            :isDataLoadedCompletely="true"
+                                    />
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerFirmReferenceNumber')"
+                                            name="brokerFirmReferenceNumber"
+                                            label="Firm Reference Number"
+                                            v-model="item.employerLiability.firmReferenceNumber"
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
+                                            :isDataLoadedCompletely="true"
+                                    />
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerTradingAddress')"
+                                            v-model="item.employerLiability.brokerTradingAddress"
+                                            :name="`brokerTradingAddress-${index}`"
+                                            label="Trading Address"
+                                    />
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerEmailAddress')"
+                                            label="Email Address"
+                                            name="brokerEmailAddress"
+                                            v-model="item.employerLiability.brokerEmailAddress"
+                                    />
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerContactNumber')"
+                                            name="brokerContactNumber"
+                                            label="Contact Number"
+                                            v-model="item.employerLiability.brokerContactNumber"
+                                    />
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerWebsite')"
+                                            label="Website"
+                                            name="brokerWebsite"
+                                            v-model="item.employerLiability.brokerWebsite"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `summary-of-cover-${index}`,
+                                    title: $t('employersLiabilityInsurancePage-summaryOfCover'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <div class="row gy-3">
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-policyNumber')"
+                                            label="Policy Number"
+                                            :name="'policyNumber' + index"
+                                            @onValueChange="((value) => item.employerLiability.policyNumber = value)"
+                                            :value="item.employerLiability.policyNumber"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-premiumAmount')"
+                                            label="Premium Amount (excl. IPT)"
+                                            :name="'premiumAmount' + index"
+                                            @onValueChange="(value) => item.employerLiability.premiumAmount = value"
+                                            :value="item.employerLiability.premiumAmount"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-annualIncome')"
+                                            label="Annual Income (as declared on Proposal Form)"
+                                            :name="'annualIncome' + index"
+                                            @onValueChange="(value) => item.employerLiability.annualIncome = value"
+                                            :value="item.employerLiability.annualIncome"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.retroactiveStartDate')"
+                                            label="Retroactive Start Date (If Applicable)"
+                                            :name="'employerInsurer.retroactiveStartDate' + index"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onRetroactiveStartDateChange(value, item.employerLiability))"
+                                            :value="convertEpochValueToDate(item?.employerLiability?.retroactiveStartDate)"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.startDate')"
+                                            label="Start Date"
+                                            :name="'employerInsurer.startDate' + index"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onStartDateChange(value, item.employerLiability))"
+                                            :value="convertEpochValueToDate(item?.employerLiability?.startDate)"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.endDate')"
+                                            label="End Date"
+                                            :name="'employerInsurer.endDate' + index"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            :minDate="convertEpochValueToDate(item?.employerLiability?.startDate)"
+                                            @onValueChange="((value) => onEndDateChange(value, item.employerLiability))"
+                                            :value="convertEpochValueToDate(item?.employerLiability?.endDate)"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-eliPremiumAmount')"
+                                            :name="`eliPremiumAmount${index}`"
+                                            label="Premium Amount"
+                                            :value="item.employerLiability.premiumAmount"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onPremiumAmountChanged(item.employerLiability, value))"
+                                    />
+
+                                    <KendoDropDownInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.paymentFrequency')"
+                                            label="Payment Frequency"
+                                            :dataItems="paymentFrequencyList"
+                                            placeholder="Please Select"
+                                            :name="'employerInsurer.paymentFrequency' + index"
+                                            :value="item?.employerLiability?.paymentFrequency"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => item.employerLiability.paymentFrequency = value)"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-eliSingle')"
+                                            label="Limit of indemnity: Single"
+                                            :name="`eliSingle${index}`"
+                                            :minimumValue="new Money(AppConstants.singleIndemnityLimit, 'EUR')"
+                                            :value="item.employerLiability.singleIndemnityLimit"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onSingleIndemnityLimitChanged(item.employerLiability, value))"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-eliAggregate')"
+                                            label="Limit of indemnity: Aggregate"
+                                            :name="`eliAggregate${index}`"
+                                            :minimumValue="new Money(AppConstants.aggregateIndemnityLimit, 'EUR')"
+                                            :value="item.employerLiability.aggregateIndemnityLimit"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onAggregateIndemnityLimitChanged(item.employerLiability, value))"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-eliPolicyExcess')"
+                                            label="Policy Excess (If Applicable)"
+                                            :name="`eliPolicyExcess${index}`"
+                                            :value="item.employerLiability.policyExcess"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            @onValueChange="((value) => onPolicyExcessChanged(item.employerLiability, value))"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-6"
+                                            :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurerPolicyExclusions')"
+                                            label="Policy Exclusions (If Applicable)"
+                                            placeholder="Type..."
+                                            :name="`employerInsurerPolicyExclusions${index}`"
+                                            :isDataLoadedCompletely="!isInitializing"
+                                            isValueReactive
+                                            :value="item?.employerLiability?.policyExclusions"
+                                            @onValueChange="((value) => item.employerLiability.policyExclusions = value)"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `document-upload-${index}`,
+                                    title: $t('employersLiabilityInsurancePage-documentUpload'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <p class="mb-2 font-weight-normal">
+                                    Please upload a copy of your Proposal Form (Accepted file types:
+                                    pdf, jpg, doc, Maximum 25 MB file size)
+                                </p>
+
+                                <KendoUploadInputComponent
+                                        class="mb-3"
+                                        :name="`riskTransferAgreement-${index}`"
+                                        stretched
+                                        multiple
+                                        dropzone
+                                        asFileModel
+                                        :disabled="!item?.employerLiability?.insurer?.companyNumber ?? true"
+                                        :value="item.employerLiability.proposalFormFile ?? []"
+                                        @updated="(value) => item.employerLiability.proposalFormFile = value"
+                                        :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                                        :uploadFor="`ELI-${customer.companyNumber}`"
+                                />
+
+                                <p class="mb-2 font-weight-normal">
+                                    Please upload a copy of your Schedule of Insurance (Accepted
+                                    file types: pdf, jpg, doc, Maximum 25 MB file size)
+                                </p>
+
+                                <KendoUploadInputComponent
+                                        :name="`StatutoryTrustLetter-${index}`"
+                                        stretched
+                                        multiple
+                                        dropzone
+                                        asFileModel
+                                        :disabled="!item?.employerLiability?.insurer?.companyNumber ?? true"
+                                        :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                                        :uploadFor="`ELI-${customer.companyNumber}`"
+                                        :value="item.employerLiability.schedOfInsurance ?? []"
+                                        @updated="(value) => item.employerLiability.schedOfInsurance = value"
+                                />
+                            </template>
+                        </CollapsiblePanelComponent>
+                    </template>
+                </CollapsiblePanelComponent>
+            </template>
+        </ScrollableTabComponent>
+
+        <!--
+        <CollapsiblePanelComponent
+          v-for="(item, index) of employerLiabilityInsurancesItem"
+          :key="`eli-${item.id}`"
+          :items="[{
+            id: `pii-details-${index}`,
+            title: $t('employersLiabilityInsurancePage-formTitleText'),
+            content: '',
+            active: true,
+          }]"
+        >
+          <template #title>
+            {{ $t('employersLiabilityInsurancePage-formTitleText') }} {{
+            item.employerLiability?.insurer?.firmName ? `:
+            ${item.employerLiability.insurer.firmName}` : '&lt;Insurer Name&gt;' }}
+          </template>
+
+          <template #content>
+            <StackLayout class="mb-2" orientation="vertical" :gap="8">
+              <KendoFirmFinderComponentAsync
+                :id="setUniqueIdentifier( `-${item.id}` +'-insurerName')"
+                class="mt-2"
+                companyNameLabel="Insurer Name"
+                companyNamePlaceholder="Insurer Name"
+                :isValueReactive="true"
+                :isInitializing="isInitializing"
+                :company="item?.employerLiability?.insurer"
+                :companyName="item?.employerLiability?.insurer?.firmName"
+                :companyNumber="item?.employerLiability?.insurer?.companyNumber ?? 'NONE'"
+                :firmReferenceNumber="item?.employerLiability?.insurer?.firmReferenceNumber"
+                @onCompanyDetailUpdated="((insurer) => onInsurerUpdated(item.employerLiability, insurer))"
+              />
+
+              <KendoFirmFinderComponentAsync
+                :id="setUniqueIdentifier( `-${item.id}` + '-brokerName')"
+                class="my-2"
+                companyNameLabel="Broker Name"
+                companyNamePlaceholder="Broker Name"
+                :isInitializing="isInitializing"
+                :isValueReactive="true"
+                :company="item?.employerLiability?.broker"
+                :companyName="item?.employerLiability?.broker?.firmName"
+                :companyNumber="item?.employerLiability?.broker?.companyNumber"
+                :firmReferenceNumber="item?.employerLiability?.broker?.firmReferenceNumber"
+                @onCompanyDetailUpdated="((broker) => onBrokerUpdated(item.employerLiability, broker))"
+              />
+            </StackLayout>
+
+            <StackLayout class="mt-3 mb-2" orientation="horizontal" :gap="8">
+              <KendoDatePickerInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.retroactiveStartDate')"
+                class="col"
+                label="Retroactive Start Date (If Applicable)"
+                :name="'employerInsurer.retroactiveStartDate' + index"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onRetroactiveStartDateChange(value, item.employerLiability))"
+                :value="convertEpochValueToDate(item?.employerLiability?.retroactiveStartDate)"
+              />
+
+              <KendoDatePickerInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.startDate')"
+                class="col"
+                label="Start Date"
+                :name="'employerInsurer.startDate' + index"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onStartDateChange(value, item.employerLiability))"
+                :value="convertEpochValueToDate(item?.employerLiability?.startDate)"
+              />
+
+              <KendoDatePickerInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.endDate')"
+                class="col"
+                label="End Date"
+                :name="'employerInsurer.endDate' + index"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                :minDate="convertEpochValueToDate(item?.employerLiability?.startDate)"
+                @onValueChange="((value) => onEndDateChange(value, item.employerLiability))"
+                :value="convertEpochValueToDate(item?.employerLiability?.endDate)"
+              />
+            </StackLayout>
+
+            <StackLayout class="mt-3 mb-2" orientation="horizontal" :gap="8">
+              <KendoCurrencyInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-eliPremiumAmount')"
+                :name="`eliPremiumAmount${index}`"
+                label="Premium Amount"
+                :value="item.employerLiability.premiumAmount"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onPremiumAmountChanged(item.employerLiability, value))"
+              />
+
+              <KendoDropDownInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurer.paymentFrequency')"
+                label="Payment Frequency"
+                :dataItems="paymentFrequencyList"
+                placeholder="Please Select"
+                :name="'employerInsurer.paymentFrequency' + index"
+                :value="item?.employerLiability?.paymentFrequency"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => item.employerLiability.paymentFrequency = value)"
+              />
+            </StackLayout>
+
+            <StackLayout class="mt-3 mb-2" orientation="horizontal" :gap="8">
+              <KendoCurrencyInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-eliSingle')"
+                label="Limit of indemnity: Single"
+                :name="`eliSingle${index}`"
+                :minimumValue="new Money(AppConstants.singleIndemnityLimit, 'EUR')"
+                :value="item.employerLiability.singleIndemnityLimit"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onSingleIndemnityLimitChanged(item.employerLiability, value))"
+              />
+
+              <KendoCurrencyInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-eliAggregate')"
+                label="Limit of indemnity: Aggregate"
+                :name="`eliAggregate${index}`"
+                :minimumValue="new Money(AppConstants.aggregateIndemnityLimit, 'EUR')"
+                :value="item.employerLiability.aggregateIndemnityLimit"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onAggregateIndemnityLimitChanged(item.employerLiability, value))"
+              />
+            </StackLayout>
+
+            <StackLayout class="mt-3 mb-2" orientation="horizontal" :gap="8">
+              <KendoCurrencyInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-eliPolicyExcess')"
+                label="Policy Excess (If Applicable)"
+                :name="`eliPolicyExcess${index}`"
+                :value="item.employerLiability.policyExcess"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                @onValueChange="((value) => onPolicyExcessChanged(item.employerLiability, value))"
+              />
+
+              <KendoGenericInputComponent
+                :id="setUniqueIdentifier( `-${item.id}` + '-employerInsurerPolicyExclusions')"
+                class="col"
+                label="Policy Exclusions (If Applicable)"
+                placeholder="Type..."
+                :name="`employerInsurerPolicyExclusions${index}`"
+                :isDataLoadedCompletely="!isInitializing"
+                isValueReactive
+                :value="item?.employerLiability?.policyExclusions"
+                @onValueChange="((value) => item.employerLiability.policyExclusions = value)"
+              />
+            </StackLayout>
+
+            <StackLayout class="mt-4" orientation="vertical" :gap="8">
+              <p class="mb-2 font-weight-normal">
+                Please upload a copy of your Proposal Form (Accepted file types:
+                pdf, jpg, doc, Maximum 25 MB file size)
+              </p>
+
+              <KendoUploadInputComponent
+                class="mb-3"
+                :name="`riskTransferAgreement-${index}`"
+                stretched
+                multiple
+                dropzone
+                :autoUpload="false"
+                :disabled="!item?.employerLiability?.insurer?.companyNumber ?? true"
+                :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                :uploadFor="`ELI-${item?.employerLiability?.insurer?.companyNumber}`"
+              />
+
+              <p class="mb-2 font-weight-normal">
+                Please upload a copy of your Schedule of Insurance (Accepted file
+                types: pdf, jpg, doc, Maximum 25 MB file size)
+              </p>
+
+              <KendoUploadInputComponent
+                :name="`StatutoryTrustLetter-${index}`"
+                stretched
+                multiple
+                dropzone
+                :disabled="!item?.employerLiability?.insurer?.companyNumber ?? true"
+                :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                :uploadFor="`ELI-${item?.employerLiability?.insurer?.companyNumber}`"
+              />
+            </StackLayout>
+          </template>
+        </CollapsiblePanelComponent>
+
+        <KendoButton
+          size="large"
+          type="button"
+          :theme-color="'primary'"
+          fill-mode="outline"
+          icon="add"
+          class="px-5"
+          @click="addEmployerLiabilityInsuranceItem"
+        >
+          <strong>{{ $t('employersLiabilityInsurancePage-addButtonText') }}</strong>
+        </KendoButton>
+        -->
+    </FormElement>
+</KendoForm>

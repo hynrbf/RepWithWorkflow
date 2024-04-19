@@ -1,0 +1,14 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="snooze-clock-12" clip-path="url(#clip0_47_148559)">
+<g id="snooze-clock--nap-sleep-rest-break-clock">
+<path id="Vector" d="M18.5887 9.99944C18.5887 11.6982 18.085 13.3589 17.1412 14.7714C16.1973 16.1839 14.856 17.2847 13.2864 17.9349C11.7169 18.585 9.98991 18.7551 8.32376 18.4237C6.6576 18.0923 5.12714 17.2742 3.9259 16.073C2.72467 14.8718 1.90662 13.3413 1.5752 11.6751C1.24378 10.009 1.41388 8.28195 2.06398 6.71247C2.71409 5.14298 3.815 3.80152 5.2275 2.85772C6.64 1.91391 8.30064 1.41016 9.99944 1.41016" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10.001 6.69531V9.99888L6.64453 13.9103" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M13.9648 1.41016H18.5898L13.9648 6.69587H18.5898" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_148559">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,0 +1,54 @@
+.NumberInput {
+  .k-numerictextbox {
+    position: relative;
+    padding-left: 30px;
+
+    .k-spin-button {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 30px;
+
+      .k-button {
+        border: none;
+        background: none;
+
+        &:first-child {
+          top: 3px;
+
+          .k-button-icon {
+            transform: rotate(180deg);
+          }
+        }
+
+        &:last-child {
+          top: -3px;
+        }
+      }
+
+      .k-button-icon {
+        background-size: 75%;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: $caret;
+
+        svg {
+          opacity: 0 !important;
+        }
+      }
+    }
+
+    .k-input-inner {
+      text-align: right;
+    }
+
+    .k-input-suffix {
+      padding: 0 8px;
+      background-color: var(--body-bg-color);
+      border-left: var(--color-neutral-tint) 1px solid;
+      color: var(--color-neutral);
+    }
+  }
+}

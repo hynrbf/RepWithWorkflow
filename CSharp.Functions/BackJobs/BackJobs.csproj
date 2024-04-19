@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+		<PropertyGroup>
+				<TargetFramework>net6.0</TargetFramework>
+				<AzureFunctionsVersion>v4</AzureFunctionsVersion>
+				<AssemblyVersion>1.0.121.0</AssemblyVersion>
+				<FileVersion>1.0.121.0</FileVersion>
+		</PropertyGroup>
+		<ItemGroup>
+		  <None Remove="Aspose.Total.NET.lic" />
+		</ItemGroup>
+		<ItemGroup>
+		  <EmbeddedResource Include="Aspose.Total.NET.lic">
+		    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		  </EmbeddedResource>
+		</ItemGroup>
+		<ItemGroup>
+				<PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
+				<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="4.1.1" />
+				<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+				<PackageReference Include="Aspose.Words" Version="23.5.0" />
+				<PackageReference Include="Aspose.PDF" Version="23.4.0" />
+				<PackageReference Include="AutoMapper" Version="12.0.1" />
+				<PackageReference Include="Azure.Storage.Blobs" Version="12.15.0" />
+				<PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+				<PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
+				<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.32.0" />
+				<PackageReference Include="Polly" Version="7.2.3" />
+		</ItemGroup>
+		<ItemGroup>
+				<ProjectReference Include="..\Common\Common.csproj" />
+		</ItemGroup>
+		<ItemGroup>
+				<None Update="host.json">
+						<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+				</None>
+				<None Update="local.settings.json">
+						<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+						<CopyToPublishDirectory>Never</CopyToPublishDirectory>
+				</None>
+		</ItemGroup>
+</Project>

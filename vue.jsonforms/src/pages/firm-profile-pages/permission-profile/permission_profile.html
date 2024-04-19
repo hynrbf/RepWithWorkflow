@@ -1,0 +1,110 @@
+<KendoDialog ref="kendoDialog"/>
+
+<KendoLoadingComponent
+        :isLoading="isLoading"
+        :isShowSavingText="isShowSavingText"
+/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        title="Permissions"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.permissionProfileRoute)"
+        progress-bar
+>
+    <template #description>
+        <div class="col-12 mb-3" v-if="isFirmAuthorised">
+            <p>
+                {{
+                    $t("permissionPage-description", {currentFirmName: currentFirmName})
+                }}
+            </p>
+            <div class="InfoCheck">
+                <KendoCheckbox
+                        :value="false"
+                        class="Checkbox Checkbox--plus is-unclickable"
+                />
+                {{ $t("permissionPage-checkboxInfoText") }}
+            </div>
+            <div class="InfoCheck">
+                <KendoCheckbox :value="false" class="is-unclickable"/>
+                {{ $t("permissionPage-checkboxInfoText1") }}
+            </div>
+            <div class="InfoCheck">
+                <KendoCheckbox
+                        :value="false"
+                        class="Checkbox Checkbox--minus is-unclickable"
+                />
+                {{ $t("permissionPage-checkboxInfoText2") }}
+            </div>
+
+        </div>
+        <div class="col-12 mb-3" v-else>
+            <p>
+                {{
+                    $t("permissionPage-descriptionUnauthorised", {currentFirmName: currentFirmName})
+                }}
+            </p>
+            <div class="InfoCheck">
+                <KendoCheckbox
+                        :value="false"
+                        class="Checkbox Checkbox--plus is-unclickable"
+                />
+                {{ $t("permissionPage-checkboxInfoText") }}
+            </div>
+            <div class="InfoCheck">
+                <KendoCheckbox :value="false" class="is-unclickable"/>
+                {{ $t("permissionPage-checkboxInfoTextUnauthorised") }}
+            </div>
+            <div class="InfoCheck">
+                {{ $t("permissionPage-InfoText", {complianceFirmName: complianceFirmName}) }}
+            </div>
+        </div>
+    </template>
+</KendoPageTitleComponent>
+
+<KendoTabStrip
+        class="TabStrip TabStrip--lined"
+        :selected="currentTab"
+        :tabs="tabs"
+        @select="selectTab"
+>
+    <template v-slot:tab-1>
+        <h3 class="font-size-xl text-primary mb-4">
+            {{ $t("permissionPage-headerTitleText") }}
+        </h3>
+        <PermissionsTable
+                :permission-groups="mortgageBrokerPermissions"
+                :permissions-from-fca="subPermissionsFromFca"
+                :customer-permissions="customerSubPermissions"
+                :authorised="isFirmAuthorised"
+                @change="updatePermission"
+        />
+    </template>
+
+    <template v-slot:tab-2>
+        <h3 class="font-size-xl text-primary mb-4">
+            {{ $t("permissionPage-headerTitleText1") }}
+        </h3>
+        <PermissionsTable
+                :permission-groups="insuranceBrokerPermissions"
+                :permissions-from-fca="subPermissionsFromFca"
+                :customer-permissions="customerSubPermissions"
+                :authorised="isFirmAuthorised"
+                @change="updatePermission"
+        />
+    </template>
+
+    <template v-slot:tab-3>
+        <h3 class="font-size-xl text-primary mb-4">
+            {{ $t("permissionPage-headerTitleText2") }}
+        </h3>
+        <PermissionsTable
+                :permission-groups="otherPermissions"
+                :permissions-from-fca="subPermissionsFromFca"
+                :customer-permissions="customerSubPermissions"
+                :authorised="isFirmAuthorised"
+                @change="updatePermission"
+        />
+    </template>
+</KendoTabStrip>

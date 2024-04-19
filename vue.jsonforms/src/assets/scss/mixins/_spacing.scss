@@ -1,0 +1,37 @@
+// Mixin to generate margin classes with arbitrary values
+@mixin margin($property, $value, $unit: px) {
+    $property-name: if($property == 'mt', 'margin-top', 
+                    if($property == 'mb', 'margin-bottom', 
+                    if($property == 'ml', 'margin-left', 
+                    if($property == 'mr', 'margin-right', $property))));
+
+    .#{$property}-#{$value + $unit} {
+      #{$property-name}: $value + $unit !important;
+    }
+}
+
+@for $i from 1 through 100 {
+    @include margin(mt, $i);
+    @include margin(mb, $i);
+    @include margin(ml, $i);
+    @include margin(mr, $i);
+}
+
+  // Mixin to generate margin classes with arbitrary values
+@mixin padding($property, $value, $unit: px) {
+    $property-name: if($property == 'pt', 'padding-top', 
+                    if($property == 'pb', 'padding-bottom', 
+                    if($property == 'pl', 'padding-left', 
+                    if($property == 'pr', 'padding-right', $property))));
+
+    .#{$property}-#{$value + $unit} {
+      #{$property-name}: $value + $unit !important;
+    }
+}
+
+@for $i from 1 through 100 {
+    @include padding(pt, $i);
+    @include padding(pb, $i);
+    @include padding(pl, $i);
+    @include padding(pr, $i);
+}

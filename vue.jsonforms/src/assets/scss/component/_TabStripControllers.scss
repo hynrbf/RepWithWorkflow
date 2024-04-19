@@ -1,0 +1,104 @@
+// With https://www.telerik.com/kendo-vue-ui/components/layout/tabstrip/
+//This is intentionally separated to be used in controllers page only, because the nested tabs there has
+//different requirements
+.TabStripControllers {
+  .k-animation-container {
+    width: 100%;
+  }
+
+  .k-content {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  &--lined {
+    .k-tabstrip-items-wrapper {
+      margin-bottom: 30px;
+      border: none;
+
+      .k-tabstrip-items {
+        .k-item {
+          border: none;
+          background-color: transparent;
+          margin: 0;
+          font-size: var(--font-size-sm);
+          font-weight: var(--font-weight-semi-bold);
+          color: var(--color-neutral);
+
+          &:last-child {
+            margin-left: auto;
+          }
+
+          &:not(:last-child) {
+            margin-right: 25px;
+          }
+
+          &:hover, &:focus, &.k-active {
+            color: var(--color-primary);
+          }
+
+          &.k-active {
+            border-bottom: var(--color-primary) 2px solid !important;
+          }
+
+          .k-link {
+            padding-left: 0;
+            padding-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &--default {
+    .k-tabstrip-items-wrapper {
+      margin-bottom: 0;
+      padding: 0;
+      border-width: 0;
+
+      .k-tabstrip-items {
+        .k-item {
+          border: none;
+          border-radius: 8px 8px 0 0;
+          padding: 10px 15px;
+          background: #E4E7E8;
+          font-style: normal;
+          line-height: 125%;
+          font-size: var(--font-size-lg);
+          font-weight: var(--font-weight-bold);
+          color: var(--content-content-05);
+
+          &:last-child {
+            margin-left: 0;
+          }
+
+          &:not(:last-child) {
+            margin-right: 15px;
+          }
+
+          &:hover, &:focus, &.k-active {
+            color: var(--color-primary);
+            background-color: white;
+          }
+
+          &.k-active {
+            border: 1px solid var(--text-text-disabled);
+            border-bottom-width: 0 !important;
+          }
+
+          .k-link {
+            padding-left: 0;
+            padding-right: 0;
+          }
+        }
+      }
+    }
+  }
+
+  &--hidden {
+    .k-tabstrip-items-wrapper {
+      display: none;
+    }
+  }
+}

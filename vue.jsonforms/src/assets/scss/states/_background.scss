@@ -1,0 +1,9 @@
+@each $name, $value in $theme-colors {
+    .is-bg-#{$name} {
+        background-color: var(--color-#{$name});
+    }
+}
+
+.is-bg-from-body {
+    background-color: var(--body-bg-color);
+}

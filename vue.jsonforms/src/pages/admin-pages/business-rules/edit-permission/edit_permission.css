@@ -1,0 +1,42 @@
+.container {
+    position: relative;
+}
+
+.child-text {
+    padding: 5px 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border-color: rgba(152, 141, 141, 0.39);
+    outline: none;
+    border-width: 1px;
+}
+
+.child-dropdown {
+    padding: 5px 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border-color: rgba(152, 141, 141, 0.39);
+    outline: none;
+}
+
+.child-text:focus {
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+h3 {
+    margin-left: 50px;
+    margin-top: 30px;
+    font-size: 20px;
+}
+
+.btn {
+    margin-top: 30px;
+    margin-right: 20px;
+    padding: 15px 15px;
+}
+
+.ddl {
+    height: 38px;
+    border: #E4E4E4 solid thin;
+}

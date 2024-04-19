@@ -1,0 +1,41 @@
+// With https://www.telerik.com/kendo-vue-ui/components/dialogs/dialog/
+
+.ModalFlexible {
+    $padding-x: 30px;
+    $padding-y: 20px;
+
+    &-title {
+        font-size: var(--font-size-2xl);
+        color: var(--color-primary);
+        margin-bottom: 0;
+    }
+
+    &-close {
+        color: var(--color-black);
+        margin-left: auto;
+    }
+
+    .k-dialog {
+        border-radius: 8px;
+
+        //TODO: This should be dynamic
+        width: 1150px;        
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .k-dialog-titlebar {
+        background-color: transparent;
+        border-bottom-color: transparent;
+        padding: #{$padding-y} #{$padding-x};
+    }
+
+    .k-dialog-content {
+        padding: 0 #{$padding-x} !important;
+    }
+
+    .k-dialog-actions {
+        border-top-color: transparent;
+        padding: #{$padding-y} #{$padding-x};
+    }
+}

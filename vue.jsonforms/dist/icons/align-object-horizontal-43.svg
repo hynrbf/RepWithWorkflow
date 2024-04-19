@@ -1,0 +1,13 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="align-object-horizontal-43" clip-path="url(#clip0_47_141976)">
+<g id="align-object-horizontal">
+<path id="Rectangle 53" d="M2.54394 1.41071H17.4549C17.4549 1.41071 18.5887 1.41071 18.5887 2.54449V17.4555C18.5887 17.4555 18.5887 18.5893 17.4549 18.5893H2.54394C2.54394 18.5893 1.41016 18.5893 1.41016 17.4555V2.54449C1.41016 2.54449 1.41016 1.41071 2.54394 1.41071Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 54" d="M5.59821 7.92932H14.4003C14.4003 7.92932 15.061 7.92932 15.061 8.59004V11.41C15.061 11.41 15.061 12.0707 14.4003 12.0707H5.59821C5.59821 12.0707 4.9375 12.0707 4.9375 11.41V8.59004C4.9375 8.59004 4.9375 7.92932 5.59821 7.92932Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_141976">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

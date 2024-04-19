@@ -1,0 +1,262 @@
+<KendoLoadingComponent
+  :is-loading="isLoading"
+  :isShowSavingText="isShowSavingText"
+/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+  :title="$t('marketingFinancialPage-title')"
+  :routeName="helperService.removeStringSpacesThenSlash(AppConstants.marketingAndFinancialPromotionsRoute)"
+  class="PageTitle"
+/>
+
+<KendoTabStrip
+  class="TabStrip TabStrip--lined"
+  :selected="currentTab"
+  :tabs="tabs"
+  @select="selectTab"
+>
+  <template v-slot:mediaMarketing>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t('marketingFinancialPage-mediaMarketingOutlet') }}
+    </h2>
+    <p>
+      {{ $t('marketingFinancialPage-mediaMarketingDescription', {
+      currentFirmName }) }}
+    </p>
+
+    <GridCardTable
+      class="OutletTable mt-4"
+      :columns="outletColumns"
+      :items="outletItems.slice(mediaMarketingTableSettings.skip, mediaMarketingTableSettings.skip + mediaMarketingTableSettings.take)"
+      :groups="outletTableGroups"
+      v-model:active-group="activeOutletTableGroup"
+      :add-button-text="$t('marketingFinancialPage-addMediaMarketingOutlet')"
+      @add="isAddOutletModalVisible = true"
+      :pageable="outletItems.length > 10"
+      isSortable
+      :sort="mediaMarketingTableSettings.sorts"
+      :skip="mediaMarketingTableSettings.skip"
+      :take="mediaMarketingTableSettings.take"
+      :total="outletItems.length"
+      :loading="marketingOutletTableLoading"
+      :handleSortChange="marketingOutletSortAsync"
+      :handlePageChange="marketingOutletPageAsync"
+    >
+    <template #cell-name="{ item }">
+      <a :href="item.url" target="_blank">
+        <MediaLabelComponent
+          :id="item?.platform"
+          :iconSize="32"
+          :text="item.name"
+        />
+      </a>
+    </template>
+
+    <template #cell-approved> 0</template>
+
+    <template #cell-pending> 0</template>
+
+    <template #cell-rejected> 0</template>
+
+    <template #cell-createdAt="{ item: { createdAt } }">
+      <DateTimeComponent v-if="createdAt" :value="moment(createdAt * 1000).toDate()" class="is-text-nowrap" />
+    </template>
+
+    <template #cell-updatedAt="{ item: { updatedAt } }">
+      <DateTimeComponent v-if="updatedAt" :value="moment(updatedAt * 1000).toDate()" class="is-text-nowrap" />
+    </template>
+
+    <template #cell-actions="{ item }">
+      <OutletActions
+        :outlet="item"
+        :archiving="isArchivingOutlet"
+        :archiveItem="archiveItem"
+        @view="viewOutlet"
+        @archive="archiveOutlet"
+        @remove="removeOutlet"
+      />
+    </template>
+
+    <template v-slot:card-content="{ item }">
+      <div class="row mb-3">
+        <div class="col-8">
+          <a :href="item.url" target="_blank" class="link">
+            <MediaLabelComponent
+              :id="item?.platform"
+              icon-size="32"
+              :text="item.name"
+            />
+          </a>
+        </div>
+
+        <div class="col-4 text-end">
+          <OutletActions
+            :outlet="item"
+            :archiving="isArchivingOutlet"
+            :archiveItem="archiveItem"
+            @view="viewOutlet"
+            @archive="archiveOutlet"
+          />
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <div class="col text-center">
+          <StatusLabelComponent status="approved" />
+
+          <h6 class="font-weight-medium mt-2">0</h6>
+        </div>
+
+        <div class="col text-center">
+          <StatusLabelComponent status="pending" />
+
+          <h6 class="font-weight-medium mt-2">0</h6>
+        </div>
+
+        <div class="col text-center">
+          <StatusLabelComponent status="rejected" />
+
+          <h6 class="font-weight-medium mt-2">0</h6>
+        </div>
+      </div>
+
+      <div class="row font-size-xs text-center">
+        <div class="col-lg-6 border-end">
+          <span class="font-weight-medium font-color-dark">
+            Most Recent Post
+          </span>
+
+          <DateTimeComponent v-if="item.createdAt" :value="item.createdAt" class="is-text-nowrap" />
+        </div>
+
+        <div class="col-lg-6">
+          <span class="font-weight-medium font-color-dark">
+            Most Recent Approval
+          </span>
+
+          <DateTimeComponent v-if="item.updatedAt" :value="item.updatedAt" class="is-text-nowrap" />
+        </div>
+      </div>
+    </template>
+  </GridCardTable>
+  </template>
+
+  <template v-slot:financialPromotions>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t('marketingFinancialPage-financialPromotions') }}
+    </h2>
+    <p>
+      {{ $t('marketingFinancialPage-financialPromotionsDescription', {
+      currentFirmName }) }}
+    </p>
+
+    <GridCardTable
+      :key="`promotion-table-${activePromotionTableGroup}`"
+      class="PromotionTable mt-4"
+      :columns="promotionColumns"
+      :items="promotionItems"
+      :groups="promotionTableGroups"
+      v-model:active-group="activePromotionTableGroup"
+      :add-button-text="$t('marketingFinancialPage-addFinancialPromotion')"
+      no-switcher
+      :no-actionbar="false"
+      search-placeholder="Search Content Owner, Moderator"
+      pageable
+      isSortable
+      :sort="promotionTableSettings.sorts"
+      :skip="promotionTableSettings.skip"
+      :take="promotionTableSettings.pageSize"
+      :total="financialPromotionTotal"
+      :loading="promotionTableLoading"
+      :handlePageChange="promotionTablePageChangedAsync"
+      :handleSortChange="promotionTableSortAsync"
+      @add="() => {
+        isAddPromotionModalVisible = true;
+        currentPromotionValues = undefined;
+      }"
+      @filter="promotionTableFilterAsync"
+      @search="promotionTableSearchAsync"
+    >
+      <template #cell-media="{ item }">
+        <a :href="item.contentUrl" target="_blank" class="link">
+          <MediaLabelComponent
+            :id="getOutlet(item.mediaOutlet)?.platform"
+            icon-only
+            icon-size="32"
+          />
+        </a>
+      </template>
+      <template #cell-type="{ item }">
+        <div class="is-truncated">{{ getFinancialTypeLabel(item.type) }}</div>
+      </template>
+      <template #cell-contentOwner="{ item }">
+        <OfficerAvatarComponent
+          :id="item.owner"
+          rounded="full"
+          text-truncated
+          text-only
+        />
+      </template>
+      <template #cell-moderator="{ item }">
+        <OfficerAvatarComponent
+          :id="item.moderator"
+          rounded="full"
+          text-truncated
+        />
+      </template>
+      <template #cell-approvalType="{ item }"> Existing Post </template>
+      <template #cell-contentStatus="{ item }">
+        <LiveLabelComponent :live="item.isLive" />
+      </template>
+      <template #cell-approvalRequiredDate="{ item }">
+        {{ moment((item.createdAt || 0) * 1e3).add(item.approvalDays || 0,
+        "days").calendar() }}
+      </template>
+      <template #cell-dateApproved="{ item }">
+        {{ moment((item.approvedAt || 0) * 1e3).calendar() }}
+      </template>
+      <template #cell-dateRejected="{ item }">
+        {{ moment((item.rejectedAt || 0) * 1e3).calendar() }}
+      </template>
+      <template #cell-actions="{ item }">
+        <PromotionActions
+          :promotion="item"
+          :disabled="updatingPromotionIds.includes(item.id)"
+          @view="viewPromotionAsync"
+          @remove="removePromotion"
+          @approve="approveRejectPost($event, true)"
+          @reject="approveRejectPost($event, false)"
+        />
+      </template>
+      <template #filter-fields="{ form }">
+        <PromotionTableFilters :form="form" :type="activePromotionTableGroup" />
+      </template>
+    </GridCardTable>
+  </template>
+</KendoTabStrip>
+
+<AddOutletModal
+  v-model="isAddOutletModalVisible"
+  :saving="isAddingOutlet"
+  @submit="addOutletAsync"
+/>
+
+<ViewOutletModal v-model="isViewOutletModalVisible" :outlet="activeOutlet" />
+
+<AddPromotionModal
+  v-model="isAddPromotionModalVisible"
+  :initial-values="currentPromotionValues"
+  :outlets="outlets"
+  :promotion-type-options="promotionTypeOptions"
+  :saving="isSavingPromotion"
+  @submit="savePromotionAsync"
+/>
+
+<ViewPromotionModal
+  v-model="isViewPromotionModalVisible"
+  :promotion="activePromotion"
+  :loading="isFetchingPromotion"
+  @edit="handleEdit"
+/>

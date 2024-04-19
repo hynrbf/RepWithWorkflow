@@ -1,0 +1,155 @@
+<KendoLoadingComponent :isLoading="isLoading" />
+
+<Breadcrumb />
+
+<KendoPageTitleComponent
+  :title="$t('appointedRepresentativesPage-header')"
+  :description="$t('appointedRepresentativesPage-subHeader', { currentFirmName: currentFirmName })"
+  :routeName="helperService.removeStringSpacesThenSlash(AppConstants.appointedRepresentativesRoute)"
+  class="PageTitle"
+/>
+<GridCardTable
+  add-button-text="Add New Appointed Representative"
+  class="appointed-representative-table"
+  :columns="columns"
+  :items="formatItems(items)"
+  :groups="tableGroups"
+  v-model:active-group="activeGroup"
+  :no-actionbar="false"
+  search-placeholder="Search Name, FRN"
+  pageable
+  :skip="tableSettings.skip"
+  :take="tableSettings.pageSize"
+  :total="appointedRepresentativesTotal"
+  :loading="tableLoading"
+  :handlePageChange="tablePageChangedAsync"
+  @add="isAddModalVisible = true"
+  @filter="tableFilterAsync"
+  @search="tableSearchAsync"
+  @clear="tableClearAsync"
+>
+  <template #cell-name="{ item }">
+    <DynamicAvatarComponent :text="item.name" rounded="full" text-truncated />
+  </template>
+  <template #cell-frn="{ item }">
+    <div class="text-center">
+      <a href="javascript:;" class="text-success text-underline">
+        {{ item.firmReferenceNumber }}
+      </a>
+    </div>
+  </template>
+  <template #cell-activities="{ item }">
+    <SnipItemsComponent :items="item.activities" popup-title="Activities">
+      <template #visible-items="{ items }">
+        <span class="is-truncated d-inline-block w-100">
+          {{ (items.map((item) => products[item.productId])).join(", ") }}
+        </span>
+      </template>
+      <template #popup-item="{ item }">
+        {{ products[item.productId] }}
+      </template>
+    </SnipItemsComponent>
+  </template>
+  <template #cell-cf1="{ item: { representative } }">
+    <DynamicAvatarComponent
+      v-if="representative.forename || representative.surname"
+      :text="`${representative.forename || ''} ${representative.surname || ''}`"
+      rounded="full"
+      text-truncated
+    />
+  </template>
+  <template #cell-status="{ item }">
+    <div class="text-center">
+      <StatusLabel :item="item" />
+    </div>
+  </template>
+  <template #cell-tasks="{ item }">
+    <div class="text-center">
+      <a href="javascript:;"><strong>1</strong></a>
+    </div>
+  </template>
+  <template #cell-actions="{ item }">
+    <TableActions
+      :item="item"
+      @view="onViewItemAsync"
+      @edit="onEditItemAsync"
+    />
+  </template>
+  <template #filter-fields="{ form }">
+    <KendoDropdownListComponent
+      name="activities"
+      :id="setUniqueIdentifier('-activities')"
+      label="Activities"
+      :data-items="activitiesOptions"
+      :value="form.values?.activities"
+      class="mb-3"
+    />
+    <KendoDropdownListComponent
+      name="status"
+      :id="setUniqueIdentifier('-status')"
+      label="Status"
+      :data-items="statusesOptions"
+      :value="form.values?.status"
+      class="mb-3"
+    />
+  </template>
+  <template #card-content="{ item }">
+    <DynamicAvatarComponent
+      size="large"
+      rounded="full"
+      :text="item.name"
+      text-truncated
+    >
+      <template #text>
+        <strong>
+          {{ item.name }} (<a href="#">{{ item.firmReferenceNumber }}</a>)
+        </strong>
+      </template>
+      <template #subtext>
+        <span class="font-size-sm"> [CF1 AR Name] </span>
+      </template>
+    </DynamicAvatarComponent>
+    <div class="text-center mt-2">
+      <span class="font-size-xs text-neutral">Activities</span>
+      <div class="font-size-sm">
+        Mortgage Broking, General Insurance Broking
+      </div>
+    </div>
+    <div class="d-flex gap-3 mt-3">
+      <KendoButton
+        fill-mode="outline"
+        theme-color="success"
+        size="small"
+        class="flex-grow-1"
+      >
+        <div class="font-weight-semi-bold" style="padding: 3px">View Tasks</div>
+      </KendoButton>
+      <TableActions
+        :item="item"
+        @view="onViewItemAsync"
+        @edit="onEditItemAsync"
+      />
+    </div>
+  </template>
+</GridCardTable>
+
+<DetailsModal v-model="isAddModalVisible" />
+
+<DetailsModal
+  v-model="isViewModalVisible"
+  :value="activeAppointedRepresentative"
+  viewMode
+  width="1000"
+  @close="() => {
+    activeAppointedRepresentative = undefined;
+  }"
+/>
+
+<DetailsModal
+  v-model="isEditModalVisible"
+  :value="activeAppointedRepresentative"
+  editMode
+  @close="() => {
+    activeAppointedRepresentative = undefined;
+  }"
+/>

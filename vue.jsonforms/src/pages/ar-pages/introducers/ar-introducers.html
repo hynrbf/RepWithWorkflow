@@ -1,0 +1,45 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<!-- <KendoPageTitleComponent title="Appointed Representative Introducers" :description="{{ $t('ar-introducers-description', {currentFirmName: firmName}) }}"
+                         :routeName="helperService.removeStringSpacesThenSlash(AppConstants.arIntroducersRoute)"/> -->
+<KendoPageTitleComponent title="Appointed Representative Introducers">
+    <template #description>
+        <p>{{ $t('ar-introducers-description', {currentFirmName: firmName}) }}</p>
+    </template>
+</KendoPageTitleComponent>                         
+
+<IntroducerFormModal
+    ref="introducerFormModal"
+    v-if="isShowIntroducerForm"
+    :introducer="introducer" 
+    :isAdd="isAdd"
+    :isCompany="isCompany"
+    @close="closeForm"
+    @submit="saveIntroducersDetailsAsync"
+/>
+
+<div v-if="isShowIntroducerAsList">
+    <IntroducerList
+            :introducers="introducersList"
+            @addIntroducer="addIntroducer"
+            @viewIntroducerList="viewIntroducer"
+            @editIntroducerList="editIntroducer"
+            @viewIntroducerCard="viewIntroducer"
+            @editIntroducerCard="editIntroducer" />
+</div>
+
+<ViewIntroducerModal
+        v-model="isShowIntroducerViewer"
+        :introducer="introducer"
+        @close="closeForm"
+        @edit-introducer="editIntroducer"
+        @view-introducer-permissions="viewIntroducerPermissions"
+/>
+
+<ViewIntroducerPermissions
+    v-if="isShowIntroducerPermissions"
+    :items="permissionsCategorized"
+    @close="closeForm"
+/>

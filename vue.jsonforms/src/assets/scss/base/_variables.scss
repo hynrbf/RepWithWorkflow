@@ -1,0 +1,107 @@
+@import 'colors';
+@import 'font';
+
+/*
+** Default Theme Variables
+*/
+$theme-colors: (
+    "primary": $color-primary-1,
+    "primary-tint": $color-primary-50,
+    "primary-shade": $color-primary-700,
+    "secondary": $color-primary-2,
+    "tertiary": $color-primary-3,
+    "info": $color-info-500,
+    "info-tint": $color-info-50,
+    "info-shade": $color-info-700,
+    "success": $color-success-500,
+    "success-tint": $color-success-50,
+    "success-shade": $color-success-700,
+    "warning": $color-warning-500,
+    "warning-tint": $color-warning-50,
+    "warning-shade": $color-warning-700,
+    "error": $color-error-500,
+    "error-tint": $color-error-50,
+    "error-shade": $color-error-700,
+    "dark": $color-neutral-gray-500,
+    "light": $color-neutral-gray-100,
+    "neutral": $color-neutral-gray-400,
+    "neutral-tint": $color-neutral-gray-300,
+    "white": #fff,
+    "black": #000,
+) !default;
+
+$font-sizes: (
+    "xs": $font-size-xs,
+    "sm": $font-size-sm,
+    "default": $font-size-default,
+    "lg": $font-size-lg,
+    "xl": $font-size-xl,
+    "2xl": $font-size-2xl,
+    "3xl": $font-size-3xl,
+    "4xl": $font-size-4xl,
+    "5xl": $font-size-5xl,
+    "6xl": $font-size-6xl,
+    "7xl": $font-size-7xl,
+) !default;
+
+$font-weights: (
+    "thin": 100,
+    "extra-light": 200,
+    "light": 300,
+    "normal": 400,
+    "medium": 500,
+    "semi-bold": 600,
+    "bold": 700,
+    "extra-bold": 800,
+    "black": 900
+) !default;
+
+// Body styles
+$body-layout: (
+    bg-color: $color-neutral-gray-50,
+    font-size: $font-size-default,
+    text-color: $color-neutral-gray-800,
+) !default;
+
+/* Components Styles */
+$alert-component: (
+    border-radius: 8px,
+    bg-color: #fff,
+    text-color: #000,
+) !default;
+
+$input-component: (
+    font-size: $font-size-default,
+) !default;
+
+$topbar-component: (
+    bg-color: #fff,
+    nav-color: $color-neutral-gray-600,
+    menu-link-color: #000,
+) !default;
+
+$maindrawer-component: (
+    bg-color: #fff,
+    link-color: $color-neutral-gray-600,
+    link-hover-color: $color-primary-1,
+    link-active-color: $color-primary-1,
+    link-active-bg-color: $color-neutral-gray-100,
+    link-disabled-color: $color-neutral-gray-300,
+) !default;
+
+$infotable-component: (
+    accent-color: $color-neutral-gray-200,
+    head-bg-color: $color-neutral-gray-50,
+) !default;
+
+$gridtable-component: (
+    border-color: $color-neutral-gray-200,
+    head-bg-color: $color-neutral-gray-200,
+) !default;
+
+$navPill-component: (
+    font-size: $font-size-sm,
+    link-color: $color-neutral-gray-600,
+    link-active-bg-color: $color-primary-50,
+    link-active-color: $color-primary-1,
+) !default;

@@ -1,0 +1,2167 @@
+/*
+** Default Theme Variables
+*/
+/* Components Styles */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_root.scss */
+:root {
+  --color-primary: #003366;
+  --color-primary-tint: #E5F2FF;
+  --color-secondary: #FFD700;
+  --color-tertiary: #3FC6EB;
+  --color-info: #33A9FF;
+  --color-info-tint: #E5F4FF;
+  --color-info-shade: #0076CC;
+  --color-success: #40BF7F;
+  --color-success-tint: #ECF9F2;
+  --color-success-shade: #309161;
+  --color-warning: #FFB21A;
+  --color-warning-tint: #FFF9EB;
+  --color-warning-shade: #CC8800;
+  --color-error: #F64C4C;
+  --color-error-tint: #FEE7E7;
+  --color-error-shade: #C20A0A;
+  --color-dark: #637083;
+  --color-light: #F2F4F7;
+  --color-neutral: #97A1AF;
+  --color-neutral-tint: #CED2DA;
+  --color-white: #fff;
+  --color-black: #000;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-default: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 28px;
+  --font-size-4xl: 36px;
+  --font-size-5xl: 48px;
+  --font-size-6xl: 60px;
+  --font-size-7xl: 72px;
+  --font-weight-thin: 100;
+  --font-weight-extra-light: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extra-bold: 800;
+  --font-weight-black: 900;
+  --body-bg-color: #F9FAFB;
+  --body-font-size: 16px;
+  --body-text-color: #202B37;
+  --alert-border-radius: 8px;
+  --alert-bg-color: #fff;
+  --alert-text-color: #000;
+  --input-font-size: 16px;
+  --topbar-bg-color: #fff;
+  --topbar-nav-color: #414E62;
+  --topbar-menu-link-color: #000;
+  --maindrawer-bg-color: #fff;
+  --maindrawer-link-color: #414E62;
+  --maindrawer-link-hover-color: #003366;
+  --maindrawer-link-active-color: #003366;
+  --maindrawer-link-active-bg-color: #F2F4F7;
+  --infotable-accent-color: #E4E7EC;
+  --infotable-head-bg-color: #F9FAFB;
+  --gridtable-border-color: #E4E7EC;
+  --gridtable-head-bg-color: #E4E7EC;
+  --navpill-font-size: 14px;
+  --navpill-link-color: #414E62;
+  --navpill-link-active-bg-color: #E5F2FF;
+  --navpill-link-active-color: #003366;
+  --color-content-50: #637083;
+  --neutral-gray-300: #CED2DA;
+  --color-grey-classic-200: #CCCCCC;
+  --color-success-50: #ECF9F2;
+  --color-success-600: #39AC73;
+  --color-success-700: #309161;
+  --color-error-600: #F20D0D;
+  --color-primary-50: #E5F2FF;
+  --text-text-primary: #000D1A;
+  --text-text-secondary: #202B37;
+  --text-text-tertiary: #414E62;
+  --text-text-disabled: #97A1AF;
+  --error-color-error-primary: #F20D0D;
+  --brand-color-brand-primary: #003366;
+  --brand-color-brand-light: #B3D9FF;
+  --screen-background-background-primary: #FFF;
+  --screen-background-background-secondary: #F9FAFB;
+  --content-content-05: #637083;
+  --content-content-06: #97A1AF;
+  --content-content-07: #CED2DA;
+  --content-content-08: #E4E7EC;
+  --content-content-10: #F9FAFB;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_base.scss */
+body {
+  background-color: var(--body-bg-color);
+  color: var(--body-text-color);
+}
+
+/* line 6, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_base.scss */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="url"],
+textarea {
+  font-size: var(--input-font-size);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 130%;
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+body {
+  font-family: 'Figtree', sans-serif;
+  font-size: var(--body-font-size);
+}
+
+/* line 9, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h1, .heading-1 {
+  font-size: var(--font-size-7xl);
+}
+
+/* line 17, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h2, .heading-2 {
+  font-size: var(--font-size-6xl);
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h3, .heading-3 {
+  font-size: var(--font-size-5xl);
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h4, .heading-4 {
+  font-size: var(--font-size-4xl);
+}
+
+/* line 29, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h5, .heading-5 {
+  font-size: var(--font-size-3xl);
+}
+
+/* line 33, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+h6, .heading-6 {
+  font-size: var(--font-size-2xl);
+}
+
+/* line 37, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+p {
+  font-size: var(--font-size-default);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+  margin-bottom: 20px;
+}
+
+/* line 44, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+small {
+  font-size: var(--font-size-xs);
+}
+
+/* line 48, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+a {
+  color: var(--color-primary);
+}
+
+/* line 52, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.fineprint {
+  color: #97A1AF;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-xs {
+  font-size: var(--font-size-xs) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-sm {
+  font-size: var(--font-size-sm) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-default {
+  font-size: var(--font-size-default) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-lg {
+  font-size: var(--font-size-lg) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-xl {
+  font-size: var(--font-size-xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-2xl {
+  font-size: var(--font-size-2xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-3xl {
+  font-size: var(--font-size-3xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-4xl {
+  font-size: var(--font-size-4xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-5xl {
+  font-size: var(--font-size-5xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-6xl {
+  font-size: var(--font-size-6xl) !important;
+}
+
+/* line 58, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-size-7xl {
+  font-size: var(--font-size-7xl) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-thin {
+  font-weight: var(--font-weight-thin) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-extra-light {
+  font-weight: var(--font-weight-extra-light) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-light {
+  font-weight: var(--font-weight-light) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-normal {
+  font-weight: var(--font-weight-normal) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-medium {
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-semi-bold {
+  font-weight: var(--font-weight-semi-bold) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-bold {
+  font-weight: var(--font-weight-bold) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-extra-bold {
+  font-weight: var(--font-weight-extra-bold) !important;
+}
+
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.font-weight-black {
+  font-weight: var(--font-weight-black) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-primary-tint {
+  color: var(--color-primary-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-secondary {
+  color: var(--color-secondary) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-tertiary {
+  color: var(--color-tertiary) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-info {
+  color: var(--color-info) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-info-tint {
+  color: var(--color-info-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-info-shade {
+  color: var(--color-info-shade) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-success {
+  color: var(--color-success) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-success-tint {
+  color: var(--color-success-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-success-shade {
+  color: var(--color-success-shade) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-warning {
+  color: var(--color-warning) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-warning-tint {
+  color: var(--color-warning-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-warning-shade {
+  color: var(--color-warning-shade) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-error {
+  color: var(--color-error) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-error-tint {
+  color: var(--color-error-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-error-shade {
+  color: var(--color-error-shade) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-dark {
+  color: var(--color-dark) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-light {
+  color: var(--color-light) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-neutral {
+  color: var(--color-neutral) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-neutral-tint {
+  color: var(--color-neutral-tint) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-white {
+  color: var(--color-white) !important;
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-black {
+  color: var(--color-black) !important;
+}
+
+/* line 77, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-center {
+  text-align: center !important;
+}
+
+/* line 81, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-right {
+  text-align: right !important;
+}
+
+/* line 85, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.text-left {
+  text-align: left !important;
+}
+
+/* Additional Typography */
+/* line 90, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.h4-figtree-bold {
+  color: var(--text-text-primary);
+  font-size: var(--font-size-4xl);
+  text-align: center;
+  font-style: normal;
+  font-weight: var(--font-weight-bold);
+  line-height: 110%;
+  /* 39.6px */
+}
+
+/* line 99, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.paragraph-s-figtree-medium {
+  color: var(--text-text-secondary);
+  font-size: var(--font-size-default);
+  font-style: normal;
+  font-weight: var(--font-weight-normal);
+  line-height: 125%;
+  /* 17.5px */
+}
+
+/* line 107, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.caption-figtree-medium {
+  color: var(--text-text-tertiary);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: var(--font-weight-medium);
+  line-height: 17.5px;
+  /* 133.333% */
+}
+
+/* line 116, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.error {
+  color: var(--error-color-error-primary);
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  font-weight: var(--font-weight-normal);
+  line-height: 125%;
+  /* 17.5px */
+}
+
+/* line 124, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.caption-frn {
+  color: var(--brand-color-brand-primary);
+  text-align: center;
+  font-size: var(--font-size-sm);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 16px;
+  /* 133.333% */
+  text-decoration-line: underline;
+}
+
+/* line 134, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.subtitle-figtree-bold {
+  color: #000;
+  text-align: center;
+  font-size: var(--font-size-xl);
+  font-style: normal;
+  font-weight: var(--font-weight-bold);
+  line-height: 28px;
+  /* 140% */
+}
+
+/* line 143, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_typography.scss */
+.paragraph-m-figtree-medium {
+  color: var(--text-text-tertiary);
+  /* font-family: Figtree; */
+  font-size: var(--font-size-default);
+  font-style: normal;
+  font-weight: var(--font-weight-medium);
+  line-height: 130%;
+  /* 20.8px */
+}
+
+/*
+This are just flat basic css that are mostly copied directly from Figma css
+Others, are quick and dirty change of kendo styles. But please use themebuilder instead
+ */
+/* line 5, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.input {
+  font: normal normal medium 'Segoe UI', 'Roboto', sans-serif !important;
+  margin: 0;
+  padding: 0;
+  text-align: start;
+  vertical-align: middle;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* line 15, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.input:focus {
+  outline: none !important;
+  border: 1px solid #D3D3D3;
+  box-shadow: 0 0 10px #808080;
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.form-control {
+  font: normal normal medium 'Segoe UI', 'Roboto', sans-serif !important;
+  font-size: var(--font-size-sm) !important;
+  margin: 0;
+  padding: 0;
+  text-align: start;
+  vertical-align: middle;
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* line 32, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.form-control:focus {
+  outline: none !important;
+  border: 1px solid #D3D3D3;
+  box-shadow: 0 0 10px #808080;
+}
+
+/* line 38, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-input-inner::placeholder {
+  color: #808191 !important;
+}
+
+/* line 42, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.font-weight-700 {
+  font-weight: 700;
+}
+
+/* line 46, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.font-weight-500 {
+  font-weight: 500;
+}
+
+/* line 50, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.gray-text {
+  color: #141C24;
+  opacity: 0.5;
+}
+
+/* line 55, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.card {
+  border-radius: 16px;
+}
+
+/* line 59, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.shadow {
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* line 63, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.workflow-header-text {
+  justify-content: left;
+  text-align: end;
+  font-weight: 100;
+  font-size: var(--font-size-4xl);
+  margin: 20px 0;
+}
+
+/* line 71, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.listview {
+  border-width: 0;
+  border-style: none;
+}
+
+/* Custom styles for the Kendo Dialog title bar */
+/* line 77, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-dialog-titlebar {
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: bold;
+}
+
+/* line 83, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.kendo-dialog-body {
+  text-align: left;
+  margin: 10px;
+  font-size: var(--font-size-sm);
+  line-height: 30px;
+}
+
+/* line 90, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.control-label {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  line-height: 125%;
+  color: var(--text-text-secondary);
+}
+
+/* line 97, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.add-manually-btn {
+  text-decoration: underline;
+  padding-top: 0;
+  color: var(--brand-color-brand-primary);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 125%;
+}
+
+/* line 107, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.violet-btn {
+  color: var(--color-white);
+  border-radius: 12px;
+}
+
+/* line 112, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.errorMessageDiv {
+  color: red;
+}
+
+/* line 116, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.accordion-arrow-icon {
+  height: 10px;
+}
+
+/* line 120, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.section-title {
+  font-weight: 700;
+  font-size: var(--font-size-xl);
+}
+
+/* line 125, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.main-title {
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-size: var(--font-size-4xl);
+}
+
+/* line 131, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-menu:not(.k-context-menu) > .k-item,
+.k-menu:not(.k-context-menu) > .k-item:hover {
+  color: #1E1E1E;
+}
+
+/* line 136, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.frame {
+  border: 1px solid #97A1AF;
+  /* To use theme builder */
+  border-radius: 8px;
+}
+
+/* line 141, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.page-tab-anchors {
+  background-color: var(--body-bg-color);
+  z-index: 101;
+}
+
+/* line 146, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.magnifier {
+  color: var(--color-dark);
+}
+
+/*For specific pages, some are global overrides that easier to do manually than Kendo Theme builder*/
+/* line 151, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.permission-section-header {
+  color: var(--color-white);
+  font-size: var(--font-size-default);
+  font-weight: 700;
+}
+
+/* line 157, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.centered-container {
+  /* Center the div horizontally and vertically */
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* line 165, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.input-container {
+  border: 1px solid #e4e4e4;
+  border-radius: 10px;
+  background-color: var(--color-white);
+}
+
+/* line 171, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#indvTab .k-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* line 176, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#indvTab .k-child-animation-container {
+  flex-grow: 1;
+}
+
+/* line 180, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#corpTab .k-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* line 185, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#corpTab .k-child-animation-container {
+  flex-grow: 1;
+}
+
+/* line 189, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.anchor {
+  height: 35px;
+  background-color: var(--color-white);
+  color: var(--color-content-50);
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
+}
+
+/* line 201, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.anchor-selected {
+  height: 35px;
+  background-color: var(--color-primary-50);
+  color: var(--color-primary);
+  border-radius: 100px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
+}
+
+/* line 213, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-autocomplete .k-clear-value {
+  width: 20px;
+  height: 20px;
+  padding: 3px;
+  margin-right: 8px;
+  border-radius: 50%;
+  color: var(--color-white);
+  opacity: 1;
+  visibility: hidden;
+}
+
+/* line 224, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#company-autocomplete-container .k-autocomplete .k-clear-value {
+  border: 1px solid var(--text-text-disabled);
+  background: var(--text-text-disabled);
+}
+
+/* line 229, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#company-autocomplete-container-authorised .k-autocomplete .k-clear-value {
+  border: 1px solid var(--color-success-600);
+  background: var(--color-success-600);
+}
+
+/* line 234, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#company-autocomplete-container-non-authorised .k-autocomplete .k-clear-value {
+  border: 1px solid var(--content-content-05);
+  background: var(--content-content-05);
+}
+
+/* line 239, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+#soletrader-name-input-authorised .k-textbox.k-input.k-input-md.k-input-solid.k-rounded-md {
+  border: 1px solid var(--color-success-600);
+}
+
+/* line 243, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.app-dialog .k-window {
+  background-color: white;
+  border-radius: 8px;
+}
+
+/* line 248, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.align-right-and-stretch {
+  text-align: end;
+  flex-grow: 1;
+}
+
+/* line 253, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.currency-drop-down .k-button,
+.kendo-drop-down .k-button {
+  border-color: transparent;
+  height: 36px;
+}
+
+/* line 259, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-form-error {
+  font-size: 14px;
+  font-style: normal;
+  margin-top: 0;
+}
+
+/* line 266, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.row {
+  --bs-gutter-y: 1.25rem;
+}
+
+/* line 272, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.TabStrip.TabStrip--lined .k-tabstrip-items-wrapper ul > li.k-item {
+  color: var(--text-text-disabled);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  /* 17.5px */
+}
+
+/* line 276, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.TabStrip.TabStrip--lined .k-tabstrip-items-wrapper ul > li.k-item.k-active {
+  color: var(--text-text-disabled);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  /* 17.5px */
+  color: var(--brand-color-brand-primary);
+}
+
+/* line 284, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.TabStripControllers.TabStripControllers--lined .k-tabstrip-items-wrapper ul > li.k-item {
+  color: var(--text-text-disabled);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  /* 17.5px */
+}
+
+/* line 288, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.TabStripControllers.TabStripControllers--lined .k-tabstrip-items-wrapper ul > li.k-item.k-active {
+  color: var(--text-text-disabled);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%;
+  /* 17.5px */
+  color: var(--brand-color-brand-primary);
+}
+
+/* line 294, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-numeric-text-input-component {
+  border-width: 0px;
+}
+
+/* line 298, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-numeric-text-input-component .k-input-inner {
+  color: var(--text-text-primary);
+  border-radius: 8px;
+  border: 1px solid var(--content-content-07);
+  background: var(--content-content-11);
+  padding: 8px 8px 8px 12px;
+}
+
+/* line 306, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.controller-counter .k-numeric-text-input-component {
+  border-width: 0px;
+  width: 80px;
+}
+
+/* line 311, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.controller-counter .k-numeric-text-input-component .k-input-inner {
+  color: var(--text-text-primary);
+  border-radius: 8px;
+  border: 1px solid var(--content-content-07);
+  background: var(--content-content-11);
+  padding: 8px 8px 8px 12px;
+  text-align: center;
+}
+
+/* SWITCH */
+/* line 321, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-switch-off .k-switch-track {
+  background: var(--content-content-07);
+  padding: 0;
+}
+
+/* DATE PICKER */
+/* line 327, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-date-picker-input-component .k-button {
+  background: white;
+  border-width: 0;
+}
+
+/* line 332, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-combobox .k-input-button {
+  background: transparent;
+  border: none;
+}
+
+/* line 337, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-combobox .k-input-button:hover {
+  background: transparent;
+  border: none;
+}
+
+/* line 342, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-percentage-input-component .k-input-prefix {
+  padding: 0 2px;
+  background: var(--content-content-10);
+  border-left: 1px solid var(--content-content-07);
+}
+
+/* line 348, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-percentage-input-component .k-input-inner {
+  text-align: end;
+}
+
+/* line 352, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-percentage-input-component .k-input-spinner.k-spin-button {
+  padding-top: 3px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* line 358, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-percentage-input-component .k-input-spinner.k-spin-button * {
+  border-width: 0;
+  background: white;
+}
+
+/* KENDO COUNTRY DROPDOWN */
+/* line 364, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.CountryList .k-button.k-button-lg.k-icon-button.k-button-solid.k-button-solid-base.k-input-button {
+  background: var(--content-content-10);
+  border: none;
+}
+
+/* line 369, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.CountryList .k-clear-value {
+  display: none;
+}
+
+/* line 373, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.CountryList .k-icon.k-i-loading.k-input-loading-icon {
+  display: none;
+}
+
+/* KENDO YES NO TOGGLE BUTTON */
+/* line 378, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.kendo-yes-no-button .k-button-group .k-button.k-group-start,
+.k-button-group .k-button:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+/* line 384, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.kendo-yes-no-button .k-button-group .k-button.k-group-end,
+.k-button-group .k-button:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* KENDO CURRENCY COMPONENT */
+/* line 391, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.kendo-currency-input-component .k-button.k-button-md.k-icon-button.k-button-null.k-button-null-base.k-input-button {
+  margin-right: 8px;
+  width: 10px;
+}
+
+/* line 396, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.currency-drop-down .k-input-inner {
+  text-align: end;
+}
+
+/* SIGN UP AND CHANGE PASSWORD PAGE */
+/* line 401, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.inner-frame {
+  height: 700px;
+  width: 1200px;
+  background-color: var(--color-white);
+  border-radius: 8px;
+  border: 0.2px solid var(--text-text-disabled);
+}
+
+/* line 409, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.inner-frame img {
+  border-top-left-radius: 8px;
+}
+
+/* line 413, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.inner-frame .text-div {
+  border-bottom-left-radius: 8px;
+}
+
+/* line 417, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.catchy-text {
+  height: 26%;
+  background-color: var(--color-primary);
+}
+
+/* line 422, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.catchy-text p {
+  font-size: var(--font-size-4xl);
+  color: var(--color-white);
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+  line-height: 39.6px;
+}
+
+/* line 430, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.center-padding {
+  padding: 0 40px;
+}
+
+/* line 434, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_basic.scss */
+.k-animation-container.k-animation-container-relative {
+  margin-top: 0px !important;
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-form-md .k-form-field {
+  margin-top: 0;
+}
+
+/* ToDo. No need. Remove in couple of days.
+// Dropdown arrow
+.k-picker {
+    .k-button-icon {
+        background-size: 90%;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: 60% center;
+        transform: translateY(1px);
+        background-image: $caret;
+
+        svg {
+            opacity: 0 !important;
+        }
+    }
+}
+
+// Numeric Input
+.k-numerictextbox {
+    flex-direction: row-reverse;
+
+    .k-spin-button {
+        .k-button {
+            border: none;
+            background: none;
+
+            &:first-child {
+                top: 3px;
+
+                .k-button-icon {
+                    transform: rotate(180deg);
+                }
+            }
+
+            &:last-child {
+                top: -3px;
+            }
+        }
+
+        .k-button-icon {
+            background-size: 70%;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: $caret;
+    
+            svg {
+                opacity: 0 !important;
+            }
+        }
+    }
+}
+*/
+/* line 65, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-treeview .k-treeview-toggle .k-svg-icon {
+  background-size: 80%;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg width='15' height='8' viewBox='0 0 15 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3335 0.998698L8.20727 6.12492C7.81675 6.51545 7.18358 6.51545 6.79306 6.12492L1.66683 0.998697' stroke='%23637083' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  transform: rotate(180deg);
+}
+
+/* line 73, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-treeview .k-treeview-toggle .k-svg-icon svg {
+  opacity: 0 !important;
+}
+
+/* line 77, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-treeview .k-treeview-toggle .k-svg-icon.k-svg-i-caret-alt-right {
+  transform: rotate(0deg);
+}
+
+/* line 85, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-avatar-sm {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
+/* line 90, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/base/_kendoReset.scss */
+.k-avatar-sm .k-avatar-text {
+  font-size: 12px;
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog,
+.Alert .k-dialog-titlebar,
+.Alert .k-dialog-actions {
+  background-color: var(--alert-bg-color);
+}
+
+/* line 8, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog {
+  width: 360px;
+  border-radius: var(--alert-border-radius);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-title {
+  font-size: var(--font-size-lg);
+  color: var(--alert-text-color);
+}
+
+/* line 18, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-titlebar {
+  border-top-left-radius: var(--alert-border-radius);
+  border-top-right-radius: var(--alert-border-radius);
+  border-bottom-width: 0;
+  padding: 20px 15px;
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-actions {
+  border-bottom-left-radius: var(--alert-border-radius);
+  border-bottom-right-radius: var(--alert-border-radius);
+  border-top-width: 0;
+  padding: 15px;
+}
+
+/* line 31, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-actions .k-button {
+  min-width: 160px;
+}
+
+/* line 36, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-content {
+  min-height: 3rem;
+  padding: 5px 15px;
+  color: var(--alert-text-color);
+}
+
+/* line 43, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-titlebar-action .k-button-icon {
+  padding: 3px;
+  width: 22px;
+  height: 22px;
+}
+
+/* line 48, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-titlebar-action .k-button-icon svg {
+  display: none;
+}
+
+/* line 52, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Alert.scss */
+.Alert .k-dialog-titlebar-action .k-button-icon:before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("data:image/svg+xml,%3Csvg width='25' height='25' viewBox='0 0 25 25' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L24 24' stroke='black' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M24 1L1 24' stroke='black' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Button.scss */
+.Button.k-button-flat-primary {
+  z-index: 1;
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Button.scss */
+.Button.k-button-flat-primary::before {
+  background-color: var(--color-primary-tint);
+}
+
+/* line 14, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Button.scss */
+.Button.k-button-flat-primary.k-selected::before, .Button.k-button-flat-primary:hover::before, .Button.k-button-flat-primary.k-hover::before {
+  opacity: 1;
+}
+
+/* line 19, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Button.scss */
+.Button.k-button-flat-primary .k-button-text {
+  z-index: 1;
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Checkbox.scss */
+.Checkbox .k-checkbox {
+  border-color: var(--color-primary);
+}
+
+/* line 12, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Checkbox.scss */
+.Checkbox--plus .k-checkbox {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='11' viewBox='0 0 10 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 1.53564V9.46422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M1.03564 5.4H8.96422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  background-size: 70%;
+}
+
+/* line 16, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Checkbox.scss */
+.Checkbox--plus .k-checkbox:checked, .Checkbox--plus .k-checkbox.k-checked {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='11' viewBox='0 0 10 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 1.53564V9.46422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M1.03564 5.4H8.96422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+/* line 26, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Checkbox.scss */
+.Checkbox--minus .k-checkbox {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='3' viewBox='0 0 10 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.03564 1.5H8.96422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+  background-size: 70%;
+}
+
+/* line 30, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Checkbox.scss */
+.Checkbox--minus .k-checkbox:checked, .Checkbox--minus .k-checkbox.k-checked {
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='3' viewBox='0 0 10 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.03564 1.5H8.96422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-toolbar {
+  padding: 0 0 25px 0;
+}
+
+/* line 11, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-grid-header {
+  padding-right: 0 !important;
+}
+
+/* line 15, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-grid-aria-root {
+  border: 1px solid var(--gridtable-border-color);
+  box-shadow: 0px 0.5px 0px 0px #14000040;
+  border-radius: 8px;
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table {
+  font-size: 14px;
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-thead {
+  background-color: var(--gridtable-head-bg-color);
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+}
+
+/* line 31, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-thead .k-table-th .k-link[class*=k-cursor-default] .k-column-title {
+  display: block;
+  width: 100%;
+}
+
+/* line 40, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-tbody .k-table-row:hover {
+  background-color: var(--color-light) !important;
+}
+
+/* line 46, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-th, .GridTable .k-table-td {
+  border-left-color: transparent;
+  border-right-color: transparent;
+}
+
+/* line 52, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-th .k-link {
+  padding: 10px 15px !important;
+}
+
+/* line 57, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-td {
+  padding: 12px 15px;
+  border-bottom-width: 1px;
+}
+
+/* line 62, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_GridTable.scss */
+.GridTable .k-table-row.k-table-alt-row {
+  background-color: transparent;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_HeadingBar.scss */
+.HeadingBar {
+  background-color: var(--color-gray-400);
+  color: var(--color-white);
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-header, .InfoTable-content {
+  border: 1px solid var(--infotable-accent-color);
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* line 11, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-header {
+  background-color: var(--infotable-accent-color);
+}
+
+/* line 14, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-header .InfoTable-cell {
+  font-weight: bold;
+}
+
+/* line 19, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-content {
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-heading, .InfoTable-row {
+  display: flex;
+  flex: 1;
+}
+
+/* line 31, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-heading {
+  background-color: var(--infotable-head-bg-color);
+  font-weight: bold;
+}
+
+/* line 36, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_InfoTable.scss */
+.InfoTable-cell {
+  flex: 1;
+  padding: 10px 15px;
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal-title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+  margin-bottom: 0;
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal-close {
+  color: var(--color-black);
+  margin-left: auto;
+}
+
+/* line 18, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal .k-dialog {
+  border-radius: 8px;
+  width: 610px;
+}
+
+/* line 23, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal .k-dialog-titlebar {
+  background-color: transparent;
+  border-bottom-color: transparent;
+  padding: 20px 30px;
+}
+
+/* line 29, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal .k-dialog-title {
+  padding: 0;
+  margin: 0;
+}
+
+/* line 34, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal .k-dialog-content {
+  padding: 0 30px !important;
+}
+
+/* line 38, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal .k-dialog-actions {
+  border-top-color: transparent;
+  padding: 20px 30px;
+}
+
+/* line 44, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal--autoScrollContent .k-dialog-content {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* line 51, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Modal.scss */
+.Modal--fixedHeight .k-dialog-content {
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible-title {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+  margin-bottom: 0;
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible-close {
+  color: var(--color-black);
+  margin-left: auto;
+}
+
+/* line 18, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible .k-dialog {
+  border-radius: 8px;
+  width: 1150px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* line 27, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible .k-dialog-titlebar {
+  background-color: transparent;
+  border-bottom-color: transparent;
+  padding: 20px 30px;
+}
+
+/* line 33, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible .k-dialog-content {
+  padding: 0 30px !important;
+}
+
+/* line 37, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_ModalFlexible.scss */
+.ModalFlexible .k-dialog-actions {
+  border-top-color: transparent;
+  padding: 20px 30px;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_NavPill.scss */
+.NavPill {
+  list-style-type: none;
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 10px;
+}
+
+/* line 10, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_NavPill.scss */
+.NavPill-item {
+  margin: 0;
+  padding: 0;
+  flex: 1;
+}
+
+/* line 17, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_NavPill.scss */
+.NavPill-item.is-active .NavPill-link, .NavPill-item:hover .NavPill-link {
+  background-color: var(--navpill-link-active-bg-color);
+  color: var(--navpill-link-active-color);
+}
+
+/* line 24, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_NavPill.scss */
+.NavPill-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--navpill-link-color);
+  font-size: var(--navpill-font-size);
+  font-weight: var(--font-weight-semi-bold);
+  padding: 6px;
+  border-radius: 100px;
+  transition: 0.3s ease all;
+  background-color: #fff;
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Notification.scss */
+.Notification .k-notification {
+  background-color: #fff;
+  border-color: #dfdfdf;
+  color: #000;
+  width: 360px;
+  max-width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* line 15, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Notification.scss */
+.Notification .k-notification-content {
+  font-size: var(--font-size-default);
+}
+
+/* line 19, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Notification.scss */
+.Notification .k-notification-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Notification.scss */
+.Notification .k-notification-status {
+  background-color: var(--color-success);
+  color: #fff;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+/* line 33, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Notification.scss */
+.Notification .k-icon {
+  font-size: 20px;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Panel.scss */
+.Panel {
+  border: 0.3px solid var(--color-neutral);
+  background-color: var(--color-white);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Panel.scss */
+.Panel-head {
+  padding: 20px 20px 0;
+}
+
+/* line 11, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Panel.scss */
+.Panel-body {
+  padding: 20px;
+}
+
+/* line 15, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Panel.scss */
+.Panel-title {
+  margin: 0;
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Panel.scss */
+.Panel-description {
+  margin-top: 10px;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill {
+  border-radius: 150px;
+  padding: 2.5px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-xs);
+  line-height: 1.25;
+  border: 1px solid transparent;
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--primary-tint {
+  background-color: var(--color-primary-tint);
+  border-color: var(--color-primary-tint);
+  color: var(--color-white);
+  color: var(--color-primary-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--secondary {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--tertiary {
+  background-color: var(--color-tertiary);
+  border-color: var(--color-tertiary);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--info {
+  background-color: var(--color-info);
+  border-color: var(--color-info);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--info-tint {
+  background-color: var(--color-info-tint);
+  border-color: var(--color-info-tint);
+  color: var(--color-white);
+  color: var(--color-info-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--info-shade {
+  background-color: var(--color-info-shade);
+  border-color: var(--color-info-shade);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--success-tint {
+  background-color: var(--color-success-tint);
+  border-color: var(--color-success-tint);
+  color: var(--color-white);
+  color: var(--color-success-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--success-shade {
+  background-color: var(--color-success-shade);
+  border-color: var(--color-success-shade);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--warning {
+  background-color: var(--color-warning);
+  border-color: var(--color-warning);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--warning-tint {
+  background-color: var(--color-warning-tint);
+  border-color: var(--color-warning-tint);
+  color: var(--color-white);
+  color: var(--color-warning-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--warning-shade {
+  background-color: var(--color-warning-shade);
+  border-color: var(--color-warning-shade);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--error {
+  background-color: var(--color-error);
+  border-color: var(--color-error);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--error-tint {
+  background-color: var(--color-error-tint);
+  border-color: var(--color-error-tint);
+  color: var(--color-white);
+  color: var(--color-error-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--error-shade {
+  background-color: var(--color-error-shade);
+  border-color: var(--color-error-shade);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--dark {
+  background-color: var(--color-dark);
+  border-color: var(--color-dark);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--light {
+  background-color: var(--color-light);
+  border-color: var(--color-light);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--neutral {
+  background-color: var(--color-neutral);
+  border-color: var(--color-neutral);
+  color: var(--color-white);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--neutral-tint {
+  background-color: var(--color-neutral-tint);
+  border-color: var(--color-neutral-tint);
+  color: var(--color-white);
+  color: var(--color-neutral-shade);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--white {
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+  color: var(--color-white);
+  border-color: var(--color-neutral-tint);
+  color: var(--color-black);
+}
+
+/* line 13, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--black {
+  background-color: var(--color-black);
+  border-color: var(--color-black);
+  color: var(--color-white);
+}
+
+/* line 31, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Pill.scss */
+.Pill--lg {
+  font-size: var(--font-size-sm);
+}
+
+/* line 4, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip .k-animation-container {
+  width: 100%;
+}
+
+/* line 8, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip .k-content {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* line 15, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper {
+  margin-bottom: 30px;
+  border: none;
+}
+
+/* line 20, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item {
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-neutral);
+}
+
+/* line 28, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:not(:last-child) {
+  margin-right: 25px;
+}
+
+/* line 32, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:hover, .TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:focus, .TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  color: var(--color-primary);
+}
+
+/* line 36, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  border-bottom: var(--color-primary) 2px solid !important;
+}
+
+/* line 40, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item .k-link {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 50, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper {
+  margin-bottom: 0;
+  padding: 0;
+  border-width: 0;
+}
+
+/* line 56, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item {
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 15px;
+  background: #E4E7E8;
+  font-style: normal;
+  line-height: 125%;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--content-content-05);
+}
+
+/* line 67, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:last-child {
+  margin-left: 0;
+}
+
+/* line 71, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:not(:last-child) {
+  margin-right: 15px;
+}
+
+/* line 75, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:hover, .TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:focus, .TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  color: var(--color-primary);
+  background-color: white;
+}
+
+/* line 80, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  border: 1px solid var(--text-text-disabled);
+  border-bottom-width: 0 !important;
+}
+
+/* line 85, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item .k-link {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 95, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStrip.scss */
+.TabStrip--hidden .k-tabstrip-items-wrapper {
+  display: none;
+}
+
+/* line 5, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers .k-animation-container {
+  width: 100%;
+}
+
+/* line 9, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers .k-content {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+/* line 16, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper {
+  margin-bottom: 30px;
+  border: none;
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item {
+  border: none;
+  background-color: transparent;
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semi-bold);
+  color: var(--color-neutral);
+}
+
+/* line 29, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:last-child {
+  margin-left: auto;
+}
+
+/* line 33, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:not(:last-child) {
+  margin-right: 25px;
+}
+
+/* line 37, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:hover, .TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:focus, .TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  color: var(--color-primary);
+}
+
+/* line 41, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  border-bottom: var(--color-primary) 2px solid !important;
+}
+
+/* line 45, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--lined .k-tabstrip-items-wrapper .k-tabstrip-items .k-item .k-link {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 55, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper {
+  margin-bottom: 0;
+  padding: 0;
+  border-width: 0;
+}
+
+/* line 61, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item {
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 15px;
+  background: #E4E7E8;
+  font-style: normal;
+  line-height: 125%;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  color: var(--content-content-05);
+}
+
+/* line 72, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:last-child {
+  margin-left: 0;
+}
+
+/* line 76, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:not(:last-child) {
+  margin-right: 15px;
+}
+
+/* line 80, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:hover, .TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item:focus, .TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  color: var(--color-primary);
+  background-color: white;
+}
+
+/* line 85, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item.k-active {
+  border: 1px solid var(--text-text-disabled);
+  border-bottom-width: 0 !important;
+}
+
+/* line 90, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--default .k-tabstrip-items-wrapper .k-tabstrip-items .k-item .k-link {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 100, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_TabStripControllers.scss */
+.TabStripControllers--hidden .k-tabstrip-items-wrapper {
+  display: none;
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Switch.scss */
+.Switch .k-switch-off .k-switch-track {
+  max-width: 36px;
+  height: 20px;
+  border-color: transparent;
+  color: transparent;
+  background-color: var(--neutral-gray-300);
+}
+
+/* line 10, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Switch.scss */
+.Switch .k-switch-on .k-switch-track {
+  max-width: 36px;
+  height: 20px;
+  border-color: transparent;
+  color: transparent;
+  background-color: var(--brand-color-brand-primary);
+}
+
+/* line 18, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Switch.scss */
+.Switch .k-switch-sm .k-switch-thumb {
+  margin-left: -2px;
+  background: var(--color-white);
+  width: 16px;
+  height: 16px;
+}
+
+/* line 25, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Switch.scss */
+.Switch .k-switch.k-switch-sm.k-rounded-full.k-switch-on {
+  width: 40px;
+}
+
+/* line 29, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/component/_Switch.scss */
+.Switch .k-switch.k-switch-sm.k-rounded-full.k-switch-off {
+  width: 40px;
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-primary {
+  background-color: var(--color-primary);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-primary-tint {
+  background-color: var(--color-primary-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-tertiary {
+  background-color: var(--color-tertiary);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-info {
+  background-color: var(--color-info);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-info-tint {
+  background-color: var(--color-info-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-info-shade {
+  background-color: var(--color-info-shade);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-success {
+  background-color: var(--color-success);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-success-tint {
+  background-color: var(--color-success-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-success-shade {
+  background-color: var(--color-success-shade);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-warning {
+  background-color: var(--color-warning);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-warning-tint {
+  background-color: var(--color-warning-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-warning-shade {
+  background-color: var(--color-warning-shade);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-error {
+  background-color: var(--color-error);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-error-tint {
+  background-color: var(--color-error-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-error-shade {
+  background-color: var(--color-error-shade);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-dark {
+  background-color: var(--color-dark);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-light {
+  background-color: var(--color-light);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-neutral {
+  background-color: var(--color-neutral);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-neutral-tint {
+  background-color: var(--color-neutral-tint);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-white {
+  background-color: var(--color-white);
+}
+
+/* line 2, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-black {
+  background-color: var(--color-black);
+}
+
+/* line 7, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_background.scss */
+.is-bg-from-body {
+  background-color: var(--body-bg-color);
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable, .is-scrollable-x, .is-scrollable-y {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 156, 156, 0.7) #fff;
+}
+
+/* line 5, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable::-webkit-scrollbar, .is-scrollable-x::-webkit-scrollbar, .is-scrollable-y::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5rem;
+}
+
+/* line 9, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable::-webkit-scrollbar-thumb, .is-scrollable-x::-webkit-scrollbar-thumb, .is-scrollable-y::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 156, 156, 0.7);
+  border-radius: 1.25rem;
+}
+
+/* line 12, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable::-webkit-scrollbar-thumb:hover, .is-scrollable-x::-webkit-scrollbar-thumb:hover, .is-scrollable-y::-webkit-scrollbar-thumb:hover, .is-scrollable::-webkit-scrollbar-thumb:active, .is-scrollable-x::-webkit-scrollbar-thumb:active, .is-scrollable-y::-webkit-scrollbar-thumb:active {
+  background-color: #9c9c9c;
+}
+
+/* line 21, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable {
+  overflow: auto;
+}
+
+/* line 26, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable-x {
+  overflow: auto hidden;
+}
+
+/* line 31, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_overflow.scss */
+.is-scrollable-y {
+  overflow: hidden auto;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_pointer.scss */
+.is-clickable {
+  cursor: pointer;
+}
+
+/* line 5, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_pointer.scss */
+.is-unclickable {
+  pointer-events: none;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_position.scss */
+.is-sticky-top {
+  position: sticky;
+  top: 0;
+}
+
+/* line 6, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_position.scss */
+.is-zindex-base {
+  z-index: 1;
+}
+
+/* line 1, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_text.scss */
+.is-truncated {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_transform.scss */
+.is-rotate45 {
+  transform: rotate(45deg);
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_transform.scss */
+.is-rotate90 {
+  transform: rotate(90deg);
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_transform.scss */
+.is-rotate180 {
+  transform: rotate(180deg);
+}
+
+/* line 3, ../../_Work.Dir.ComplyDex/Ours.B/Source/vue.jsonforms/src/assets/scss/states/_transform.scss */
+.is-rotate270 {
+  transform: rotate(270deg);
+}
+
+/*# sourceMappingURL=main.css.map */

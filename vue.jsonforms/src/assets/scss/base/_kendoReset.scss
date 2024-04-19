@@ -1,0 +1,78 @@
+$caret: url("data:image/svg+xml,%3Csvg width='15' height='8' viewBox='0 0 15 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M13.3335 0.998698L8.20727 6.12492C7.81675 6.51545 7.18358 6.51545 6.79306 6.12492L1.66683 0.998697' stroke='%23637083' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+
+// Form field
+.k-form-md .k-form-field {
+    margin-top: 0;
+}
+
+/* ToDo. No need. Remove in couple of days.
+// Dropdown arrow
+.k-picker {
+    .k-button-icon {
+        background-size: 90%;
+        background-color: transparent;
+        background-repeat: no-repeat;
+        background-position: 60% center;
+        transform: translateY(1px);
+        background-image: $caret;
+
+        svg {
+            opacity: 0 !important;
+        }
+    }
+}
+*/
+
+// Tree View Component
+.k-treeview {
+    .k-treeview-toggle {
+        .k-svg-icon {
+            background-size: 80%;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: $caret;
+            transform: rotate(180deg);
+    
+            svg {
+                opacity: 0 !important;
+            }
+
+            &.k-svg-i-caret-alt-right {
+                transform: rotate(0deg);
+            }
+        }
+    }
+}
+
+// Avatar
+.k-avatar-sm {
+    width: 24px;
+    height: 24px;
+    flex-basis: 24px;
+
+    .k-avatar-text {
+        font-size: 12px;
+    }
+}
+
+// Dropdown List
+.k-list {
+    .k-list-content {
+        .k-list-ul {
+            padding: 5px;
+        }
+        .k-list-item {
+            border-radius: 8px;
+            color: #202B37;
+
+            &.k-selected {
+                background-color: #B3D9FF;
+            }
+
+            &.k-focus {
+                box-shadow: none !important;
+            }
+        }
+    }
+}

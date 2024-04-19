@@ -1,0 +1,70 @@
+@mixin serializeCssVars(
+  $theme-colors: $theme-colors,
+  $font-sizes: $font-sizes,
+  $font-weights: $font-weights,
+  $body-layout: $body-layout,
+
+  // Components
+  $alert-component: $alert-component,
+  $input-component: $input-component,
+  $topbar-component: $topbar-component,
+  $maindrawer-component: $maindrawer-component,
+  $infotable-component: $infotable-component,
+  $gridtable-component: $gridtable-component,
+  $navPill-component: $navPill-component,
+) {
+  // Theme colors
+  @each $name, $value in $theme-colors {
+    --color-#{$name}: #{$value};
+  }
+
+  // Font sizes
+  @each $name, $value in $font-sizes {
+    --font-size-#{$name}: #{$value};
+  }
+
+  // Font weights
+  @each $name, $value in $font-weights {
+    --font-weight-#{$name}: #{$value};
+  }
+
+  // Body layout
+  @each $name, $value in $body-layout {
+    --body-#{$name}: #{$value};
+  }
+
+  // Alert component
+  @each $name, $value in $alert-component {
+    --alert-#{$name}: #{$value};
+  }
+
+  // Input component
+  @each $name, $value in $input-component {
+    --input-#{$name}: #{$value};
+  }
+
+  // Topbar component
+  @each $name, $value in $topbar-component {
+    --topbar-#{$name}: #{$value};
+  }
+
+  // Main Drawer component
+  @each $name, $value in $maindrawer-component {
+    --maindrawer-#{$name}: #{$value};
+  }
+
+  // Info Table component
+  @each $name, $value in $infotable-component {
+    --infotable-#{$name}: #{$value};
+  }
+
+  // Grid table component
+  @each $name, $value in $gridtable-component {
+    --gridtable-#{$name}: #{$value};
+  }
+
+  // Nav Pill component
+  @each $name, $value in $navPill-component {
+    --navpill-#{$name}: #{$value};
+  }
+}

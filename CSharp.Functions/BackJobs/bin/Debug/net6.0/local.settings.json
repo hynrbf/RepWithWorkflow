@@ -1,0 +1,41 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDbAccount": "https://complydexdb.documents.azure.com:443/",
+    "CosmosDbKey": "6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==",
+    "Database": "complydexdbinstance",
+    "CustomerContainer": "customer",
+    "AppointedRepresentativesContainer": "appointedRepresentatives",
+    "OrganizationalEmployeesContainer": "organizationEmployees",
+    "ProvidersContainer": "providers",
+    "IntroducersContainer": "introducers",
+    "SaveFieldsContainer": "savefields",
+    "SettingsContainer": "settings",
+    "DocumentHtmlContentContainer": "htmlContentDocument",
+    "Email": "tech@suntech.gi",
+    "SmtpEmail": "tech.dev@suntech.gi",
+    "SignNowBasicAuthorizationToken": "MmZmNzFjZTY4Yzc0NTBkNTM3Njk1NDU0NTI5MzEwYzI6ZGNiN2ExODc3ZTEwM2Y1YjY5ODM0MGQ5ZmRlNTNiZWE=",
+    "BaseRedirectUrl": "http://localhost:5173",
+    "PdfCoApiKey": "admin@dsforgs.com_12a260be12f216d8e96f91a6f6d1fb830682f97ba56068dd9c84e7581f638bf750d46e3e",
+    "AzureStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sunstorageaccntfncstg;AccountKey=UD5NCx58zSlR96KE0Q8X5xrvSp3p1fl9XaVKy8tqZ1eH12ym2H28KrKN2NAmWbu2qz5pw7PVDI29+AStyQLyMw==;EndpointSuffix=core.windows.net",
+    "BlobStorageContainerName": "complydexcontainer",
+    "AzureStorageBaseUrl": "https://sunstorageaccntfncstg.blob.core.windows.net/",
+    "IsEnable": "true",
+    "ScheduleExpression": "*/30 * * * * *",
+    "FourteenDaysInSecs": "1209600",
+    "SevenDaysInSecs": "604800",
+    "TwoDaysInSecs": "172800",
+    "OneHourInSecs": "3600",
+    "TenMinutesInSecs": "600",
+    "DirectDebitFollowUpTriggerTimeInEpoch": "300",
+    "FunctionAppUrl": "https://az-func-api-sun.azurewebsites.net",
+    "CalendlyPersonalAccessToken": "eyJraWQiOiIxY2UxZTEzNjE3ZGNmNzY2YjNjZWJjY2Y4ZGM1YmFmYThhNjVlNjg0MDIzZjdjMzJiZTgzNDliMjM4MDEzNWI0IiwidHlwIjoiUEFUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiJodHRwczovL2F1dGguY2FsZW5kbHkuY29tIiwiaWF0IjoxNjg5MjMzNDc1LCJqdGkiOiJjZWI2YjI0Yy1hMDhjLTRkNTctYTIxMi05M2FmMmNlMWVhNTkiLCJ1c2VyX3V1aWQiOiIzMzM5ZWYyNS1kZTNiLTRmMTYtYjQwOC0zZjRlODY1MDEwNWMifQ.WJO8UeKsessRloqkmadNvYhR7P0oOiorrM3DDX0IUbAsWLFZjuVG80IpxdnOLRbuVF9wJuSMpgh63neUKh2mMA"
+  },
+  "Host": {
+    "LocalHttpPort": 7374,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}

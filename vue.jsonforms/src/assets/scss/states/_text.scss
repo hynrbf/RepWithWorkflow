@@ -1,0 +1,15 @@
+.is-truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.is-text-nowrap {
+    white-space: nowrap;
+}
+
+.is-text-tight {
+    & > :last-child {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,718 @@
+<KendoDialog ref="kendoDialog"/>
+
+<KendoFlexibleDialog ref="kendoCalendarFlexibleDialog" :style="{height: auto, width: 'auto', padding: '20px'}">
+    <p>Selected: <strong>{{ selectedEventType?.name }}</strong></p>
+
+    <DropDownList size="large"
+                  :data-items="activeEventTypes"
+                  :text-field="'name'"
+                  :data-item-key="'name'"
+                  @change="onSelectEventType"
+                  v-model="selectedEventType"/>
+
+    <Button type="button" class="mt-3 violet-btn"
+            :disabled="!selectedEventType" :theme-color="'primary'"
+            @click="onNavigateToScheduling">{{ $t('signUpPage-scheduleMeetingButtonText') }}
+    </Button>
+</KendoFlexibleDialog>
+
+
+<StackLayout orientation="vertical" style="height: 100vh; background-color: var(--body-bg-color);"
+             :align="{vertical: 'top'}">
+    <TopBar/>
+
+    <div class="d-flex flex-grow-1"
+         style="justify-content: center; align-items: center;">
+        <div class="d-flex inner-frame">
+            <!-- Left side -->
+            <div class="col-sm-6 d-flex flex-column" style="padding: 0;">
+                <div style="color: white" class="flex-grow-1">
+                    <img src="/side-banner-b.png" alt="signup"
+                         style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
+                </div>
+
+                <div class="catchy-text d-flex flex-column justify-content-center text-div">
+                    <p>
+                        {{ $t('signUpPage-navBottomText') }} <br/> {{ $t('signUpPage-navBottomText1') }}
+                        <br/>{{ $t('signUpPage-navBottomText2') }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right side -->
+            <div class="col-sm-6" style="position: relative">
+                <StackLayout class="centered-container center-padding" v-if="!selectedSigningType"
+                             orientation="vertical"
+                             :align="{horizontal: 'center'}"
+                             :gap="20">
+
+                    <Label class="h4-figtree-bold">{{ $t('signUpPage-header') }}</Label>
+
+                    <Label class="subtitle-figtree-regular">{{ $t('signUpPage-subtitle') }}</Label>
+
+                    <StackLayout class="mt-4 soletrader-or-company-btn subtitle-figtree-semibold"
+                                 orientation="horizontal" :align="{horizontal: 'center'}" :gap="4"
+                                 @click="setSigningType(AppConstants.signInTypeCompany)">
+                        <IconComponent size="28" symbol="building-construction-primary"/>
+
+                        <Label>{{ $t('signUpPage-companyButtonText') }}</Label>
+                    </StackLayout>
+
+                    <StackLayout class="m-2 soletrader-or-company-btn subtitle-figtree-semibold"
+                                 orientation="horizontal" :align="{horizontal: 'center'}" :gap="4"
+                                 @click="setSigningType(AppConstants.signInTypeSoleTrader)">
+                        <IconComponent size="28" symbol="user-primary"/>
+
+                        <Label>{{ $t('signUpPage-soleTraderButtonText') }}</Label>
+                    </StackLayout>
+                </StackLayout>
+
+                <StackLayout v-else class="centered-container center-padding" orientation="vertical"
+                             :align="{horizontal: 'stretch'}">
+                    <Label v-if="!isProposalReady" class="mb-4 h4-figtree-bold">{{ $t('signUpPage-formHeader') }}<br/>
+                        {{ $t('signUpPage-formHeader1') }}</Label>
+
+                    <Form v-if="!isProposalReady" @submit="signupAsync">
+                        <KendoFormElementComponent v-slot="{ form }">
+                            <!-- Company -->
+                            <StackLayout v-if="selectedSigningType === AppConstants.signInTypeCompany"
+                                         orientation="vertical" :gap="20">
+                                <StackLayout orientation="horizontal"
+                                             :gap="15"
+                                             :align="{horizontal: 'stretch'}">
+                                    <KendoGenericInputComponent id="profile.forename" name="profile.forename"
+                                                                label="Forename(s)" placeholder="John"
+                                                                :isCapitalizeFirstLetter="true"
+                                                                :value="profile.foreName"
+                                                                @onValueChange="((value) => profile.foreName = value)"/>
+
+                                    <KendoGenericInputComponent id="profile.lastname" name="profile.lastname"
+                                                                label="Last Name" placeholder="Smith"
+                                                                :isCapitalizeFirstLetter="true"
+                                                                :value="profile.lastName"
+                                                                @onValueChange="((value) => profile.lastName = value)"/>
+                                </StackLayout>
+
+                                <KendoCompaniesAutoCompleteComponent
+                                        isShowBottomResults="true"
+                                        id="companyName"
+                                        name="companyName"
+                                        label="Company Name"
+                                        placeholder="Type"
+                                        :isSoleTrader="false"
+                                        :isShowBottomResults="true"
+                                        :isShowToolTipWithoutHover="false"
+                                        :isShowStatus="true"
+                                        @onInput="onCompanyInput"
+                                        @onClear="onClearCompany"
+                                        @onValueChange="onCompanyValueChanged"
+                                />
+
+                                <StackLayout orientation="horizontal"
+                                             :gap="15"
+                                             :align="{horizontal: 'stretch'}">
+                                    <KendoEmailAddressInputComponent id="profile.email" name="profile.email"
+                                                                     :value="profile.email"
+                                                                     @onValueChange="((value) => profile.email = value)"/>
+
+                                    <!-- bottom of KendoTelInputComponent has a bottom space of around 5px-->
+                                    <KendoTelInputComponent id="profile.contactNumber" name="profile.contactNumber"
+                                                            label="Contact Number"
+                                                            :value="profile.contactNumber"
+                                                            @onValueChange="((value) => profile.contactNumber = value)"/>
+                                </StackLayout>
+                            </StackLayout>
+
+                            <!-- Sole Trader -->
+                            <StackLayout v-else orientation="vertical" :gap="20">
+                                <KendoSoleTraderNameInputComponent @onFullNameChange="onFullNameValueChanged"
+                                                                   @onFinishedSearch="onSearchSoleTraderResult"/>
+
+                                <StackLayout orientation="horizontal"
+                                             :gap="15"
+                                             :align="{horizontal: 'stretch'}">
+                                    <KendoEmailAddressInputComponent id="profile.email" name="profile.email"
+                                                                     :value="profile.email"
+                                                                     @onValueChange="((value) => profile.email = value)"/>
+
+                                    <KendoTelInputComponent id="profile.contactNumber"
+                                                            name="profile.contactNumber"
+                                                            label="Contact Number"
+                                                            :value="profile.contactNumber"
+                                                            @onValueChange="((value) => profile.contactNumber = value)"/>
+                                </StackLayout>
+
+                                <KendoPostCodeInputComponentForSignup id="profile.homeAddress"
+                                                                      class="address-autocomplete"
+                                                                      name="profile.homeAddress"
+                                                                      label="Home Address"
+                                                                      placeholder="Postcode"
+                                                                      searchModeText="+Add Manually"
+                                                                      manualModelText="Back to Address Search"
+                                                                      :value="profile.homeAddress"
+                                                                      @onValueChange="((value) => profile.homeAddress = value)"/>
+
+                                <KendoDatePickerInputComponent id="profile.dateOfBirth" name="profile.dateOfBirth"
+                                                               class="col-6"
+                                                               label="Date of Birth"
+                                                               :maxDate="eighteenYearsAgo"
+                                                               @onValueChange="(value: Date) => onDateOfBirthChange(value)"
+                                                               />
+                            </StackLayout>
+
+                            <p class="mt-4 paragraph-m-figtree-regular">{{ $t('signUpPage-dataPrivacyText') }}
+                                <a href="#" class="link-primary"
+                                   @click="showPrivacyNotice">{{ $t('signUpPage-privacyNotice') }}</a>.
+                            </p>
+
+                            <StackLayout class="mt-4 justify-content-between" :align="{horizontal: 'start'}">
+                                <Button type="button" class="back-button"
+                                        :class="isGenerateProposalButtonDisabled ? 'signup-btn-disabled' : 'signup-btn-enabled'"
+                                        @click="onBack">
+                                    <StackLayout
+                                            orientation="horizontal"
+                                            :align="{horizontal: 'stretch', vertical: 'middle'}"
+                                            :gap="8">
+                                        <IconComponent symbol="arrow-left-1-81"/>
+                                        {{ $t('signUpPage-back') }}
+                                    </StackLayout>
+                                </Button>
+
+                                <Button type="submit"
+                                        :class="isGenerateProposalButtonDisabled ? 'signup-btn-disabled' : 'signup-btn-enabled'"
+                                        :disabled="isGenerateProposalButtonDisabled">
+                                    {{ $t('signUpPage-generateProposal') }}
+                                </Button>
+                            </StackLayout>
+                        </KendoFormElementComponent>
+                    </Form>
+
+                    <StackLayout v-if="isProposalReady" orientation="vertical"
+                                 :align="{horizontal: 'center', vertical: 'middle'}">
+                        <img :src="isSoleTrader ? '/check-filled.svg' : '/proposal-ready-pana.svg'"
+                             :alt="isSoleTrader ? 'check-filled.svg' : 'proposal-ready-pana.svg'"
+                             :style="{height: isSoleTrader ? '60px' : '160px'}"/>
+
+                        <Label v-if="isFirmIsNotCompanyHouseRegistered"
+                               class="mt-4 h4-figtree-bold">{{ $t('signUpPage-proposalReadyTextUnknown') }}</Label>
+
+                        <Label v-else class="mt-4 h4-figtree-bold">{{ $t('signUpPage-proposalReadyText') }}</Label>
+
+                        <Label v-if="isFirmIsNotCompanyHouseRegistered" class="mb-4 subtitle-figtree-regular">
+                            {{
+                                $t('signUpPage-proposalReadySubTitleUnknown', {currentComplianceFirmName: this.complianceFirmName})
+                            }}
+                        </Label>
+
+                        <Label v-if="!isFirmIsNotCompanyHouseRegistered" class="subtitle-figtree-regular">
+                            {{ $t('signUpPage-proposalReadySubTitle') }} {{ profile.email }}.
+                        </Label>
+
+                        <Label v-if="!isFirmIsNotCompanyHouseRegistered" class="mb-4 subtitle-figtree-regular">
+                            {{ $t('signUpPage-proposalReadySubTitle1') }}
+                        </Label>
+
+                        <StackLayout class="mt-4 p-4 proposal-ready-bottom-banner" orientation="vertical"
+                                     :align="{horizontal: 'stretch'}">
+                            <StackLayout orientation="horizontal" :align="{horizontal: 'center', vertical: 'middle'}">
+                                <!-- NOTE: SVGs below have big files sizes ( > 2.56 MB) so use img tag  -->
+                                <img class="mb-4 mx-4 side-avatar-icons" src="/female-avatar.svg" alt="female-avatar"/>
+                                <img class="mb-4 mx-4 side-avatar-icons" src="/male-avatar.svg" alt="male-avatar"/>
+                                <img class="mb-4 center-avatar-icon" src="/center-avatar.svg" alt="center-avatar"/>
+                            </StackLayout>
+
+                            <Label class="subtitle-figtree-bold">{{ $t('signUpPage-proposalReadySubTitle2') }}</Label>
+
+                            <Label class="mt-2 paragraph-m-figtree-regular text-center">
+                                {{ $t('signUpPage-queryText') }} <br/>
+                                {{ $t('signUpPage-scheduleMeetingText') }} <a class="link-primary"
+                                                                              style="cursor: pointer;"
+                                                                              @click="navigateToScheduleMeetingPage">{{
+                                    $t('signUpPage-scheduleMeetingText1')
+                                }}</a>
+                                {{ $t('signUpPage-scheduleMeetingText2') }}
+                            </Label>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <div v-if="isProcessingProposal" class="page-overlay">
+                    <StackLayout class="centered-container center-padding" orientation="vertical"
+                                 :align="{horizontal:'center'}">
+                        <img :src="isSoleTrader ? '/loader-soletrader.gif' : '/outlining-loader.gif'"
+                             alt="loader" :style="{width: isSoleTrader ? '150px' : '60px'}"/>
+
+                        <Label class="mt-4 h5-figtree-bold">{{ $t('signUpPage-loadingText') }}</Label>
+                    </StackLayout>
+                </div>
+            </div>
+        </div>
+
+        <Dialog v-if="isPrivacyDialogOpen" class="d-flex privacy-popup">
+            <StackLayout orientation="horizontal" :align="{ horizontal: 'stretch'}">
+                <Label class="section-title k-color-primary"
+                       style="margin-bottom: 20px; line-height: 28px; color: #003366;">Privacy Notice</Label>
+
+                <div class="d-flex justify-content-end">
+                    <IconComponent @click="closePrivacyDialog" symbol="close" style="cursor:pointer;"/>
+                </div>
+            </StackLayout>
+
+            <div class="content-wrapper k-overflow-y-auto">
+                <div class="content-container k-text-black">
+                    <Label class="mt-2 section-title k-color-primary" style="margin-bottom: 20px">Introduction</Label>
+        
+                    <p style="font-weight: 500 !important;">We are committed to protecting your privacy. This Privacy Notice
+                        applies between you, the user of the website
+                        {{ privacyWebsite }} (Website) and SunTech Investments Ltd.</p>
+        
+                    <p style="font-weight: 500 !important;">SunTech Investments Ltd is the owner and provider of this website,
+                        and this Privacy Notice sets out our privacy
+                        practices and explains how we collect, process, hold and store (collectively referred to as handle)
+                        personal
+                        data and with whom we share it. The personal data we handle is only that which is required by us so that
+                        we may
+                        deliver the services you require. Except as provided in this Privacy Notice, we do not supply personal
+                        data to
+                        any company for marketing purposes.</p>
+        
+                    <p style="font-weight: 500 !important;">As a data controller, we determine the purpose for which, and the
+                        manner in which, personal data is processed,
+                        and we make sure we comply with UK and EU data protection law when we process such data.</p>
+        
+                    <p style="font-weight: 500 !important;">You may browse our website without telling us who you are or
+                        revealing any personal data about yourself. We will
+                        not collect any Personal Data from you as a user of the Website. The information we collect from you is
+                        only
+                        that which is required by us so that we may deliver the site functionality, information you have
+                        requested or
+                        searched for.</p>
+        
+                    <p style="font-weight: 500 !important;">Our Privacy Notice will be reviewed on a regular basis and may be
+                        updated from time to time.</p>
+        
+                    <Label class="section-title k-color-primary">What is Personal Data</Label>
+        
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">When we refer to personal data, we mean any information relating to
+                        an identifiable person who can be directly or
+                        indirectly identified in particular by reference to an identifier. Under data protection legislation it
+                        is known
+                        as personal data. Some personal data will identify you directly – for example, by giving your name and
+                        email
+                        address. It may also be possible to identify you indirectly, from information in which your name is not
+                        given,
+                        for example by naming your job title and employer, or by using another form of identifier such as an
+                        online
+                        identifier.</p>
+        
+                    <p style="font-weight: 500 !important;">
+                        <label>What Personal Data Do We Collect -</label>
+                        As a user of our Website we will not collect any Personal Data from you. Personal Data may include;
+                    </p>
+        
+                    <ul>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Personal Details</label>
+                            <p style="font-weight: 500 !important;">
+                                Full name, Title, Gender, Date of Birth, Profession/Job Title.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Contact Details</label>
+                            <p style="font-weight: 500 !important;">
+                                Telephone number, mobile phone number, correspondence address, email address.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Financial Details</label>
+                            <p style="font-weight: 500 !important;">
+                                Bank details, Credit or Debit card details.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Technological Details (automatically
+                                collected)</label>
+                            <p style="font-weight: 500 !important;">
+                                IP address, web browser type and version, operating system, URLs, etc.
+                            </p>
+                        </li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">
+                        <label>How Do We Collect Personal Data -</label>
+                        As a user of our Website we will not collect any Personal Data from you. The following outlines the
+                        processes
+                        which may be used when collecting Personal Data:
+                    </p>
+        
+                    <ul>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Contacting Us</label>
+                            <p style="font-weight: 500 !important;">
+                                We may record, use and store any telephone, postal, e-mail or other electronic communications
+                                provided
+                                by you. This is to ensure that we can refer back to any instruction you may have given to us as
+                                well as
+                                to ensure that the information we provide you with is accurate.
+                            </p>
+        
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">General Statistics</label>
+                            <p style="font-weight: 500 !important;">
+                                We collect statistics relating to pages visited, paths through the website, search terms used to
+                                find
+                                us. This is done to improve the visitor experience, understand our customer’s needs and help us
+                                improve
+                                site design and layout.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Online Forms</label>
+                            <p style="font-weight: 500 !important;">
+                                We collect data that you have entered into our online/contact forms. We have appropriate
+                                measures in
+                                place to ensure that users' personal details are not misused, accidentally destroyed, lost or
+                                altered
+                                within the server environment. No data transmission over the internet can be guaranteed to be
+                                totally
+                                secure, we cannot ensure, guarantee or warrant the security of any information which you send to
+                                us, and
+                                you do so at your own risk. Our website may contain links to enable you to visit other websites.
+                                Once
+                                you have left our site, you should note that we do not have any control over the other linked
+                                website.
+                                We cannot be held responsible therefore for the protection and privacy of any information which
+                                you
+                                provide whilst visiting such sites and such sites are not governed by this Privacy Notice. You
+                                should
+                                exercise caution and look at the privacy notice applicable to the website in question.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Third Parties</label>
+                            <p style="font-weight: 500 !important;">
+                                We may be provided with your personal data by any third parties whom you have instructed to do
+                                so.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Publicly Available Sources</label>
+                            <p style="font-weight: 500 !important;">
+                                We may collect your personal data from any publicly available records such as internet searches.
+                            </p>
+                        </li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">
+                        <label>Why Do We Collect Personal Data -</label>
+                        As a user of our Website we will not collect any Personal Data from you. The following outlines the
+                        reasons why
+                        personal data may be collected:
+                    </p>
+        
+                    <ul style="font-weight: 500 !important;">
+                        <li>
+                            Enable us to provide you with information about our products and services;
+                        </li>
+                        <li>
+                            Enable us to provide you with our products and services;
+                        </li>
+                        <li>
+                            Enable us to contact you regarding general product and service level matters;
+                        </li>
+                        <li>
+                            Keep you informed of new features, products and services available from us;
+                        </li>
+                        <li>
+                            Maintain internal records;
+                        </li>
+                        <li>
+                            Ensure that we comply with the necessary laws and regulations; and
+                        </li>
+                        <li>
+                            Ensure that our website is compatible with the browsers and operating systems used by most of our
+                            visitors.
+                        </li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">It is important that the information we hold about you is accurate
+                        and current. Please keep us informed if any
+                        such information were to change during the period for which we hold it.</p>
+        
+                    <p style="font-weight: 500 !important;">We may use your personal data for the above purposes if we deem it
+                        necessary to do so for our legitimate
+                        interests. If you are not satisfied with this, you have the right to object in certain circumstances
+                        (see
+                        below).</p>
+        
+                    <p style="font-weight: 500 !important;">For the delivery of direct marketing to you via email, we need your
+                        consent whether via an opt-in or soft-opt-in
+                        arrangement:</p>
+        
+                    <ul style="font-weight: 500 !important; text-align:justify;">
+                        <li>
+                            Soft-opt-in consent applies when you have previously engaged with us by enquiring about or receiving
+                            our
+                            products or services and we are marketing similar products or services. Under soft-opt-in consent we
+                            will
+                            take your consent as given unless you opt-out.
+                        </li>
+                        <li>
+                            For other types of email marketing we will require your explicit consent, for example asking you to
+                            tick a
+                            box to confirm you are happy to receive these communications.
+                        </li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">When you enter into a contract to receive our products or services,
+                        the legal basis for processing your personal
+                        data is the contract between us or the taking of steps at your request and consent, to enter into such a
+                        contract.</p>
+        
+                    <Label class="section-title k-color-primary">Disclosing Personal Data to Third Parties:</Label>
+                    <br/><br/>
+        
+                    <ul style="font-weight: 500 !important; text-align:justify;">
+                        <li>
+                            We will not sell, share or rent your name, email address, or any other personal data to any third
+                            party for
+                            marketing purposes;
+                        </li>
+                        <li>
+                            We will disclose your Personal Data to the relevant Provider(s) from whom we will be providing
+                            products or
+                            services to you;
+                        </li>
+                        <li>
+                            We may disclose personal data to third parties (this may include but is not limited to, our
+                            employees,
+                            agents, accountants, contractors and other professional advisors) who may require access to personal
+                            data in
+                            the course of them providing us with their services. We will at all stages ensure that these third
+                            parties
+                            have appropriate security measures in place when handling any personal data;
+                        </li>
+                        <li>
+                            Your data may be shared with third-party payment providers who process payments made over the
+                            website if
+                            applicable;
+                        </li>
+                        <li>
+                            We may at our discretion disclose personal data that is required by the police (or other
+                            organisations with
+                            a law enforcement role) for the prevention and detection of crime or the apprehension or prosecution
+                            of
+                            offenders;
+                        </li>
+                        <li>
+                            We may disclose specific personal data where we are required to by law;
+                        </li>
+                        <li>
+                            We may share aggregated demographic information with our partners, advertisers or other third
+                            parties. This
+                            will not contain information that can identify any individual person.
+                        </li>
+                    </ul>
+        
+                    <Label class="section-title k-color-primary">Data Retention</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">Unless a longer retention period is required or permitted by law, we
+                        will only hold your personal data on our
+                        systems only for the period necessary to fulfil the purposes outlined in this Privacy Notice or until
+                        you
+                        request that your personal data be deleted</p>
+        
+                    <p style="font-weight: 500 !important;">Even if we delete your personal data, it may remain on backup or
+                        archival media for legal, tax or regulatory
+                        purposes.</p>
+        
+                    <Label class="section-title k-color-primary">Viewing, Changing or Removing Client Data:</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">You have the following rights in relation to your personal data:</p>
+        
+                    <ul>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to access</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to request (i) copies of the personal data we hold about you at any time, or (ii) that
+                                we
+                                modify, update or delete such personal data. If we provide you with access to the information we
+                                hold
+                                about you, we will not charge you for this, unless your request is "manifestly unfounded or
+                                excessive."
+                                Where we are legally permitted to do so, we may refuse your request. If we refuse your request,
+                                we will
+                                tell you the reasons why.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to correct</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to have your personal data rectified if it is inaccurate or incomplete.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to erase</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to request that we delete or remove your personal data from our systems in certain
+                                circumstances.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to restrict our use of your
+                                personal data</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to ask us to restrict the processing of your personal data or limit the way in which
+                                we can
+                                use it, in certain circumstances.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to personal data
+                                portability</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to request that we move, copy or transfer your personal data, in certain
+                                circumstances.
+                            </p>
+                        </li>
+                        <li>
+                            <label style="color: black; font-weight: 700; size: 16px;">Right to object</label>
+                            <p style="font-weight: 500 !important;">
+                                The right to object to our use of your personal data including where we use it for our
+                                legitimate
+                                interests, in certain circumstances.
+                            </p>
+                        </li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">To make enquiries or complaints, exercise any of your rights set out
+                        above, or withdraw your consent to the
+                        processing of your personal data (where consent is our legal basis for processing your personal data),
+                        please
+                        contact us via the details below. Except as above in the “Right to access” section, you are not required
+                        to pay
+                        any charge for exercising your rights. If you make a request, we have one month to respond to you.</p>
+        
+                    <p style="font-weight: 500 !important;">If you are not satisfied with the way a complaint you make in
+                        relation to your personal data is handled by us,
+                        you may be able to refer your complaint to the Gibraltar’s Information Commissioner. The Gibraltar’s
+                        Information
+                        Commissioner contact details can be found on their website at www.gra.gi/data-protection</p>
+        
+                    <Label class="section-title k-color-primary">How We Store Client Data:</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">Your data will be stored securely in line with industry best
+                        practices at all times. The security measures in
+                        place are reviewed annually and include:</p>
+                    <ul style="font-weight: 500 !important;">
+                        <li>Requiring a username and password to access your personal data</li>
+                        <li>Your personal data being stored on secure servers; and</li>
+                        <li>The encryption of payment details (where applicable).</li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">Personal data which we collect from you may be stored and processed
+                        in and transferred to countries outside of
+                        the European Economic Area (EEA). For example, this could occur if our servers are in a country outside
+                        the EEA
+                        or one of our service providers is situated in a country outside the EEA. We may also share information
+                        with
+                        other group companies, some of which may be located outside the EEA.</p>
+        
+                    <p style="font-weight: 500 !important;">We will only transfer personal data outside the EEA where it is
+                        compliant with data protection legislation and
+                        the means of transfer provides adequate safeguards in relation to your personal data, e.g. by way of
+                        personal
+                        data transfer agreement, incorporating the current standard contractual clauses adopted by the European
+                        Commission.</p>
+        
+                    <p style="font-weight: 500 !important;">To ensure that your personal data receives an adequate level of
+                        protection, we have put in place appropriate
+                        safeguards and procedures with the third parties we share your personal data with. This ensures your
+                        personal
+                        data is treated by those third parties in a way that is consistent with the Data Protection Laws.</p>
+        
+                    <p style="font-weight: 500 !important;">If you suspect any data breach or misuse, loss or unauthorised
+                        access to your personal data, please let us know
+                        immediately via the contact details below</p>
+        
+                    <p style="font-weight: 500 !important;">If you want detailed information from Get Safe Online on how to
+                        protect your information and your computers and
+                        devices against fraud, identity theft, viruses and many other online problems, please visit <a
+                                :href="privacyURL" target="_blank" class="privacy-url-style">{{ privacyURL }}.</a>
+                        Get Safe Online is supported by HM Government and leading businesses.</p>
+                    <Label class="section-title k-color-primary">Change of Business Ownership and Control</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">We may, from time to time, expand or reduce our business and this
+                        may involve the sale and/or the transfer of
+                        control. Personal data as well as any other form of data provided by you will, where it is relevant to
+                        any part
+                        of our business so transferred, be transferred along with that part and the new owner or newly
+                        controlling party
+                        will, under the terms of this Privacy Notice, be permitted to use such data for the purposes for which
+                        it was
+                        originally supplied to us.</p>
+        
+                    <p style="font-weight: 500 !important;">We may also disclose such data to a prospective purchaser of our
+                        business or any part of it. In the above
+                        instances, we will take steps with the aim of ensuring your privacy is protected.</p>
+        
+                    <Label class="section-title k-color-primary">General</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">You may not transfer any of your rights under this Privacy Notice to
+                        any other person. We may transfer our rights
+                        under this Privacy Notice where we reasonably believe your rights will not be affected.</p>
+        
+                    <p style="font-weight: 500 !important;">If any court or competent authority finds that any provision of this
+                        Privacy Notice (or part of any provision) is
+                        invalid, illegal or unenforceable, that provision or part-provision will, to the extent required, be
+                        deemed to
+                        be deleted, and the validity and enforceability of the other provisions of this Privacy Notice will not
+                        be
+                        affected.</p>
+        
+                    <p style="font-weight: 500 !important;">Unless otherwise agreed, no delay, act or omission by a party in
+                        exercising any right or remedy will be deemed a
+                        waiver of that, or any other, right or remedy.</p>
+        
+                    <p style="font-weight: 500 !important;">This Privacy Notice will be governed by and interpreted according to
+                        the law of England and Wales. All disputes
+                        arising under this Privacy Notice will be subject to the exclusive jurisdiction of the English and Welsh
+                        courts</p>
+        
+                    <Label class="section-title k-color-primary">Changes to this Privacy Notice</Label>
+                    <br/><br/>
+        
+                    <p style="font-weight: 500 !important;">We reserve the right to change this Privacy Notice as we may deem
+                        necessary from time to time or as may be
+                        required by law. Any changes will be immediately posted on the website and you are deemed to have
+                        accepted the
+                        terms of the Privacy Notice on your first use of the website following the alterations or any changes
+                        will be
+                        notified to you and you are deemed to have accepted the terms of the Privacy Notice on your receipt.
+                        For further information please contact us as below:</p>
+                    <Label class="section-title k-color-primary">Contact</Label>
+                    <br/><br/>
+        
+                    <ul style="font-weight: 500 !important;">
+                        <li>{{ $t('privacy-contact-name') }}</li>
+                        <li>{{ $t('privacy-contact-address') }}</li>
+                        <li>{{ $t('privacy-contact-email') }}</li>
+                    </ul>
+        
+                    <p style="font-weight: 500 !important;">{{ $t('privacy-contact-last-update') }}</p>
+                </div>
+            </div>
+
+        </Dialog>
+
+        <div v-if="isPrivacyDialogOpen" class="overlay"></div>
+    </div>
+</StackLayout>

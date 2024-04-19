@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "BackJobsWebScraper": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7244",
+      "launchBrowser": false
+    }
+  }
+}

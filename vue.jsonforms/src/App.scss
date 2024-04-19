@@ -1,0 +1,18 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+/*
+  This is the default theme. @import "~@progress/kendo-theme-default/dist/all.css";
+  We can change the theme via theme builder and download the files and folder like below,
+     this usually gives you a folder with all scss files inside it
+*/
+@import './assets/kendo/scss/index.scss';
+
+/*
+  If you want to add manual style using scss then this is the file to do it
+*/
+@import './assets/scss/main.scss';
+
+/*
+  If you want to add manual style using vanilla css then this is the file to do it
+*/
+@import "./assets/css/site.css";

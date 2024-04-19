@@ -1,0 +1,3 @@
+1. place the svg that will be generate to sprite icons in /icons. this is used with IconComponent
+
+2. place svg that are not intended to be used in IconComponent in root of public folder

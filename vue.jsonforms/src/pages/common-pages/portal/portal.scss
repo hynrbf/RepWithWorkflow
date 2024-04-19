@@ -1,0 +1,144 @@
+$topbar-height: 55px;
+
+.MainDrawer {
+  $root: &;
+  height: calc(100vh - #{$topbar-height});
+  position: relative;
+  z-index: 10;
+
+  &-menu {
+    &Item {
+      display: block;
+      cursor: auto;
+      padding: 5px 10px;
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    &Link {
+      display: inline-flex;
+      color: var(--maindrawer-link-color);
+      text-decoration: none;
+      gap: 10px;
+      border-radius: 999px;
+      padding: 10px;
+      cursor: pointer;
+      transition: 0.2s ease font-weight;
+
+      &:hover {
+        background: var(--maindrawer-link-active-bg-color);
+        color: var(--maindrawer-link-hover-color);
+        font-weight: bold;
+      }
+    }
+
+    &Text {
+      display: none;
+      font-size: var(--font-size-sm);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &Stamp {
+      position: absolute;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    &Active {
+      #{$root}-menuLink {
+        background: var(--maindrawer-link-active-bg-color);
+        color: var(--maindrawer-link-active-color);
+        font-weight: bold;
+      }
+      #{$root}-menuText {
+        white-space: nowrap;
+      }
+
+      &#{$root}-menuStamp {
+        #{$root}-menuText {
+          display: block;
+        }
+      }
+    }
+
+    &Disabled {
+      cursor: not-allowed;
+
+      #{$root}-menuLink {
+        color: var(--maindrawer-link-disabled-color);
+        pointer-events: none;
+      }
+    }
+
+    &Status {
+      color: var(--color-white);
+      background: #FFB700;
+      margin-left: auto;
+      font-size: var(--font-size-xs);
+      font-weight: normal;
+      padding: 1px 5px;
+      border-radius: 8px;
+      display:  none;
+    }
+  }
+
+  :deep(.k-drawer-wrapper) {
+    padding-top: 30px;
+  }
+
+  :deep(.k-drawer-items) {
+    position: relative;
+  }
+
+  &.k-drawer-expanded {
+    :deep(.k-drawer) {
+      max-width: 100%;
+    }
+
+    #{$root}-menuLink {
+      display: flex;
+    }
+
+    #{$root}-menuText,
+    #{$root}-menuStatus {
+      display: block;
+    }
+  }
+
+  &-content {
+    height: 100%;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.SideMenuToggle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: -15px;
+  top: 15px;
+  z-index: 2;
+
+  svg {
+    display: block;
+  }
+}
+
+.MainContent {
+  overflow: auto;
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+
+  &-container {
+    margin: 0 auto;
+    max-width: 1440px;
+    padding: 13px 35px 35px 35px;
+  }
+}

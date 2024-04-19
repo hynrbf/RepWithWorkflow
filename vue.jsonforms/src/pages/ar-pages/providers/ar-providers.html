@@ -1,0 +1,49 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent :title="$t('providersPage-header')">
+	<template #description>
+		<p>{{ $t('ar-providers-description', {currentFirmName: firmName}) }}</p>
+	</template>
+</KendoPageTitleComponent>
+
+<ARProvidersList
+        v-if="isShowProvidersAsList"
+        :providers="currentProvidersList"
+        @addNewProvider="addNewProvider"
+        @viewProviderList="viewProvider"
+        @viewProviderCard="viewProvider"
+        @editProviderList="editProvider"
+        @editProviderCard="editProvider"
+        @viewTasksCard="viewTasks" />
+
+<ARViewProviderModal
+        v-if="isShowProviderViewer"
+        :provider="provider"
+        @close="closeProviderForm"
+        @viewEditProvider="viewEditProvider"
+        @view-provider-permissions="viewProviderPermissions"
+/>
+
+<ARProviderFormModal
+        v-if="isShowProviderForm"
+        :provider="provider"
+        :saving="false"
+        :isEditMode="isEditMode"
+        @close="closeProviderForm"
+        @submit="saveOrUpdateProviderAsync"
+        @requestToComplete="requestToComplete" />
+
+<ARTasksModal
+        v-if="isShowTasksViewer"
+        :tasks="providerTasks"
+        :providerName="providerName"
+        @close="closeProviderForm"
+/>
+
+<ViewProviderPermissions
+    v-if="isShowProviderPermissions"
+    :items="permissionsCategorized"
+    @close="closeProviderForm"
+/>

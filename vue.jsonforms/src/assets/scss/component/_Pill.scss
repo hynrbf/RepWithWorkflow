@@ -1,0 +1,40 @@
+.Pill {
+    border-radius: 150px;
+    padding: 2.5px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-xs);
+    line-height: 1.25;
+    border: 1px solid transparent;
+
+    @each $name, $value in $theme-colors {
+        &--#{$name} {
+            background-color: var(--color-#{$name});
+            border-color: var(--color-#{$name});
+            color: var(--color-white);
+
+            $tint-suffix: '-tint';
+            $shade-suffix: '-shade';
+            @if (str-index($name, $tint-suffix)) {
+                color: var(--color-#{str-replace($name, $tint-suffix)}#{$shade-suffix});
+            }
+
+            @if $name == "white" {
+                border-color: var(--color-neutral-tint);
+                color: var(--color-black);
+            }
+        }
+    }
+
+    &--lg {
+        font-size: var(--font-size-sm);
+    }
+
+    &-text {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+}

@@ -1,0 +1,727 @@
+<KendoDialog ref="kendoDialog"/>
+
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<KendoActionDialog ref="kendoActionDialog"
+                   rightActionButtonLabel="Proceed Anyway"
+                   @onRightButtonClicked="proceedAnyway"/>
+
+<KendoActionDialog ref="kendoActionDialogForLocum"
+                   rightActionButtonLabel="Proceed Anyway"
+                   @onRightButtonClicked="proceedLocumAnyway"/>
+
+<KendoPromptDialog ref="kendoActionDialogCompanyNumber"
+                   primaryActionButtonLabel="Schedule a meeting"
+                   primaryActionButtonIcon="/calendar.svg"
+                   @onPrimaryActionClick="scheduleAMeetingAsync">
+    <div class="paragraph-m-figtree-regular">
+        <!-- This is the old implementation -->
+        <!--        <p>Are you sure you wish to update your company number? </p> @onPrimaryActionClick="proceedWithUpdateCompanyNumber"-->
+        <!--        <p>Current company number with the FCA is {{ firmDetails?.companyNumber }}</p>-->
+        <p>If you wish to change this, please schedule a meeting below.</p>
+    </div>
+</KendoPromptDialog>
+
+<KendoPromptDialog ref="kendoActionDialogFirmName">
+    <div class="paragraph-m-figtree-regular">
+        <p>{{ $t("firmDetailsPage-confirmFirmName", {firmName: locumInputFirm?.firmName}) }}</p>
+    </div>
+</KendoPromptDialog>
+
+<KendoFlexibleDialog ref="kendoCalendarFlexibleDialog" :style="{height: auto, width: 'auto', padding: '20px'}">
+    <p>Selected: <strong>{{ selectedEventType?.name }}</strong></p>
+
+    <DropDownList size="large"
+                  :data-items="activeEventTypes"
+                  :text-field="'name'"
+                  :data-item-key="'name'"
+                  @change="onSelectEventType"
+                  v-model="selectedEventType"/>
+
+    <Button type="button" class="mt-3 violet-btn"
+            :disabled="!selectedEventType" :theme-color="'primary'"
+            @click="onNavigateToScheduling">{{ $t("signUpPage-scheduleMeetingButtonText") }}
+    </Button>
+</KendoFlexibleDialog>
+
+<!-- used in old implementation -->
+<!--<KendoAlertDialog ref="kendoAlertDialog" :hasIcon="false"/>-->
+
+<KendoConfirmDialog ref="kendoConfirmDialog" @onConfirm="onRemoveItemConfirmed"/>
+
+<KendoPromptDialog ref="kendoActionDialogError">
+    <div class="paragraph-m-figtree-regular">
+        <p>{{
+                $t("firmDetailsPage-locumAndCurrentFirmShouldNotBeSame", {
+                    locumFirmName: locumInputFirm?.firmName,
+                    firmName: firmName
+                })
+            }}</p>
+    </div>
+</KendoPromptDialog>
+
+<KendoPromptDialog ref="kendoActionDialogDifferentPermissions"
+                   primaryActionButtonLabel="Confirm"
+                   @onPrimaryActionClick="confirmPermission">
+    <div class="paragraph-m-figtree-regular">
+        <p>{{
+                $t("firmDetailsPage-locumPermissionNotSameWithCurrent", {
+                    locumFirmName: locumInputFirm?.firmName,
+                    firmName: firmName
+                })
+            }}</p>
+        <p>{{ $t("firmDetailsPage-locumPermissionNotSameWithCurrent2", {locumFirmName: locumInputFirm?.firmName}) }}</p>
+    </div>
+</KendoPromptDialog>
+
+<KendoPromptDialog ref="kendoActionDialogNotAuthorised"
+                   primaryActionButtonLabel="Confirm"
+                   @onPrimaryActionClick="confirmNotAuthorised">
+    <div class="paragraph-m-figtree-regular">
+        <p>{{
+                $t("firmDetailsPage-locumNotAuthorised", {
+                    locumFirmName: locumInputFirm?.firmName,
+                    mortgageDistributionActivities: "mortgageDistributionActivities",
+                    insuranceDistributionActivities: "insuranceDistributionActivities"
+                })
+            }}</p>
+        <p>{{ $t("firmDetailsPage-locumNotAuthorised2", {locumFirmName: locumInputFirm?.firmName}) }}</p>
+    </div>
+</KendoPromptDialog>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        title="Firm Details"
+        :description="pageDescription"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.firmDetailsRoute)"
+        progress-bar
+/>
+
+<!-- Anchors -->
+<StackLayout
+        class="page-tab-anchors is-sticky-top FirmDetailNav"
+        orientation="vertical"
+        :align="{ horizontal: 'start', vertical: 'middle' }"
+        :gap="8"
+>
+    <StackLayout class="align-self-stretch"
+                 orientation="horizontal" :gap="20">
+        <div class="section-item" :class="getSectionIndicatorStyle('about-firm-section')"
+             @click="() => scrollToPageSection('about-firm-section')">
+            <IconComponent symbol="text-file-17" size="24"/>
+
+            <Label>{{ $t("firmDetailsPage-aboutFirm") }}</Label>
+        </div>
+
+        <div class="section-item" :class="getSectionIndicatorStyle('firm-representative-section')"
+             @click="() => scrollToPageSection('firm-representative-section')">
+            <IconComponent symbol="user-identifier-card-54" size="24"/>
+
+            <Label>{{ $t("firmDetailsPage-firmRepresentative") }}</Label>
+        </div>
+
+        <div class="section-item" :class="getSectionIndicatorStyle('locum-section')"
+             @click="() => scrollToPageSection('locum-section')">
+            <IconComponent symbol="user-circle-single-49" size="24"/>
+
+            <Label>{{ $t("firmDetailsPage-locum") }}</Label>
+        </div>
+
+        <div class="section-item" :class="getSectionIndicatorStyle('account-department-details-section')"
+             @click="() => scrollToPageSection('account-department-details-section')">
+            <IconComponent symbol="user-single-neutral-22" size="24"/>
+
+            <Label>{{ $t("firmDetailsPage-accountDepartment") }}</Label>
+        </div>
+    </StackLayout>
+</StackLayout>
+
+<KendoLoadingComponent :isLoading="isInitializing"/>
+
+<Form>
+    <FormElement ref="formElement">
+        <StackLayout orientation="vertical" :gap="20" style="margin-top: 20px">
+            <!-- About the Firm Section -->
+            <!--replace with this in debugging anchoring `About the Firm (${sectionElementCurrentPosition.x}, ${sectionElementCurrentPosition.y})` -->
+            <KendoAccordionItemComponent
+                    :title="'About the Firm'"
+                    id="about-firm-section"
+                    :isActive="activePageSectionId === 'about-firm-section'"
+                    @onToggle="onToggleAccordionAsync">
+                <StackLayout orientation="vertical" :gap="20">
+                    <KendoFirmFinderComponentAsync
+                            :id="setUniqueIdentifier( '-firmName')"
+                            companyNameLabel="Firm Name"
+                            :company="inputFirm"
+                            :companyName="firmDetails?.firmName"
+                            :companyNumber="firmDetails?.companyNumber"
+                            :firmReferenceNumber="firmDetails?.firmReferenceNumber"
+                            :isInitializing="isInitializing"
+                            :isEnableSearch="false"
+                            @onCompanyDetailUpdated="onCompanyDetailUpdated"
+                            :useDefaultSchedMeetingModal="false"/>
+
+                    <KendoTradingNameComponent
+                            :id="setUniqueIdentifier( '-firmdetails.tradingNames')"
+                            name="firmdetails.tradingNames"
+                            isValueReactive
+                            :value="firmDetails.tradingNames"
+                            :isUserModified="firmDetails.isTradingNamesChanged"
+                            :isDataLoadedCompletely="!isInitializing"
+                            @onRemoveItem="onRemoveItem"
+                            @onValueChange="onTrandingNamesChanged"
+                            isShowAllOnPopup/>
+
+                    <KendoPostCodeInputComponent v-if="!this.isSoleTrader"
+                                                 :name="'firmdetails.registeredAddress'"
+                                                 :id="setUniqueIdentifier( '-firmdetails.registeredAddress')"
+                                                 label="Registered Address"
+                                                 :isUserModified="firmDetails.isRegisteredAddressChanged"
+                                                 @onValueChange="onFirmRegisteredAddressChanged"
+                                                 :value="firmDetails.registeredAddress"
+                                                 :isDataLoadedCompletely="!isInitializing"
+                                                 isValueReactive/>
+
+                    <KendoPostCodeInputWithSameAsComponent :name="'firmdetails.tradingAddress'"
+                                                           :id="setUniqueIdentifier( '-firmdetails.tradingAddress')"
+                                                           label="Trading Address"
+                                                           :isUserModified="firmDetails.isTradingAddressChanged"
+                                                           :value="firmDetails.tradingAddress"
+                                                           :isShowCheckBox="!this.isSoleTrader"
+                                                           :isChecked="firmDetails.isTradingSameAsRegisteredAddress"
+                                                           @onValueChange="onFirmTradingAddressChanged"
+                                                           @onToggle="onToggleTradingAddress(firmDetailsKey)"
+                                                           @onLostFocus="onTradingAddressDoneTyping"
+                                                           :sameAsLabel="$t('same-as-registered-address')"
+                                                           :isDataLoadedCompletely="!isInitializing"
+                                                           isValueReactive/>
+
+                    <KendoPostCodeInputWithSameAsComponent :name="'firmdetails.headOfficeAddress'"
+                                                           :id="setUniqueIdentifier( '-firmdetails.headOfficeAddress')"
+                                                           label="Head Office Address"
+                                                           :isRequired="false"
+                                                           :isUserModified="firmDetails.isHeadOfficeAddressChanged"
+                                                           @onToggle="onToggleHeadOfficeAddress()"
+                                                           :isChecked="firmDetails.isHeadOfficeSameAsTradingAddress"
+                                                           @onValueChange="((value) => firmDetails.headOfficeAddress = value)"
+                                                           :value="firmDetails.headOfficeAddress"
+                                                           :sameAsLabel="$t('same-as-trading-address')"
+                                                           :isValueReactive="true"
+                                                           :isDataLoadedCompletely="!isInitializing"/>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
+                        <KendoEmailAddressInputComponent :name="'firmdetails.emailAddress'"
+                                                         :id="setUniqueIdentifier( '-firmdetails.emailAddress')"
+                                                         class="col"
+                                                         @onValueChange="((value) => firmDetails.emailAddress = value)"
+                                                         :value="firmDetails.emailAddress" :isValueReactive="true"
+                                                         :isEditable="false"
+                                                         @onAttemptEdit="attemptEditEmailAddress"
+                                                         :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoTelInputComponent
+                                :id="setUniqueIdentifier( '-firmdetails.contactNumber')"
+                                name="firmdetails.contactNumber"
+                                label="Contact Number"
+                                :value="firmDetails?.contactNumber"
+                                class="col"
+                                @onValueChange="((value) => firmDetails.contactNumber = value)"
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent :name="'firmdetails.website'"
+                                                    :id="setUniqueIdentifier( '-firmdetails.website')"
+                                                    class="col" label="Website" :isCheckForProfanity="false"
+                                                    @onValueChange="((value) => firmDetails.website = value)"
+                                                    :isRequired="false"
+                                                    type="url"
+                                                    :value="firmDetails.website"
+                                                    :isValueReactive="true" :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+                </StackLayout>
+            </KendoAccordionItemComponent>
+
+            <!-- Firm Representative Details Section -->
+            <KendoAccordionItemComponent
+                    :title="'Firm Representative Details'"
+                    id="firm-representative-section"
+                    :isActive="activePageSectionId === 'firm-representative-section'"
+                    @onToggle="onToggleAccordionAsync">
+                <StackLayout orientation="vertical" :gap="0">
+                    <p class="sub-texts">
+                        {{ $t("firmDetailsPage-firmRepresentativeSubText", {firmName: firmName}) }}</p>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
+                        <KendoNameTitleComponent
+                                :name="'firmRepresentative.title'"
+                                :id="setUniqueIdentifier('firmRepresentative.title')"
+                                label="Title"
+                                class="col"
+                                :is-required="false"
+                                :value="firmRepresentativeDetail.title"
+                                @onValueChange="((value) => firmRepresentativeDetail.title = value)"
+                                :isValueReactive="true"
+                                :isDataLoadedCompletely="!isInitializing"
+                        />
+
+                        <KendoGenericInputComponent :name="'firmRepresentative.forename'"
+                                                    :id="setUniqueIdentifier( '-firmRepresentative.forename')"
+                                                    class="col"
+                                                    :value="firmRepresentativeDetail.forename"
+                                                    @onValueChange="((value) => firmRepresentativeDetail.forename = value)"
+                                                    label="Forename(s)" isCapitalizeFirstLetter="true"
+                                                    isCheckForProfanity="true"
+                                                    :isValueReactive="true"
+                                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent :name="'firmRepresentative.surname'"
+                                                    :id="setUniqueIdentifier( '-firmRepresentative.surname')"
+                                                    class="col"
+                                                    :value="firmRepresentativeDetail.surname"
+                                                    @onValueChange="((value) => firmRepresentativeDetail.surname = value)"
+                                                    label="Surname"
+                                                    isCapitalizeFirstLetter="true" isCheckForProfanity="true"
+                                                    :isValueReactive="true"
+                                                    :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}"
+                                 style="margin-top: 20px;">
+                        <KendoEmailAddressInputComponent :name="'firmRepresentative.emailAddress'"
+                                                         :id="setUniqueIdentifier( '-firmRepresentative.emailAddress')"
+                                                         class="col"
+                                                         :placeholder="'Type'"
+                                                         :value="firmRepresentativeDetail.emailAddress"
+                                                         @onValueChange="((value) => firmRepresentativeDetail.emailAddress = value)"
+                                                         :isValueReactive="true"
+                                                         :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoTelInputComponent
+                                :id="setUniqueIdentifier( '-firmRepresentative.contactNumber')"
+                                name="firmRepresentative.contactNumber"
+                                label="Contact Number"
+                                class="col"
+                                :value="firmRepresentativeDetail.contactNumber"
+                                @onValueChange="((value) => firmRepresentativeDetail.contactNumber = value)"
+                                :isValueReactive="true"
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+
+                        <KendoGenericInputComponent :name="'firmRepresentative.jobTitle'"
+                                                    :id="setUniqueIdentifier( '-firmRepresentative.jobTitle')"
+                                                    :isRequired="false" class="col"
+                                                    :value="firmRepresentativeDetail.jobTitle"
+                                                    @onValueChange="((value) => firmRepresentativeDetail.jobTitle = value)"
+                                                    label="Job Title"
+                                                    :isValueReactive="true" :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+                </StackLayout>
+            </KendoAccordionItemComponent>
+
+            <!-- Locum Details Section -->
+            <KendoAccordionItemComponent
+                    :title="'Locum Details'"
+                    id="locum-section"
+                    :isActive="activePageSectionId === 'locum-section'"
+                    @onToggle="onToggleAccordionAsync">
+                <StackLayout orientation="vertical" :gap="20">
+                    <p class="sub-texts">{{ $t("firmDetailsPage-locumSubText", {firmName: firmName}) }}</p>
+
+                    <KendoYesOrNoQuestionInputComponent
+                            :id="setUniqueIdentifier( '-dependentOnSingleKeyIndividual')"
+                            numberText="1"
+                            :questionText="'Is ' + firmName + ' dependent on a single key individual?'"
+                            @onValueChange="toggleLocumYesOrNo"
+                            :value="isFirmDependentOnSingleKeyIndividual"
+                            isValueReactive
+                            :isDataLoadedCompletely="!isInitializing"
+                            isRequired/>
+
+                    <KendoYesOrNoQuestionInputComponent
+                            :id="setUniqueIdentifier( '-hasAppointedLocum')"
+                            v-if="isFirmDependentOnSingleKeyIndividual" numberText="2"
+                            :questionText="'Has ' + firmName + ' appointed a locum?'"
+                            @onValueChange="toggleHasAppointedLocumYesOrNo"
+                            :value="hasAppointedLocum"
+                            isValueReactive
+                            :isDataLoadedCompletely="!isInitializing"
+                            isRequired/>
+
+                    <StackLayout v-if="isFirmDependentOnSingleKeyIndividual && hasAppointedLocum === false"
+                                 orientation="vertical" :gap="10">
+                        <p class="sub-texts" style="margin-top: 14px">Please advise how
+                            {{ firmName ?? "&lt;Firm Name&gt;" }}’s customers would be supported in the event of the
+                            single key individual being unavailable e.g. due to sickness or death.</p>
+
+                        <KendoTextAreaInputComponent
+                                cornerRadius="8"
+                                :id="setUniqueIdentifier( '-firmDetails.noAppointedLocum')"
+                                name="firmDetails.noAppointedLocum"
+                                :isOverrideCommonPlaceHolderText="true"
+                                placeholder="Please add additional information"
+                                @onValueChange="((value: string) => hasNoAppointedLocumInfo = value)"
+                                :value="hasNoAppointedLocumInfo"
+                                labelForErrorMessage="Additional Information"
+                                :isValueReactive="true"
+                                :isDataLoadedCompletely="!isInitializing"
+                                :isRequired="true"
+                        />
+                    </StackLayout>
+
+                    <KendoCompanyOrSoleTraderQuestionInputComponent
+                            v-if="hasAppointedLocum" numberText="3"
+                            :id="setUniqueIdentifier( '-isLocumCompanyOrSoletrader')"
+                            questionText="Is the Locum a Company or a Sole Trader?"
+                            @onValueChange="toggleIsLocumCompanyOrSoleTrader"
+                            :value="isLocumCompany"
+                            :isDataLoadedCompletely="!isInitializing"
+                            isValueReactive
+                            isRequired="true"/>
+
+                    <!-- Has Single Key Individual and Appointed Locum Section -->
+                    <!-- Locum Company Details Section -->
+                    <StackLayout
+                            v-if="isFirmDependentOnSingleKeyIndividual && hasAppointedLocum && isLocumCompany"
+                            orientation="vertical" :gap="20">
+                        <KendoFirmFinderComponentAsync
+                                :id="setUniqueIdentifier( '-locumfirmName')"
+                                companyNameLabel="Locum Firm Name"
+                                :company="locumInputFirm"
+                                :companyName="locumCompanyDetail?.firmName"
+                                :companyNumber="locumCompanyDetail?.companyNumber"
+                                :firmReferenceNumber="locumCompanyDetail?.firmReferenceNumber"
+                                :isInitializing="isInitializing"
+                                :excludedFirm="firmDetails"
+                                @onCompanyNotAuthorised="showNotAuthorisedFirmMessage"
+                                @onPermissionNotSame="onPermissionNotSameAsCustomerFirm"
+                                @onCompanyDetailUpdated="onLocumDetailUpdated"/>
+
+                        <!-- Todo. Not implemented yet to the FirmDetails.vue, for UI only -->
+                        <KendoPostCodeInputComponent v-if="isShowLocumTradingAddress"
+                                                     :name="'locumDetail.registeredAddress'"
+                                                     :id="setUniqueIdentifier( '-locumDetail.registeredAddress')"
+                                                     label="Registered Address"
+                                                     :isUserModified="locumCompanyDetail?.isRegisteredAddressChanged"
+                                                     @onValueChange="onLocumRegisteredAddressChanged"
+                                                     :value="locumCompanyDetail?.registeredAddress"
+                                                     isValueReactive
+                                                     :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoPostCodeInputWithSameAsComponent v-if="isShowLocumTradingAddress"
+                                                               :name="'locumDetail.tradingAddress'"
+                                                               :id="setUniqueIdentifier( '-locumDetail.tradingAddress')"
+                                                               label="Trading Address" isRequired="true"
+                                                               :isUserModified="locumCompanyDetail?.isTradingAddressChanged"
+                                                               :value="locumCompanyDetail?.tradingAddress"
+                                                               :isShowCheckBox="this.isShowLocumTradingAddress"
+                                                               :isChecked="locumCompanyDetail?.isTradingSameAsRegisteredAddress"
+                                                               @onValueChange="onLocumTradingAddressChanged"
+                                                               @onLostFocus="onLocumTradingAddressDoneTyping"
+                                                               @onToggle="onToggleTradingAddress(locumDetailKey)"
+                                                               :sameAsLabel="$t('same-as-registered-address')"
+                                                               isValueReactive
+                                                               :isDataLoadedCompletely="!isInitializing"/>
+
+                        <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
+                            <KendoEmailAddressInputComponent
+                                    :id="setUniqueIdentifier( '-locumDetail.emailAddress')"
+                                    :name="'locumDetail.emailAddress'" class="col"
+                                    @onValueChange="((value) => locumCompanyDetail.emailAddress = value)"
+                                    :value="locumCompanyDetail?.emailAddress"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                            <KendoTelInputComponent
+                                    :id="setUniqueIdentifier( '-locumDetail.contactNumber')"
+                                    name="locumDetail.contactNumber"
+                                    label="Contact Number"
+                                    class="col"
+                                    :value="locumCompanyDetail?.contactNumber"
+                                    @onValueChange="((value) => locumCompanyDetail.contactNumber = value)"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                            <KendoGenericInputComponent
+                                    :id="setUniqueIdentifier( '-locumDetail.website')"
+                                    :name="'locumDetail.website'"
+                                    class="col" label="Website" :isCheckForProfanity="false"
+                                    :isRequired="false"
+                                    @onValueChange="((value) => locumCompanyDetail.website = value)"
+                                    :value="locumCompanyDetail?.website"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Locum Representative Details Section -->
+                <StackLayout
+                        v-if="isFirmDependentOnSingleKeyIndividual && hasAppointedLocum && isLocumCompany"
+                        orientation="vertical"
+                        :gap="20" style="margin-top: 14px;">
+                    <Label class="section-title k-color-black">{{
+                            $t("firmDetailsPage-locumRepresentative")
+                        }}</Label>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}"
+                                 style="margin-top: 4px;">
+                        <KendoNameTitleComponent
+                                :id="setUniqueIdentifier('locumDetail.representativeTitle')"
+                                :name="'locumDetail.representativeTitle'"
+                                :is-required="false"
+                                label="Title"
+                                class="col"
+                                :value="locumCompanyDetail?.representativeTitle"
+                                :isValueReactive="true"
+                                :isDataLoadedCompletely="!isInitializing"
+                                @onValueChange="((value) => locumCompanyDetail.representativeTitle = value)"/>
+
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumDetail.representativeForename')"
+                                :name="'locumDetail.representativeForename'"
+                                class="col"
+                                isCapitalizeFirstLetter
+                                label="Forename(s)"
+                                @onValueChange="((value) => locumCompanyDetail.representativeForename = value)"
+                                :value="locumCompanyDetail?.representativeForename"
+                                isCheckForProfanity
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumDetail.representativeSurname')"
+                                :name="'locumDetail.representativeSurname'"
+                                class="col"
+                                isCapitalizeFirstLetter
+                                label="Surname"
+                                @onValueChange="((value) => locumCompanyDetail.representativeSurname = value)"
+                                :value="locumCompanyDetail?.representativeSurname"
+                                isCheckForProfanity
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
+                        <KendoEmailAddressInputComponent
+                                :id="setUniqueIdentifier( '-locumDetail.representativeEmailAddress')"
+                                :name="'locumDetail.representativeEmailAddress'"
+                                class="col"
+                                @onValueChange="((value) => locumCompanyDetail.representativeEmailAddress = value)"
+                                :value="locumCompanyDetail?.representativeEmailAddress"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoTelInputComponent
+                                :id="setUniqueIdentifier( '-locumDetail.representativeMobileNumber')"
+                                :name="'locumDetail.representativeMobileNumber'"
+                                class="col"
+                                @onValueChange="((value) => locumCompanyDetail.representativeMobileNumber = value)"
+                                :value="locumCompanyDetail?.representativeMobileNumber"
+                                label="Contact Number"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoRoleComponent
+                                :id="setUniqueIdentifier( '-locumDetail.representativeRole')"
+                                :name="'locumDetail.representativeRole'"
+                                class="col"
+                                label="Role"
+                                :isCheckForProfanity="false"
+                                @onValueChange="((value) => locumCompanyDetail.representativeRole = value)"
+                                :value="locumCompanyDetail?.representativeRole"
+                                placeholder="Please select"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"
+                        />
+                    </StackLayout>
+                </StackLayout>
+
+                <!-- Locum Sole Trader Details Section -->
+                <StackLayout v-if="isLocumCompany === false" orientation="vertical"
+                             :gap="20" style="margin-top: 14px;">
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.foreName')"
+                                :name="'locumSoleTraderDetail.foreName'"
+                                class="col" label="Forename(s)"
+                                :isRequired="true"
+                                isValueReactive
+                                :value="locumSoleTraderDetail?.foreName"
+                                @onValueChange="((value) => locumSoleTraderDetail.foreName = value)"
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.surName')"
+                                :name="'locumSoleTraderDetail.surName'"
+                                class="col" label="Surname"
+                                :isRequired="true"
+                                :value="locumSoleTraderDetail?.surName"
+                                @onValueChange="((value) => locumSoleTraderDetail.surName = value)"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.firmReferenceNumber')"
+                                :name="'locumSoleTraderDetail.firmReferenceNumber'"
+                                class="col" label="Firm Reference Number" :isCheckForProfanity="false"
+                                :isRequired="true"
+                                :isByPassGenericPlaceHolder="true"
+                                placeholder="123456"
+                                :value="locumSoleTraderDetail?.firmReferenceNumber"
+                                @onValueChange="((value) => locumSoleTraderDetail.firmReferenceNumber = value)"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+
+                    <KendoPostCodeInputComponent v-if="isShowLocumTradingAddress"
+                                                 :name="'locumSoleTraderDetail.isTradingAddressChanged'"
+                                                 :id="setUniqueIdentifier( '-locumSoleTraderDetail.isTradingAddressChanged')"
+                                                 label="Trading Address"
+                                                 :isUserModified="locumSoleTraderDetail?.isTradingAddressChanged ?? false"
+                                                 @onValueChange="onLocumSoleTradingAddressChanged"
+                                                 @onLostFocus="onLocumSoleTraderTradingAddressDoneTyping"
+                                                 :value="locumSoleTraderDetail?.tradingAddress"
+                                                 isValueReactive
+                                                 :isDataLoadedCompletely="!isInitializing"/>
+
+                    <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
+                        <KendoEmailAddressInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.emailAddress')"
+                                :name="'locumSoleTraderDetail.emailAddress'" class="col"
+                                :value="locumSoleTraderDetail?.emailAddress"
+                                @onValueChange="((value) => locumSoleTraderDetail.emailAddress = value)"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoTelInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.contactNumber')"
+                                name="locumSoleTraderDetail.contactNumber"
+                                label="Contact Number"
+                                class="col"
+                                :value="locumSoleTraderDetail?.contactNumber"
+                                @onValueChange="((value) => locumSoleTraderDetail.contactNumber = value)"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+
+                        <KendoGenericInputComponent
+                                :id="setUniqueIdentifier( '-locumSoleTraderDetail.website')"
+                                :name="'locumSoleTraderDetail.website'"
+                                class="col" label="Website" :isCheckForProfanity="false"
+                                :isRequired="false"
+                                :value="locumSoleTraderDetail?.website"
+                                @onValueChange="((value) => locumSoleTraderDetail.website = value)"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"/>
+                    </StackLayout>
+                </StackLayout>
+            </KendoAccordionItemComponent>
+
+            <!-- Accounts Department Details Section -->
+            <KendoAccordionItemComponent
+                    :title="getAccountsDepartmentDetailTitle"
+                    id="account-department-details-section"
+                    :style="getScrollableSectionStyle"
+                    :isActive="activePageSectionId === 'account-department-details-section'"
+                    @onToggle="onToggleAccordionAsync">
+                <StackLayout orientation="vertical" :gap="2">
+                    <p class="sub-texts">
+                        {{ $t("firmDetailsPage-accountDepartmentSubText", {firmName: firmName}) }}</p>
+
+                    <StackLayout orientation="horizontal" :gap="0" :align="{horizontal: 'start'}">
+                        <!-- :valid="true" => this is needed to bypass validation on switch. We don't validate this -->
+                        <div class="Switch" @click="onToggleIsSameFirmRepresentativeDetails">
+                            <Switch name="switch" size="small" off-label="" on-label="" :valid="true"
+                                    :checked="isAccountsDepartmentSameAsFirmRepresentative"/>
+                        </div>
+
+                        <!-- @click="isAccountsDepartmentSameAsFirmRepresentative ? scrollToPageSection('firm-representative-section') : null" -->
+                        <div style="margin-top: 2px; margin-left: 4px; height: 20px; font-weight: 500;">
+                            <span :style="{ color: isAccountsDepartmentSameAsFirmRepresentative ? 'var(--text-text-secondary)' : 'var(--color-black)' }">
+                              {{ $t("same-as") + " " }}
+                            </span>
+                            <span @click="isAccountsDepartmentSameAsFirmRepresentative ? scrollToPageSection('firm-representative-section') : null"
+                                  :style="{ color: isAccountsDepartmentSameAsFirmRepresentative ? 'var(--color-primary)' : 'var(--color-black)', cursor: isAccountsDepartmentSameAsFirmRepresentative ? 'pointer' : 'text' }"
+                                  :class="isAccountsDepartmentSameAsFirmRepresentative ? 'link-text' : ''">
+                              {{ $t("firmDetailsPage-firmRepresentativeText") }}
+                            </span>
+                        </div>
+                    </StackLayout>
+
+                    <!-- Spacer -->
+                    <div v-if="isAccountsDepartmentSameAsFirmRepresentative" style="margin-top: 12px;"/>
+
+                    <!-- Not the same as Firm Representative Details -->
+                    <StackLayout v-if="!isAccountsDepartmentSameAsFirmRepresentative" orientation="vertical" :gap="20"
+                                 style="margin-top: 22px;">
+                        <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
+                            <KendoNameTitleComponent
+                                    :name="'accountDepartmentDetail.title'"
+                                    :id="setUniqueIdentifier('accountDepartmentDetail.title')"
+                                    label="Title"
+                                    class="col"
+                                    :is-required="false"
+                                    :value="accountDepartmentDetail.title"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    @onValueChange="((value) => accountDepartmentDetail.title = value)"
+                            />
+
+                            <KendoGenericInputComponent
+                                    :id="setUniqueIdentifier( '-accountDepartmentDetail.forename')"
+                                    :name="'accountDepartmentDetail.forename'" class="col"
+                                    isCapitalizeFirstLetter="true"
+                                    label="Forename(s)" isCheckForProfanity="true"
+                                    @onValueChange="((value) => accountDepartmentDetail.forename = value)"
+                                    :value="accountDepartmentDetail.forename"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                            <KendoGenericInputComponent
+                                    :id="setUniqueIdentifier( '-accountDepartmentDetail.surname')"
+                                    :name="'accountDepartmentDetail.surname'" class="col"
+                                    isCapitalizeFirstLetter="true"
+                                    label="Surname" isCheckForProfanity="true"
+                                    @onValueChange="((value) => accountDepartmentDetail.surname = value)"
+                                    :value="accountDepartmentDetail.surname"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"/>
+                        </StackLayout>
+
+                        <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
+                            <KendoEmailAddressInputComponent
+                                    :id="setUniqueIdentifier( '-accountDepartmentDetail.emailAddress')"
+                                    :name="'accountDepartmentDetail.emailAddress'" class="col"
+                                    :placeholder="'Type'"
+                                    @onValueChange="((value) => accountDepartmentDetail.emailAddress = value)"
+                                    :value="accountDepartmentDetail.emailAddress"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                            <KendoTelInputComponent
+                                    :id="setUniqueIdentifier( '-accountDepartmentDetail.contactNumber')"
+                                    :name="'accountDepartmentDetail.contactNumber'"
+                                    class="col"
+                                    @onValueChange="((value) => accountDepartmentDetail.contactNumber = value)"
+                                    :value="accountDepartmentDetail.contactNumber"
+                                    label="Contact Number"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"/>
+
+                            <KendoGenericInputComponent
+                                    :id="setUniqueIdentifier( '-accountDepartmentDetail.jobTitle')"
+                                    :name="'accountDepartmentDetail.jobTitle'"
+                                    :isRequired="false" class="col "
+                                    :isCheckForProfanity="false"
+                                    @onValueChange="((value) => accountDepartmentDetail.jobTitle = value)"
+                                    :value="accountDepartmentDetail.jobTitle" label="Job Title"
+                                    :isValueReactive="true"
+                                    :isDataLoadedCompletely="!isInitializing"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </KendoAccordionItemComponent>
+        </StackLayout>
+    </FormElement>
+</Form>
+

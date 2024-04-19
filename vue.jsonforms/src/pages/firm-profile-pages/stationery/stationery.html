@@ -1,0 +1,224 @@
+<KendoLoadingComponent :isLoading="isLoading" />
+
+<Breadcrumb />
+
+<KendoTabStrip
+  class="TabStrip TabStrip--lined"
+  :selected="currentTab"
+  :tabs="tabs"
+  @select="selectTab"
+>
+  <template v-slot:stationery>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t("stationaryPage-stationery") }}
+    </h2>
+    <p>
+      {{ $t("stationaryPage-stationeryDescription", { currentFirmName:
+      currentFirmName, currentComplianceFirmName: complianceFirmName }) }}
+    </p>
+
+    <GridCardTable
+      :columns="stationeryColumns"
+      :items="stationeries"
+      class="mt-4 stationery-table"
+      add-button-text="Add Stationery"
+      @add="isStationeryModalVisible = true"
+    >
+      <template v-slot:cell-stationeryName="{ item: { name, icon } }">
+        <IconTextComponent :icon="icon">
+          <template #text>
+            <strong class="font-size-default">{{ name }}</strong>
+          </template>
+        </IconTextComponent>
+      </template>
+      <template v-slot:cell-filesUploaded="{ item: { files } }">
+        {{ files.length }}
+      </template>
+      <template v-slot:cell-status="{ item: { status } }">
+        <StatusLabelComponent :status="status" />
+      </template>
+      <template v-slot:cell-lastUpdated="{ item: { updatedAt } }">
+        <DateTimeComponent :value="moment(updatedAt * 1000).toDate()" />
+      </template>
+      <template v-slot:cell-actions="{ item }">
+        <Actions
+          :stationery="item"
+          @view="viewStationery"
+          @upload="uploadStationery"
+          @download="viewStationery"
+        />
+      </template>
+
+      <template
+        v-slot:card-content="{ item: { id, name, icon, status, files, updatedAt } }"
+      >
+        <div class="d-flex align-items-center mb-3">
+          <div class="flex-grow-1">
+            <IconTextComponent :icon="icon">
+              <template #text>
+                <strong class="font-size-default">{{ name }}</strong>
+                <DividerComponent />
+                <small>
+                  <!-- @TODO Put in localization plural -->
+                  {{ files.length }} {{ files.length > 1 ? "files" : "file" }}
+                </small>
+              </template>
+            </IconTextComponent>
+          </div>
+          <div class="flex-shrink-1">
+            <StatusLabelComponent :status="status" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <small>
+            <DateTimeComponent :value="updatedAt" />
+          </small>
+          <Actions
+            :stationery="{ id, files }"
+            @view="viewStationery"
+            @upload="uploadStationery"
+            @download="viewStationery"
+          />
+        </div>
+      </template>
+    </GridCardTable>
+  </template>
+  <template v-slot:disclosures>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t("stationaryPage-disclosures") }}
+    </h2>
+    <NavPillComponent
+      :items="disclosuresNav"
+      v-sticky="{ marginTop: 55, stickyClass: 'is-bg-from-body is-zindex-base' }"
+      anchorable
+    ></NavPillComponent>
+
+    <div class="mb-3"></div>
+
+    <PanelComponent
+      v-for="disclosureType in disclosureTypes"
+      :key="`disclosure-${disclosureType.id}`"
+      :id="disclosureType.id"
+      :title="disclosureType.title"
+      class="DisclosurePanel"
+    >
+      <template #description>
+        <span v-html="disclosureType.description"></span>
+      </template>
+      <ContentListBoxComponent
+        v-model="disclosure"
+        :blocks="disclosuresListBox[disclosureType.id]"
+      >
+        <template #empty="{ blockId, emptyText }">
+          <div class="text-center text-neutral">
+            <IconComponent size="27" symbol="text-square-17" />
+            <div class="mt-2">{{ emptyText }}</div>
+          </div>
+        </template>
+        <template #create-form="{ setValue, getValue }">
+          <RichTextComponent
+            :model-value="getValue('content', '')"
+            @update:model-value="setValue('content', $event)"
+          />
+        </template>
+        <template #item-edit-footer="{ getValue, setValue }">
+          <RichTextComponent
+            :model-value="getValue('content')"
+            @update:model-value="setValue('content', $event)"
+          />
+        </template>
+        <template #item-content="{ props }">
+          <ExcerptTextComponent :text="props.dataItem?.content" />
+        </template>
+      </ContentListBoxComponent>
+    </PanelComponent>
+  </template>
+  <template v-slot:documentFormat>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t("stationaryPage-documentFormatting") }}
+    </h2>
+    <p>
+      {{ $t("stationaryPage-documentFormattingDescription", { currentFirmName:
+      currentFirmName, currentComplianceFirmName: complianceFirmName }) }}
+    </p>
+
+    <GridCardTable
+      :columns="documentFormattingColumns"
+      :items="documentFormattings"
+      no-toolbar
+      class="mt-4"
+    >
+      <template
+        v-slot:cell-style="{ item: { name, font, size, isBold, isItalic, isUnderline, alignment, textCase } }"
+      >
+        <!-- ToDo. Create typography component -->
+        <div
+          :style="{
+                        fontFamily: font,
+                        fontSize: `${size}px`,
+                        fontWeight: isBold ? 'bold' : 'normal',
+                        fontStyle: isItalic ? 'italic' : 'normal',
+                        textDecoration: isUnderline ? 'underline' : 'none',
+                        textAlign: alignment,
+                        textTransform: textCase,
+                    }"
+        >
+          {{ name }}
+        </div>
+      </template>
+      <template v-slot:cell-font="{ item: { id, font } }">
+        <FontSelectorComponent
+          :value="font"
+          @change="updateDocumentFormatting(id, { font: $event.value })"
+        />
+      </template>
+      <template v-slot:cell-size="{ item: { id, size } }">
+        <FontSizeSelectorComponent
+          :value="size"
+          @change="updateDocumentFormatting(id, { size: $event.value })"
+        />
+      </template>
+      <template
+        v-slot:cell-fontStyle="{ item: { id, isBold, isItalic, isUnderline } }"
+      >
+        <FontStyleSelectorComponent
+          :bold="isBold"
+          :italic="isItalic"
+          :underline="isUnderline"
+          @update:bold="updateDocumentFormatting(id, { isBold: $event })"
+          @update:italic="updateDocumentFormatting(id, { isItalic: $event })"
+          @update:underline="updateDocumentFormatting(id, { isUnderline: $event })"
+        />
+      </template>
+      <template v-slot:cell-alignment="{ item: { id, alignment } }">
+        <AlignmentSelectorComponent
+          :model-value="alignment"
+          @update:model-value="updateDocumentFormatting(id, { alignment: $event })"
+        />
+      </template>
+      <template v-slot:cell-case="{ item: { id, textCase } }">
+        <FontCaseSelectorComponent
+          :model-value="textCase"
+          @update:model-value="updateDocumentFormatting(id, { textCase: $event })"
+        />
+      </template>
+    </GridCardTable>
+  </template>
+</KendoTabStrip>
+
+<StationeryModal
+  v-model="isStationeryModalVisible"
+  :initialValues="stationery"
+  :saving="isSavingStationery"
+  @submit="saveStationeryAsync"
+  @update="updateStationeryDataAsync"
+  @close="clearStationery"
+/>
+
+<ViewStationeryModal
+  v-model="isViewStationeryModalVisible"
+  :stationery="selectedStationery"
+  :isView="isActionView"
+  @update="updateStationeryDataAsync"
+  @close="clearStationery"
+/>

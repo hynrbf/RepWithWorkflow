@@ -1,0 +1,224 @@
+<KendoLoadingComponent
+  :isLoading="isLoading"
+  :isShowSavingText="isShowSavingText"
+/>
+
+<Breadcrumb />
+
+<KendoPageTitleComponent
+  :title="$t('dataProtectionLicencePage-title')"
+  :description="$t('dataProtectionLicencePage-description', { firmName: currentArFirmName })"
+  :routeName="helperService.removeStringSpacesThenSlash(AppConstants.arDataProtectionRoute)"
+  :hasContainer="true"
+/>
+
+<KendoForm>
+  <KendoFormElementComponent ref="formElement" v-slot="{ form }" novalidate>
+    <KendoTabStrip
+      class="TabStrip TabStrip--lined"
+      :selected="currentTab"
+      :tabs="tabs"
+      @select="selectTab"
+    >
+      <template v-slot:details>
+        <PanelComponent :title="$t('ar-dataProtectionLicencePage-title')">
+          <div class="row mb-3">
+            <KendoGenericInputComponent
+              :id="setUniqueIdentifier( '-licenseNumber')"
+              class="col-lg-4"
+              name="licenseNumber"
+              label="Data Protection Licence Number"
+              v-model="dataProtectionLicence.licenseNumber"
+              isValueReactive
+              :isDataLoadedCompletely="!isInitializing"
+              :input-class="isFieldModified('licenseNumber') ? 'is-border-warn' : ''"
+            />
+
+            <KendoDatePickerInputComponent
+              :id="setUniqueIdentifier( '-endDate')"
+              class="col-lg-4"
+              name="endDate"
+              label="End Date"
+              v-model="dataProtectionLicence.endDate"
+              :input-class="isFieldModified('endDate') ? 'is-border-warn' : ''"
+              epoch
+              isValueReactive
+              :isDataLoadedCompletely="!isInitializing"
+            />
+
+            <KendoDatePickerInputComponent
+              :id="setUniqueIdentifier( '-renewalDate')"
+              class="col-lg-4"
+              name="renewalDate"
+              label="Renewal Date"
+              v-model="dataProtectionLicence.renewalDate"
+              :input-class="isFieldModified('renewalDate') ? 'is-border-warn' : ''"
+              epoch
+              isValueReactive
+              :isDataLoadedCompletely="!isInitializing"
+            />
+          </div>
+
+          <a href="javascript:;" @click="isViewDocument = true">
+            <strong
+              >{{ $t("ar-dataProtectionLicencePage-viewProtectionLicence")
+              }}</strong
+            >
+          </a>
+        </PanelComponent>
+
+        <PanelComponent
+          :title="$t('ar-dataProtectionLicencePage-formTitleDataProtection')"
+        >
+          <NumberListComponent
+            :items="[`Does ${currentArFirmName} process Personal Data for any other purpose other than for providing its services to the Data Subject (e.g For Marketing)?`, `Does the ${currentArFirmName} use automated individual decision-making, which means making a decision solely by automated means without any human involvement and also do profiling, which means automated processing of personal data to evaluate certain aspects about an individual?`]"
+            align-top
+            class="OverviewList"
+          >
+            <template #item-1="{ item }">
+              <ToggleButtonComponent
+                reverse
+                wide
+                :text="item"
+                v-model="dataProtectionLicence.isForAnyOtherPurpose"
+              />
+            </template>
+
+            <template #item-2="{ item }">
+              <ToggleButtonComponent
+                reverse
+                wide
+                :text="item"
+                v-model="dataProtectionLicence.isUsedAutomatedProcessing"
+              />
+            </template>
+          </NumberListComponent>
+        </PanelComponent>
+
+        <PanelComponent
+          :title="$t('ar-dataProtectionLicencePage-formTitleDataProtectionOfficer')"
+        >
+          <div class="row">
+            <template
+              v-if="!dataProtectionLicence.dataProtectionOfficer.isOrganisation"
+            >
+              <div class="col-lg-4">
+                <KendoNameTitleComponent
+                  name="dataProtectionOfficer.title"
+                  :id="setUniqueIdentifier('-dataProtectionOfficer.title')"
+                  label="Title"
+                  :isRequired="false"
+                  v-model="dataProtectionLicence.dataProtectionOfficer.title"
+                />
+              </div>
+
+              <KendoGenericInputComponent
+                :id="setUniqueIdentifier( '-forename')"
+                class="col-lg-4"
+                name="forename"
+                label="Forename(s)"
+                isValueReactive
+                :isDataLoadedCompletely="!isInitializing"
+                v-model="dataProtectionLicence.dataProtectionOfficer.forename"
+              />
+
+              <KendoGenericInputComponent
+                :id="setUniqueIdentifier( '-surname')"
+                class="col-lg-4"
+                name="surname"
+                label="Surname"
+                isValueReactive
+                :isDataLoadedCompletely="!isInitializing"
+                v-model="dataProtectionLicence.dataProtectionOfficer.surname"
+              />
+            </template>
+
+            <KendoFirmFinderComponent
+              v-else
+              :id="setUniqueIdentifier(AppConstants.firmDetailsRoute + '-firmName')"
+              companyNameLabel="Firm Name"
+              :companyName="dataProtectionLicence.dataProtectionOfficer.companyName"
+              :companyNumber="dataProtectionLicence.dataProtectionOfficer.companyNumber"
+              :firmReferenceNumber="dataProtectionLicence.dataProtectionOfficer.firmReferenceNumber"
+              :isDataLoadedCompletely="isInitializing"
+              :isEnableSearch="false"
+              @onCompanyDetailUpdated="(values) => {
+                                    dataProtectionLicence.dataProtectionOfficer.companyName = values.companyName;
+                                    dataProtectionLicence.dataProtectionOfficer.companyNumber = values.companyNumber;
+                                    dataProtectionLicence.dataProtectionOfficer.firmReferenceNumber = values.firmReferenceNumber;
+                                  }"
+            />
+
+            <KendoEmailAddressInputComponent
+              :id="setUniqueIdentifier( '-email')"
+              isValueReactive
+              :isDataLoadedCompletely="!isInitializing"
+              class="col-lg-4"
+              name="email"
+              label="Email"
+              v-model="dataProtectionLicence.dataProtectionOfficer.email"
+            />
+
+            <KendoTelInputComponent
+              :id="setUniqueIdentifier( '-contactNumber')"
+              isValueReactive
+              :isDataLoadedCompletely="!isInitializing"
+              class="col-lg-4"
+              name="contactNumber"
+              label="Contact Number"
+              v-model="dataProtectionLicence.dataProtectionOfficer.contactNumber"
+            />
+
+            <div class="col-lg-4">
+              <KendoRoleComponent
+                :id="setUniqueIdentifier( '-role')"
+                name="role"
+                label="Role"
+                isValueReactive
+                :isDataLoadedCompletely="!isInitializing"
+                v-model="dataProtectionLicence.dataProtectionOfficer.role"
+              />
+            </div>
+          </div>
+        </PanelComponent>
+      </template>
+
+      <template v-slot:categoriesOfPersonalData>
+        <h4 class="text-primary font-size-lg mb-4">
+          Categories of Personal Data
+        </h4>
+
+        <CategoriesOfPersonalData v-model="dataProtectionLicence" />
+      </template>
+
+      <template v-slot:timingOfDataCollection>
+        <h4 class="text-primary font-size-lg mb-4">
+          Timing of Data Collection
+        </h4>
+
+        <TimingOfDataCollection v-model="dataProtectionLicence" />
+      </template>
+
+      <template v-slot:methodsOfDataCollection>
+        <h4 class="text-primary font-size-lg mb-4">
+          Methods of Data Collection
+        </h4>
+
+        <MethodsOfDataCollection v-model="dataProtectionLicence" />
+      </template>
+
+      <template v-slot:purposeOfDataCollection>
+        <h4 class="text-primary font-size-lg mb-4">
+          Purpose of Data Collection
+        </h4>
+
+        <PurposeOfDataCollection v-model="dataProtectionLicence" />
+      </template>
+    </KendoTabStrip>
+  </KendoFormElementComponent>
+</KendoForm>
+
+<DataProtectionLicenseViewer
+  v-model="isViewDocument"
+  :document-url="dataProtectionLicence.documentUrl"
+/>

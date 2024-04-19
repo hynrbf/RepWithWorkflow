@@ -1,0 +1,22 @@
+<svg width="98" height="40" viewBox="0 0 98 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 1000003720">
+<g id="Filte Icon">
+<path id="Rectangle 129" d="M87.303 1H10.697C5.34148 1 1 5.47715 1 11V29C1 34.5228 5.34148 39 10.697 39H87.303C92.6585 39 97 34.5228 97 29V11C97 5.47715 92.6585 1 87.303 1Z" fill="#160E83" stroke="#160E83" stroke-miterlimit="10"/>
+<path id="Rectangle 134" d="M39.3359 1H10.3359C4.81309 1 0.335938 5.47715 0.335938 11V29C0.335938 34.5228 4.81309 39 10.3359 39H39.3359C44.8588 39 49.3359 34.5228 49.3359 29V11C49.3359 5.47715 44.8588 1 39.3359 1Z" fill="white"/>
+<g id="list-outline">
+<path id="Line 38" d="M71.4355 14.0498H83.3355" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Line 39" d="M71.4355 20H83.3355" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Line 40" d="M71.4355 25.9502H83.3355" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 76" d="M67.1859 14.9002C67.6554 14.9002 68.0359 14.5196 68.0359 14.0502C68.0359 13.5808 67.6554 13.2002 67.1859 13.2002C66.7165 13.2002 66.3359 13.5808 66.3359 14.0502C66.3359 14.5196 66.7165 14.9002 67.1859 14.9002Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 77" d="M67.1859 20.8504C67.6554 20.8504 68.0359 20.4698 68.0359 20.0004C68.0359 19.5309 67.6554 19.1504 67.1859 19.1504C66.7165 19.1504 66.3359 19.5309 66.3359 20.0004C66.3359 20.4698 66.7165 20.8504 67.1859 20.8504Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 78" d="M67.1859 26.8006C67.6554 26.8006 68.0359 26.42 68.0359 25.9506C68.0359 25.4811 67.6554 25.1006 67.1859 25.1006C66.7165 25.1006 66.3359 25.4811 66.3359 25.9506C66.3359 26.42 66.7165 26.8006 67.1859 26.8006Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<g id="grid-outline">
+<path id="Rectangle 130" d="M24.2589 15.9615C24.2589 14.3259 22.933 13 21.2974 13C19.6618 13 18.3359 14.3259 18.3359 15.9615C18.3359 17.5971 19.6618 18.923 21.2974 18.923C22.933 18.923 24.2589 17.5971 24.2589 15.9615Z" stroke="#160E83" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 131" d="M32.3351 15.9615C32.3351 14.3259 31.0092 13 29.3736 13C27.738 13 26.4121 14.3259 26.4121 15.9615C26.4121 17.5971 27.738 18.923 29.3736 18.923C31.0092 18.923 32.3351 17.5971 32.3351 15.9615Z" stroke="#160E83" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 132" d="M24.2589 24.0386C24.2589 22.4031 22.933 21.0771 21.2974 21.0771C19.6618 21.0771 18.3359 22.4031 18.3359 24.0386C18.3359 25.6742 19.6618 27.0001 21.2974 27.0001C22.933 27.0001 24.2589 25.6742 24.2589 24.0386Z" stroke="#160E83" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 133" d="M32.3351 24.0386C32.3351 22.4031 31.0092 21.0771 29.3736 21.0771C27.738 21.0771 26.4121 22.4031 26.4121 24.0386C26.4121 25.6742 27.738 27.0001 29.3736 27.0001C31.0092 27.0001 32.3351 25.6742 32.3351 24.0386Z" stroke="#160E83" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</svg>

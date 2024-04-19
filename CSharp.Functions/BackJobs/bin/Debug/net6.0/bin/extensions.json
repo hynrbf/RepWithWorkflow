@@ -1,0 +1,5 @@
+{
+  "extensions":[
+    { "name": "Startup", "typeName":"BackJobs.Startup, BackJobs, Version=1.0.117.0, Culture=neutral, PublicKeyToken=null"}
+  ]
+}

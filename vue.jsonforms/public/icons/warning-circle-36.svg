@@ -1,0 +1,17 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="warning-circle-36" clip-path="url(#clip0_47_141828)">
+<g id="warning-circle--warning-alert-frame-exclamation-caution-circle">
+<path id="Vector" d="M9.99944 18.5893C14.7432 18.5893 18.5887 14.7438 18.5887 9.99999C18.5887 5.25626 14.7432 1.41071 9.99944 1.41071C5.25571 1.41071 1.41016 5.25626 1.41016 9.99999C1.41016 14.7438 5.25571 18.5893 9.99944 18.5893Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10 6.03571V10.3303" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Group 2605">
+<path id="Ellipse 1111" d="M9.99833 13.9643C9.81588 13.9643 9.66797 13.8164 9.66797 13.6339C9.66797 13.4515 9.81588 13.3036 9.99833 13.3036" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 1112" d="M10 13.9643C10.1824 13.9643 10.3304 13.8164 10.3304 13.6339C10.3304 13.4515 10.1824 13.3036 10 13.3036" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_141828">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

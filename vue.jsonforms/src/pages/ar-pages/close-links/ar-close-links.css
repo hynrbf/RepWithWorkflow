@@ -1,0 +1,18 @@
+.intro-text {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.question-text {
+    font-weight: bold;
+    text-decoration: underline;
+    color: rgb(0, 140, 255);
+}
+
+.btn-group-item {
+    border-radius: 0px;
+}
+
+.house-icon {
+    height: 20px;
+}

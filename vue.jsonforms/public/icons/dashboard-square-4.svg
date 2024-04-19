@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="dashboard-square-4" clip-path="url(#clip0_47_144213)">
+<g id="dashboard-square--app-application-dashboard-home-layout-square">
+<path id="Vector" d="M6.69587 1.41064H2.73158C2.00178 1.41064 1.41016 2.00227 1.41016 2.73207V6.69636C1.41016 7.42616 2.00178 8.01779 2.73158 8.01779H6.69587C7.42567 8.01779 8.0173 7.42616 8.0173 6.69636V2.73207C8.0173 2.00227 7.42567 1.41064 6.69587 1.41064Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M17.2662 1.41064H13.3019C12.5721 1.41064 11.9805 2.00227 11.9805 2.73207V6.69636C11.9805 7.42616 12.5721 8.01779 13.3019 8.01779H17.2662C17.996 8.01779 18.5876 7.42616 18.5876 6.69636V2.73207C18.5876 2.00227 17.996 1.41064 17.2662 1.41064Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M6.69587 11.9819H2.73158C2.00178 11.9819 1.41016 12.5736 1.41016 13.3034V17.2676C1.41016 17.9975 2.00178 18.5891 2.73158 18.5891H6.69587C7.42567 18.5891 8.0173 17.9975 8.0173 17.2676V13.3034C8.0173 12.5736 7.42567 11.9819 6.69587 11.9819Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M17.2662 11.9819H13.3019C12.5721 11.9819 11.9805 12.5736 11.9805 13.3034V17.2676C11.9805 17.9975 12.5721 18.5891 13.3019 18.5891H17.2662C17.996 18.5891 18.5876 17.9975 18.5876 17.2676V13.3034C18.5876 12.5736 17.996 11.9819 17.2662 11.9819Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_144213">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

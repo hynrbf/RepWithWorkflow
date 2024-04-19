@@ -1,0 +1,54 @@
+<KendoDialog ref="kendoDialog"/>
+
+<div class="m-4">
+    <editor :api-key="apiKey"
+            :init="{
+         height: 500,
+         menubar: false,
+         plugins: [],
+         toolbar:
+           'undo redo | formatselect | bold italic backcolor | \
+           alignleft aligncenter alignright alignjustify | \
+           bullist numlist outdent indent | removeformat | help'
+       }" v-model="content">
+    </editor>
+
+    <div class="mt-2 d-flex align-items-center gap-4">
+        <DropDownList :data-items="documentNames" @change="selectName"/>
+
+        <button class="my-2 btn btn-success"
+                style="width:80px"
+                @click="saveContent">Save
+        </button>
+    </div>
+
+    <div class="pb-2 d-flex align-items-center gap-3">
+        <div class="col-4">
+            <input type="text"
+                   style="height: 40px"
+                   class="form-control"
+                   placeholder="Recipient email"
+                   v-model="recipientEmail"
+                   aria-describedby="basic-addon1">
+        </div>
+
+        <div class="d-flex flex-grow-1 gap-2 align-items-center">
+            <button :class="signButtonClass" @click="signAsync">Sign</button>
+
+            <button class="my-2 btn btn-success" @click="getApiHeartBeat">Get Heart Beat</button>
+        </div>
+    </div>
+
+    <div class="py-2 d-flex align-items-center gap-3">
+        <div>
+            DOC to HTML
+            <input type="file"
+                   ref="doc"
+                   :disabled="!name"
+                   accept=".doc,.docx"
+                   @change="onConvertWordToHtmlAsync"/>
+        </div>
+
+        <button class="my-2 btn btn-success" @click="onConvertHtmlToDocAsync">HTML To Doc</button>
+    </div>
+</div>

@@ -1,0 +1,792 @@
+1. to run
+    npm run dev 
+
+2. using eslint for code checker
+    Settings > Language > Enable EsLint
+
+3. typescript solid
+    https://github.com/devbootstrap/SOLID-Principles-Examples-using-Typescript
+
+4. di used
+    https://github.com/microsoft/tsyringe#installation
+    https://www.youtube.com/watch?v=D1kM5W9r85Q
+
+5. to add routing
+    - install vue-router
+        $ npm install vue-router --save
+    - setup router file (src/router/index.ts)
+        This is where we define our routes
+    - modify main.ts to add '.use(router)'
+        BEFORE: createApp(App).mount('#app')
+        AFTER:  createApp(App).use(router).mount('#app')
+    https://www.codemag.com/Article/2101051/Routing-in-Vue3-Navigating-the-Options
+
+6. kendo ui
+    https://github.com/telerik/kendo-vue/tree/master/getting-started-typescript-composition-api
+
+    https://www.telerik.com/kendo-vue-ui/components/inputs/api/InputProps/
+    https://www.telerik.com/kendo-vue-ui/components/inputs/input/
+    (github)
+    https://github.com/telerik/kendo-vue/blob/fb8bd98acbb2423a979c397600076932ee81c54c/kendo-nuxt3/pages/form/overview/FormContent.vue#L4
+
+7. coding standards
+    A. standard arrangement in Vue file
+    <script />
+
+    <template />
+
+    <style />
+
+    e.g.,
+    <script lang="ts">
+    import {defineComponent} from "vue";
+
+    export default defineComponent({
+    name: "DocumentTemplating"
+    })
+    </script>
+
+    <template />
+    
+    <style scoped />
+
+    B. standard organizations of directories, same our standard
+    infra = infra
+    resources = assets
+    schema = ??
+    views & vm = pages
+    infra/customcontrols = components
+
+    C. .ts, .Vue filename conventions
+    .ts = RestBase.ts
+    .vue = DocumentEdit.vue
+    .css and .html = document_edit.html or admin_guide.css
+        also this one is good as well document-edit.html
+
+    D. checking nulls, undefined vs null
+    should always use undefined https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines#null-and-undefined
+
+    then to check for not null or undefined, or not empty string
+
+    if (!myVariable) {
+    //do here
+    //this is null or undefined
+    }
+
+    or checking a list has at least contains one
+    if (!(objAnswer.companies && objAnswer.companies.length > 0)) {
+        return;
+    }
+
+    E. how to declare strong typing in data
+    a. data() {
+        return {
+        allSchemaAnswers: [] as Answer[],
+        schemaYourDetailsAnswers: null as FormKeysSignUpPageYourDetails | null
+        }
+    }
+    
+    b. Promise<CompanyEntity[] | undefined>
+
+    c. let isCompanyNotApplicable: boolean = JSON.parse(this.schemaYourDetailsAnswers.companyNotApplicable);
+
+    d. private customerService: CustomerService = null as unknown as CustomerService;
+      or private customerService: CustomerService | undefined = null; (later is better raw)
+
+    F. ordering of Vue defining components
+      name
+      props
+      components
+      data()
+      computed
+      watch
+      lifecycle like -> created()
+      methods
+
+   G.const or let
+     default is const, only use let if you know the variable will change its value later
+
+   H. prefer returning 'Date | undefined' vs 'Date | null' because undefined has slight advantage
+    in optional properties accdg to chatgpt. I know javascript is confusing.
+        export declare interface IHelperService {
+            convertEpochToDateTime(epoch: number): Date | undefined;
+        }
+    but in data section of OptionsApi just use like this because undefined wont work
+        kendoDialogInstance: null as KendoDialogComponent | null,
+
+    I. localStorage use always not sessionStorage unless there's a reason
+
+    J. when doing constructor injection, just do container.resolve in constructor because the tysyringe injects a class not interface which is not good
+    example,
+    export default class NavigationService implements INavigationService {
+      private readonly _firmPagesRouteService: IFirmPagesRouteService;
+
+      private _navigationStack: string[] = [];
+
+      constructor() {
+        this._firmPagesRouteService = container.resolve<IFirmPagesRouteService>(
+          IFirmPagesRouteServiceInfo.name,
+        );
+        console.log(this._firmPagesRouteService);
+      }
+    }
+
+    K. using pub sub or the mitt 
+    please note that the $eventBusService is declare in main.ts
+
+    publisher,  
+    const eventBusService = inject<Emitter<Record<EventType, RouteProps[]>>>("$eventBusService");
+
+    eventBusService?.emit(
+        AppConstants.routesChangedEvent,
+        firmPagesRouteService.value.getCurrentRoutes(),
+      );
+
+    subscriber,
+    data() {
+        return {
+              eventBus: inject("$eventBusService") as Emitter<Record<EventType, RouteProps[]>>,
+        };
+    }
+
+    this.eventBus.on(AppConstants.routesChangedEvent, (value) => {
+      if (!value) {
+        return;
+      }
+
+      this.sideMenuRouteItems = value;
+    });
+
+    L. for sharing implementation in component, just use composables in vue
+    ex. create usePageSectionWithAnchor compsable file
+    import { onBeforeUnmount, onMounted, ref } from "vue";
+
+    interface PageSection {
+      id: string;
+      offsetTop: number;
+    }
+
+    export const usePageSectionWithAnchor = (initialSections: PageSection[]) => {
+      const pageSections = initialSections as PageSection[];
+      const activePageSectionId = ref("");
+
+      const updatePageSectionTop = (): void => {
+        pageSections.forEach((section) => {
+          const sectionElement = document.getElementById(section.id);
+          section.offsetTop = sectionElement?.offsetTop ?? 0;
+        });
+      };
+
+      const handleScroll = (): void => {
+        const scrollPosition = window.scrollY;
+
+        if (!pageSections) {
+          return;
+        }
+
+        for (let i = pageSections.length - 1; i >= 0; i--) {
+          const section = pageSections[i];
+
+          if (scrollPosition < section.offsetTop) {
+            continue;
+          }
+
+          if (activePageSectionId.value === section.id) {
+            break;
+          }
+
+          activePageSectionId.value = section.id;
+          break;
+        }
+      };
+
+      onMounted(() => {
+        updatePageSectionTop();
+        window.addEventListener("scroll", handleScroll);
+      });
+
+      onBeforeUnmount(() => {
+        window.removeEventListener("scroll", handleScroll);
+      });
+
+      return {
+        updatePageSectionTop
+      };
+    };
+
+    in component use it like this,
+    export default defineComponent({
+      name: "TestOnly",
+      data() {
+        return {
+          helperService: container.resolve<IHelperService>(IHelperServiceInfo.name),
+        };
+      },
+      setup() {
+        const pageSections = [
+          { id: "firstTest", offsetTop: 0 },
+          { id: "applyTest", offsetTop: 0 },
+          { id: "lastTest", offsetTop: 0 },
+        ];
+        const {
+          updatePageSectionTop,
+        } = usePageSectionWithAnchor(pageSections);
+
+        return {
+          updatePageSectionTop,
+          pageSections,
+        };
+      },
+    });
+
+    M. prefer scss over css. how to follow this:
+    _colors.scss
+    $color-primary-1: #003366;
+    $color-primary-2: #FFD700;
+
+    _variables.scss
+    $theme-colors: (
+        "primary": $color-primary-1,
+        "secondary": $color-primary-2
+    )
+
+    _serialize.css
+    @mixin serializeCssVars(
+      $theme-colors: $theme-colors,
+    ) {
+      // Theme colors
+      @each $name, $value in $theme-colors {
+        --color-#{$name}: #{$value};
+      }
+    }
+
+    main.scss
+    @import 'mixins/serializeCssVars';
+
+    App.scss
+    @import './assets/scss/main.scss';
+
+    in you component
+    .inactive-section {
+      color: var(--color-primary);
+    }
+
+    or,
+    style="background-color: var(--color-primary)"
+
+    or, you can use the variable of scss directly but not in style of html
+    .active-section {
+      background-color: $color-primary-1;
+    }
+
+
+8. JSONForms Renderer sets
+ https://jsonforms.io/docs/renderer-sets/
+ https://github.com/jsonform/jsonform/wiki (JSONForms github)
+
+9. jsonforms vue
+https://github.com/eclipsesource/jsonforms-vue-seed
+
+10. Default cosmos db container values
+schema
+[
+    {
+        "Schema": "{\"properties\":{\"firstName\":{\"title\":\"Your Name\",\"type\":\"string\",\"minLength\":1,\"tooltip\":\"Tooltip your name\"},\"lastName\":{\"title\":\"\",\"type\":\"string\"},\"companyName\":{\"title\":\"Company Name\",\"type\":\"string\",\"enum\":[\"Axa Aofas (Postcode KT2 5RG)\",\"Axa Financial Services LTD (Postcode: EC3V 3ND)\"]},\"companyNotApplicable\":{\"title\":\"Not Applicable e.g. Sole Trader\",\"type\":\"boolean\"},\"companies\":{\"type\":\"array\",\"items\":{\"type\":\"object\",\"properties\":{\"companyName\":{\"type\":\"string\"},\"postcode\":{\"type\":\"string\"},\"companyNumber\":{\"type\":\"string\"},\"firmReferenceNo\":{\"type\":\"string\"},\"role\":{\"type\":\"string\"},\"isConfirmedFirmDetails\":{\"type\":\"boolean\"},\"isVariedFirmPermissions\":{\"type\":\"boolean\"},\"isSelected\":{\"type\":\"boolean\"}}}},\"email\":{\"title\":\"Email Address\",\"type\":\"string\"},\"contactNumber\":{\"title\":\"Contact Number\",\"type\":\"string\"}},\"required\":[\"firstName\",\"email\"]}",
+        "id": "200071b9-7577-4488-a2cd-487cf5baf746",
+        "Page": "SignUpPage",
+        "FormNameKey": "SignUpPage.YourDetailsForm",
+        "_rid": "vcITALBdEJSSAAAAAAAAAA==",
+        "_self": "dbs/vcITAA==/colls/vcITALBdEJQ=/docs/vcITALBdEJSSAAAAAAAAAA==/",
+        "_etag": "\"0400fd3a-0000-1900-0000-642b8b570000\"",
+        "_attachments": "attachments/",
+        "_ts": 1680575319
+    }
+]
+
+uiSchema
+[
+    {
+        "UiSchema": "{\"type\":\"Group\",\"elements\":[{\"elements\":[{\"type\":\"Control\",\"scope\":\"#/properties/firstName\",\"rule\":{\"effect\":\"DISABLE\",\"condition\":{\"scope\":\"#/properties/companyNotApplicable\",\"schema\":{\"const\":false}}}},{\"type\":\"Control\",\"scope\":\"#/properties/lastName\",\"rule\":{\"effect\":\"DISABLE\",\"condition\":{\"scope\":\"#/properties/companyNotApplicable\",\"schema\":{\"const\":false}}}},{\"type\":\"Control\",\"scope\":\"#/properties/companyName\",\"rule\":{\"effect\":\"ENABLE\",\"condition\":{\"scope\":\"#/properties/companyNotApplicable\",\"schema\":{\"const\":false}}}},{\"type\":\"Control\",\"scope\":\"#/properties/companyNotApplicable\"},{\"type\":\"Control\",\"scope\":\"#/properties/companies\"},{\"type\":\"Control\",\"scope\":\"#/properties/email\"},{\"type\":\"Control\",\"scope\":\"#/properties/contactNumber\"}]}]}",
+        "id": "cb975da2-69dd-48bc-9b63-1f0f0ffacdcb",
+        "Page": "SignUpPage",
+        "FormNameKey": "SignUpPage.YourDetailsForm",
+        "_rid": "vcITAM5Mdk6NAAAAAAAAAA==",
+        "_self": "dbs/vcITAA==/colls/vcITAM5Mdk4=/docs/vcITAM5Mdk6NAAAAAAAAAA==/",
+        "_etag": "\"0000a05f-0000-1900-0000-642b8b570000\"",
+        "_attachments": "attachments/",
+        "_ts": 1680575319
+    }
+]
+
+htmlrepository
+[
+    {
+        "id": "035c1b91-322c-4d8d-803c-ec1127828484",
+        "name": "HelloWorld",
+        "content": "<p>Hello, <b>World!</b></p>",
+        "_rid": "jxEOANhhgW4BAAAAAAAAAA==",
+        "_self": "dbs/jxEOAA==/colls/jxEOANhhgW4=/docs/jxEOANhhgW4BAAAAAAAAAA==/",
+        "_etag": "\"4500314c-0000-1900-0000-63f4224a0000\"",
+        "_attachments": "attachments/",
+        "_ts": 1676943946
+    }
+]
+
+schemaAnswers
+[
+	{
+        "Answers": "{\"firstName\":\"\",\"lastName\":\"\",\"companyName\":\"\",\"companyNotApplicable\":false,\"companies\":[],\"email\":\"\",\"contactNumber\":\"\"}",
+        "id": "764f31e7-6b26-4c45-9403-544acc59eb2b",
+        "Page": "SignUpPage",
+        "FormNameKey": "SignUpPage.YourDetailsForm",
+        "_rid": "vcITALGT84sOAAAAAAAAAA==",
+        "_self": "dbs/vcITAA==/colls/vcITALGT84s=/docs/vcITALGT84sOAAAAAAAAAA==/",
+        "_etag": "\"8e00e68a-0000-1900-0000-642b8b580000\"",
+        "_attachments": "attachments/",
+        "_ts": 1680575320
+    }
+]
+
+to edit, just edit the local json then minify it in internet, and simply copy and paste to seeding and VS will automatically format it
+
+11. Tiny MCE account
+email: hynrbf@gmail.com
+sign in as google
+
+official,
+https://www.tiny.cloud/my-account/dashboard/ (tinymce)
+u: admin@dsforgs.com
+p: Comply321%
+
+12. Apryse account
+    email: hynrbf@gmail.com
+    pass: Grace28%
+    trial key: demo:1676881449876:7d390594030000000076189b9eb44ff5b03ce87b3148a63ebf935b5767
+
+13. SignNow account
+    email: hynrbf@gmail.com
+    pass: Grace28%
+
+    official,
+	https://app.signnow.com/webapp/inbox (signnow)
+	u: admin@dsforgs.com
+	p: Comply321%
+
+14. testing										
+    a. forms editing and rendering 					
+    b. signing can send document					
+    c. html editing crud 						
+    d. create account and signin			
+    e. importing files and it renders the changes 	
+    f. convert docx to html and vice versa			
+    g. edit and save converted file					
+    h. Input Name or Company Name					
+    i. Search Company or Firm Based on Name			
+    j. Show Company or Firm List Based on Name		
+    k. If Firm not authorised go to Screen 2		
+    l. If Firm authorised but not seek 				
+        for current permission go to screen 3
+    m. If Firm authorised and seek 					
+        for current permission go to screen 2
+    n. Saving and if details or info is saved
+    0. resetting back the app to original state by deleting cosmos schema, uiSchema, schemaAnswers, customer,
+        fcaPermissions, fcaStatuses, settings should still work good
+    p. Go to Dashboard page after completing sign up
+    q. Upload, edit and save Permission
+
+    the two companies with company house and fca
+    AXA ART INSURANCE SE
+    RICHDALE BROKERS AND FINANCIAL SERVICES LTD.
+    Jacob Bernstein (sole)
+
+    or use the company number, 07297692
+
+    OC testing data
+    SIMPLESURANCE (2 companies in company house) (solve it by company + postcode)
+    Fidelity Payment Services Ltd  (payment services type in fca "Type of business or Individual": "Payment services firm")
+    Debit Direct LTD (payment services category, same with Fidelity)
+    Marketplace platforms limited, (if null, then show fca)
+    DEX FINANCE LTD (should have value)
+    RSBM Finance LTD (should have value)
+
+    in email hynrbf,
+        remove all or clean email from 'signow' and 'admin@dsforgs.com'
+        also noted we cannot use mailinator because it doesnt allow attachments
+
+    Go to Testing.Manual.Impt.txt for comprehensive
+
+15. how dynamic, which we defined
+    a. css is dynamic defined
+    b. library of controls is defined
+    c. sections are defined like profile format
+    section name
+    section address
+    d. rules are defined, which can be set in json forms
+    e. business rules are defined. for example consent form
+    if you answer age below 18 and that was saved in DB, then the pdf that will be created will have additional paragraph that has "parent consent by"
+
+16. standard style font
+    normal = 14px
+    header = 24px
+
+    18. bootstrap is from and guide, spacing margin padding
+    https://getbootstrap.com/docs/5.3/layout/grid/
+    https://getbootstrap.com/docs/5.3/utilities/spacing/#margin-and-padding
+
+17. to fix like this error SignIn.vue.js' is a JavaScript file. Did you mean to enable the 'allowJs' option
+    <script lang="ts" />
+
+18. always run, this is to see if you have errors
+    npm install
+    npm i --save-dev @types/uuid
+    npm run lint
+    npm run build
+    npm run dev
+
+    if got issues to any command above, run the
+    ./uninstall_packages.sh
+    then,
+    ./install_packages.sh
+
+    delete dist and npm modules
+    File > Invalidate Cache in WS to restart typescript server
+
+19. impt to do Auth0
+    https://auth0.com/docs/authenticate/login/cross-origin-authentication
+
+    https://manage.auth0.com/dashboard/us/dev-qtjimtz2pcisjh3o/applications/RTBfH0gwauIs85PkneOTd7OJqUw0VMK0/settings
+    https://manage.auth0.com/dashboard/us/dev-qtjimtz2pcisjh3o/login_settings
+
+    after success login, get token here
+    https://auth0.com/docs/secure/tokens/access-tokens/get-access-tokens
+
+20. Auth0
+    Email: hynrbf@gmail.com
+    Password: Grace28%1234
+
+    official,
+	https://manage.auth0.com/dashboard/us/dev-nidxdibj27gfa43s/ (Auth0)
+	e:admin@dsforgs.com
+	p:Comply321%Comp123
+
+21. options api page lifecycle
+    https://vuejs.org/api/options-lifecycle.html#mounted
+
+22. when has CORS issue
+    redeploy auth.json
+    AUTH0_CLIENT_SECRET, should be there?
+
+23. jsonforms
+    schema = naming of our fields
+    uiSchema = layout, you can vertical or horizontal
+    data = it is items source, either initial values or the selected values
+
+    maintaining our forms keys. keys should not be always change. these 3 should have the same keys name and consistent
+    FormKeysSignUpPageYourDetails.ts
+    UpdatingFormTabDelimited.xlsx
+    list.schema.json
+        list.uiSchema.json
+        list.answers.json
+
+24. mapping of CSV to json forms schema (core only)
+    Key -> properties.key
+    DisplayText -> title
+    InputType -> type
+
+25. Converting string to boolean
+    see: https://www.webtips.dev/solutions/convert-string-to-boolean-in-typescript#:~:text=To%20convert%20a%20string%20to,false%20%2C%20depending%20on%20the%20input.
+
+26. Activating Kendo license
+    - must have 'kendo-ui-license.txt' (trial for now) at the root directory
+    $ npx kendo-ui-license activate
+    see: https://www.telerik.com/kendo-vue-ui/components/my-license/
+
+27. validation jsonforms is using
+    it has intrinsic using of https://ajv.js.org/guide/modifying-data.html
+
+28. documentation of vue jsonforms to see code
+    just go to node_modules > @jsonforms > vue-vanilla
+
+29. Links that used for cypress cucumber. our standard end to end test with ui test
+    A. Since, we are using ESBuild with Typescript then we can refer this documentation:
+    https://github.com/badeball/cypress-cucumber-preprocessor/tree/master/examples/esbuild-ts
+
+    Packages that need to configure cypress cucumber
+    https://github.com/badeball/cypress-cucumber-preprocessor
+    https://github.com/bahmutov/cypress-esbuild-preprocessor
+
+    Cypress cucumber example
+    https://www.lambdatest.com/learning-hub/cypress-cucumber-tutorial
+
+    Commands
+    npx cypress open -> to open the cypress UI
+    npx cypress run -> to run the cypress in the terminal
+
+    Notes:
+    -If you want to visit your local in the step definition, 
+    you need to change the baseUrl in cypress.config.ts and run your local first
+    otherwise it will not work
+
+    -Feature (business language) while step definitions (programming language either javascript or typescript)
+
+    -chromeWebSecurity (false) is needed if you want to visit a website that is already deployed through step definition
+
+    B. Links to deploy the cypress to the Azure DevOps
+    https://www.lambdatest.com/blog/run-cypress-tests-in-azure-devops-pipeline/
+    https://medium.com/geekculture/test-your-application-using-cypress-github-and-azure-devops-5bdd7a6ba9eb
+    https://www.youtube.com/watch?v=bOF-qZnT2vo
+
+30. deployment to staging and live
+    json forms vue = azure pipelines
+    api = filezilla
+
+    when deploying to staging, please make sure these settings are change accordingly
+    .env
+        VITE_LANDING_URL
+        VITE_REMOTE_API
+        VITE_AUTH0_TOKEN_URL
+
+    main.ts
+        app.use(router)
+            .use(createAuth0({
+                // admin@dsforgs auth0
+                domain: "dev-nidxdibj27gfa43s.us.auth0.com",
+                clientId: "Bwh43N3Myyy5U0aGd2YcEOqIPOGbDNmn",       // staging
+                // clientId: "Ig7Isi6UhKet0dKq0jcgmZzCKkhinH7T",    // live
+                authorizationParams: {
+                    redirect_uri: LANDING_URL,
+                    scope: 'openid profile email'
+                }
+            }))
+            .mount('#app');
+
+31. making Auth0 success in both api and front end
+a. please follow CSharp.Functions\Impt.txt file
+
+b. front end
+  go to https://manage.auth0.com/ > QuickStart > Vue, follow it. see _impt\auth0urls.png
+  
+  put in the main.ts file
+  app.use(router)
+    .use(createAuth0({
+        // hynrbf auth0
+        // domain: "dev-qtjimtz2pcisjh3o.us.auth0.com",
+        // clientId: "RTBfH0gwauIs85PkneOTd7OJqUw0VMK0",
+
+        // admin@dsforgs auth0
+        domain: "dev-nidxdibj27gfa43s.us.auth0.com",
+        clientId: "Bwh43N3Myyy5U0aGd2YcEOqIPOGbDNmn",
+        authorizationParams: {
+            redirect_uri: 'https://ashy-flower-0344ad800.3.azurestaticapps.net',
+            scope: 'openid profile email'
+        }
+    }))
+    .mount('#app');
+
+    put in the SigUpVue > methods > logout
+     async logoutAsync() {
+          await this.$auth0.logout({
+            logoutParams: {
+              returnTo: 'https://ashy-flower-0344ad800.3.azurestaticapps.net'
+            }
+          });
+        },
+
+32. inspiration
+https://www.habito.com/
+
+33. all caching keys used in vue frontend
+delete when clearAllLocalCache is invoked
+AppConstants.jsonFormsSchemaKey
+AppConstants.jsonFormsUiSchemaKey
+AppConstants.jsonFormsAnswersKey
+AppConstants.fcaFirmsCacheKey
+AppConstants.fcaSoleTraderFirmsCacheKey
+AppConstants.authUserKey
+AppConstants.jsonFormsCustomersKey
+AppConstants.addressManuallyAddedKey
+AppConstants.DateOfBirth
+
+delete only when needed
+AppConstants.profanityKey
+AppConstants.authTokenCacheKey
+AppConstants.SelectedFirm
+
+34. for basic component with kendo validation
+please see, _Misc\Vue.Component.With.Kendo.Validation
+
+35. Controllers endpoints to clean
+Corp Controller >Director(s) of SUNLIFE LIMITED
+	/company/{{companyNumber}}/officers
+
+Ind Controller > Directorships of Colin Williams
+   /company/{{companyNumber}}/officers
+   /officers/BrzLJ_Kn4Smufmmd-eK2O8s0gNM/appointments
+
+Ind Controller > Controlling Interest
+   company/10022067/persons-with-significant-control
+
+36. changing kendo themes, using via themebuilder
+https://themebuilderapp.telerik.com
+u: tech@suntech.gi
+p: 3276T3chSala
+
+37. to update sprite-icons.svg manually
+svg-sprite -s --symbol-dest public --symbol-sprite sprite/sprite-icons.svg public/*.svg
+
+38. css or scss tricks
+    a. if you want to override global css just use like this
+    :global(.k-window-content) {
+        padding-block: 0 !important;
+        padding-inline: 0 !important;
+        color: red !important;
+    }
+
+    b. in scss
+    .Checkbox {
+      .k-checkbox {
+          border-color: var(--color-primary);
+          }
+      }
+
+    will transform to this, (just use scout app scss)
+    .Checkbox .k-checkbox {
+          border-color: var(--color-primary);
+      }
+
+    anotter ex.
+    .Button {
+      &.k-button-flat-primary {
+      }
+    }
+
+    will transform,
+    .Button.k-button-flat-primary {
+    }
+
+39. debugging vue
+a. create Javascript debug please see VueJsDebug.png
+b. open terminal and run 'npm run dev'
+c. run letter a
+
+40. calculation for pound to euro (vice versa)
+Pound to euro 	=	multiply by euro (exchange rate)
+Euro to pound	=	divide by euro (exchange rate)
+
+Single (PII):
+1300380 / 1.16	=	1,121,017.24137931
+1121017 * 1.16	=	1300380
+
+Aggregate (PII):
+1924560 / 1.16	= 1,659,103.448275862
+1659103 * 1.16	=	1924560
+
+41. constructor like c# or other OO native language, in typescript multiple constructors are not allowed so,
+    export class Money {
+      public currency: string | undefined;
+      public symbol: string | undefined;
+      public amount: number = 0;
+
+      constructor() {
+        this.currency = "GBP";
+        this.symbol = "£";
+      }
+
+      constructor(amount: number = 0) {
+        this.currency = "GBP";
+        this.symbol = "£";
+        this.amount = amount;
+      }
+    }
+
+    above will turn into this,
+    export class Money {
+      public currency: string;
+      public symbol: string;
+      public amount: number;
+
+      constructor(amount: number = 0) {
+        this.currency = "GBP";
+        this.symbol = "£";
+        this.amount = amount;
+      }
+    }
+
+42. testing deployed version or the dist folder version
+a. npm run build
+b. npm start -> this will run the start specified in packages.json
+
+43. Pinia and observables
+try to avoid, just make it simple if we can observables can be harder to maintain and will slow down the app
+
+43. from clean architecture codes are grouped into
+ui
+  pages
+  assets
+  components
+  composables
+  stores
+  directives
+  models
+
+infra
+  services
+  rest-services
+
+entities
+  contracts
+  entities
+
+44. using pinia store
+https://pinia.vuejs.org/core-concepts/#Using-the-store
+for actions you can destructure, but for properties you cannot destructure
+ex, of destructure
+   const { count, increment } = useCounterStore();
+
+45. the truths I see in Kendo Form
+a. every element in one form, if you edit, it validate all fields in that one form group
+
+b. the vue dont destroy components immediately ->
+  Component State Preservation: When a component is removed from the DOM with v-if,
+   Vue doesn't immediately destroy the component instance
+
+c. v-show dont unmount it to the DOM, Reveal component uses v-if so this umounts the component to the DOM
+
+d. the tabs of Kendo, when you delete the middle item, the last item data will be moved first to middle item, then delete the last tab
+
+46. preference using maps over foreach like this
+before,
+const subContractors: JobSubcontractor[] = result.forEach((subContractorSearch) => {
+      const contractor = new JobSubcontractor(
+        subContractorSearch.jnid ?? '',
+        subContractorSearch.Name ?? '',
+        subContractorSearch.Logo ?? ''
+      );
+      if (subContractorSearch.LocationId !== locationId) {
+        return;
+      }
+      subContractors.push(contractor);
+    });
+
+after,
+const subContractors: JobSubcontractor[] = result
+      .filter((resultItem) => resultItem.LocationId === locationId)
+      .map(
+        (subContractorSearch) =>
+          new JobSubcontractor(
+            subContractorSearch.jnid ?? '',
+            subContractorSearch.Name ?? '',
+            subContractorSearch.Logo ?? '',
+            subContractorSearch.LocationId ?? 0
+          )
+      );
+    return subContractors;
+  }
+
+47. to simplify long codes in components and in pages,
+  use model for props and data, not list every property
+
+48. login with onboarding type
+http://localhost:5173/ar-verify/amNjcGFuZ2dhQGdtYWlsLmNvbQ==
+ex,user: joseph1@suntech.gi
+ex, pw: &z_X3C]N

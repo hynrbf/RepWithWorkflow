@@ -1,0 +1,484 @@
+// Compatible with @progress/kendo-theme-default v.7.0.0
+
+%tb-typography {
+  @include typography-classes($tb-typography);
+}
+
+%tb-effects {
+  @include effects-classes($tb-effects);
+}
+
+    .k-button.k-button-outline.k-hover.k-button-outline-base, .k-button.k-button-outline.k-state-hover.k-button-outline-base, .k-button.k-button-outline.k-state-hovered.k-button-outline-base, .k-button.k-button-outline:hover.k-button-outline-base{
+        box-shadow: none;
+        
+}
+    .k-button.k-button-outline.k-hover, .k-button.k-button-outline.k-state-hover, .k-button.k-button-outline.k-state-hovered, .k-button.k-button-outline:hover{
+        visibility: visible;
+        
+}
+    .k-button.k-rounded-md{
+        border-bottom-left-radius: $tb-button-border-radius;
+                border-bottom-right-radius: $tb-button-border-radius;
+                border-top-left-radius: $tb-button-border-radius;
+                border-top-right-radius: $tb-button-border-radius;
+        
+}
+    .k-button.k-button-md{
+        padding-left: $tb-button-padding-x;
+                padding-right: $tb-button-padding-x;
+                font-size: 16px;
+                padding-top: $tb-button-padding-y;
+                padding-bottom: $tb-button-padding-y;
+        
+}
+    .k-button-group .k-button.k-group-start,.k-button-group  .k-button:first-child{
+        border-top-left-radius: $tb-kendo-border-radius;
+                border-bottom-left-radius: $tb-kendo-border-radius;
+        
+}
+    .k-button-group .k-button.k-group-end,.k-button-group  .k-button:last-child{
+        border-top-right-radius: $tb-kendo-border-radius;
+                border-bottom-right-radius: $tb-kendo-border-radius;
+        
+}
+    .k-textbox.k-input.k-input-solid.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-textbox.k-input.k-input-solid .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-textbox.k-input.k-input-md.k-input-solid.k-rounded-md .k-clear-value{
+        padding-bottom: $tb-input-padding;
+                padding-left: $tb-input-padding;
+                padding-right: $tb-input-padding;
+                padding-top: $tb-input-padding;
+        
+}
+    .k-numerictextbox .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-numerictextbox.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-maskedtextbox.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-maskedtextbox .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    input.k-input{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-input.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-input.k-input-solid{
+        border-bottom-color: $tb-border-color;
+                border-left-color: $tb-border-color;
+                border-right-color: $tb-border-color;
+                border-top-color: $tb-border-color;
+        
+}
+    .k-dateinput.k-input .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-slider .k-button.k-button-md.k-button-solid.k-button-solid-base.k-icon-button.k-rounded-full.k-button-decrease{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-slider .k-button.k-button-md.k-button-solid.k-button-solid-base.k-icon-button.k-rounded-full.k-button-increase{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-colorgradient .k-colorgradient-inputs.k-hstack .k-vstack .k-input.k-numerictextbox .k-input-inner{
+        padding-bottom: 4px;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 4px;
+        
+}
+    .k-colorgradient .k-colorgradient-inputs.k-hstack .k-vstack .k-button.k-colorgradient-toggle-mode.k-button-flat.k-button-flat-base.k-icon-button{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-colorgradient .k-colorgradient-inputs .k-hex-value.k-textbox.k-input .k-input.k-input-solid{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-flatcolorpicker.k-coloreditor .k-coloreditor-footer.k-actions.k-actions-end .k-button.k-button-solid.k-button-solid-base.k-coloreditor-cancel{
+        padding-bottom: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 5px;
+        
+}
+    .k-flatcolorpicker.k-coloreditor .k-coloreditor-footer.k-actions.k-actions-end .k-button.k-button-solid.k-button-solid-base.k-primary.k-coloreditor-apply{
+        padding-bottom: 5px;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-top: 5px;
+        
+}
+    .k-autocomplete.k-input .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-autocomplete .k-clear-value{
+        padding-bottom: $tb-input-padding;
+                padding-left: $tb-input-padding;
+                padding-right: $tb-input-padding;
+                padding-top: $tb-input-padding;
+        
+}
+    .k-numerictextbox .k-input-spinner.k-spin-button .k-button.k-button-md.k-button-solid.k-button-solid-base.k-icon-button.k-spinner-increase{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-numerictextbox .k-input-spinner.k-spin-button .k-button.k-button-md.k-button-solid.k-button-solid-base.k-icon-button.k-spinner-decrease{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-colorpicker.k-picker.k-icon-picker.k-picker-md.k-picker-solid.k-rounded-md .k-button.k-icon-button.k-input-button{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-combobox .k-input-button{
+        padding-right: 5px;
+                padding-left: 5px;
+        
+}
+    .k-dropdownlist.k-picker.k-picker-md.k-rounded-md.k-picker-solid .k-input-button{
+        padding-right: 5px;
+                padding-left: 5px;
+        
+}
+    .k-dropdowntree .k-input-button.k-button.k-icon-button{
+        padding-right: 5px;
+                padding-left: 5px;
+        
+}
+    .k-multiselect.k-input .k-clear-value{
+        padding-bottom: $tb-input-padding;
+                padding-left: $tb-input-padding;
+                padding-right: $tb-input-padding;
+                padding-top: $tb-input-padding;
+        
+}
+    .k-multiselect.k-input .k-input-values{
+        padding-left: 4px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                padding-right: 4px;
+        
+}
+    .k-multiselect.k-input .k-input-values .k-chip-list.k-chip-list-md .k-chip.k-chip-md{
+        padding-top: 7px;
+                padding-bottom: 7px;
+                padding-right: 5px;
+                padding-left: 5px;
+        
+}
+    .k-listbox .k-listbox-actions .k-button.k-button-solid.k-button-solid-base.k-icon-button{
+        padding-bottom: 5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                padding-top: 5px;
+        
+}
+    .k-dropdownlist .k-input-inner{
+        padding-top: $tb-input-padding-y;
+                padding-bottom: $tb-input-padding-y;
+                padding-right: $tb-input-padding-x;
+                padding-left: $tb-input-padding-x;
+        
+}
+    .k-multiselect.k-input .k-input-values .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+        
+}
+    .k-combobox.k-input .k-input-inner{
+        padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                padding-right: $tb-input-padding-x;
+                padding-top: $tb-input-padding-y;
+                color: var(--color-black);
+        
+}
+    .k-multiselecttree.k-input .k-clear-value{
+        padding-bottom: $tb-input-padding;
+                padding-left: $tb-input-padding;
+                padding-right: $tb-input-padding;
+                padding-top: $tb-input-padding;
+        
+}
+    .k-multiselecttree.k-input .k-input-values.k-chip-list .k-chip.k-chip-md{
+        padding-top: 7px;
+                padding-bottom: 7px;
+                padding-right: 5px;
+                padding-left: 5px;
+        
+}
+    .k-multiselecttree.k-input .k-input-values.k-chip-list{
+        padding-right: 4px;
+                padding-left: 4px;
+                padding-top: 4px;
+                padding-bottom: 4px;
+        
+}
+    .k-card{
+        border-bottom-left-radius: $tb-card-border-radius;
+                border-bottom-right-radius: $tb-card-border-radius;
+                border-top-left-radius: $tb-card-border-radius;
+                border-top-right-radius: $tb-card-border-radius;
+        
+}
+    .k-dialog-wrapper .k-window.k-dialog .k-window-titlebar.k-dialog-titlebar .k-window-titlebar-actions.k-dialog-titlebar-actions .k-window-titlebar-action.k-dialog-titlebar-action.k-button.k-button-md.k-button-flat.k-button-flat-base.k-rounded-md.k-icon-button{
+        padding-top: 4px;
+                padding-right: 4px;
+                padding-bottom: 4px;
+                padding-left: 4px;
+        
+}
+    .k-input.k-invalid, .k-input.ng-invalid.ng-touched, .k-input.ng-invalid.ng-dirty{
+        padding-top: $tb-input-padding-y;
+                padding-right: $tb-input-padding-x;
+                padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+                border-bottom-color: $tb-kendo-color-error;
+                border-left-color: $tb-kendo-color-error;
+                border-right-color: $tb-kendo-color-error;
+                border-top-color: $tb-kendo-color-error;
+        
+}
+    .k-textarea .k-input-inner{
+        padding-top: $tb-input-padding-y;
+                padding-right: $tb-input-padding;
+                padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+        
+}
+    .k-datepicker.k-input .k-input-inner{
+        padding-top: $tb-input-padding-y;
+                padding-right: $tb-input-padding-x;
+                padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+        
+}
+    .k-timepicker.k-input .k-input-inner{
+        padding-top: $tb-input-padding-y;
+                padding-right: $tb-input-padding-x;
+                padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+        
+}
+    .k-datetimepicker.k-input .k-input-inner{
+        padding-top: $tb-input-padding-y;
+                padding-right: $tb-input-padding-x;
+                padding-bottom: $tb-input-padding-y;
+                padding-left: $tb-input-padding-x;
+        
+}
+    .k-daterangepicker .k-floating-label-container .k-dateinput .k-input-inner{
+        padding-top: $tb-input-padding-y;
+        
+}
+    .k-dropdownlist.k-picker-solid{
+        background-color: $tb-kendo-component-bg;
+                background-image: none;
+                border-bottom-color: $tb-border-color;
+                border-left-color: $tb-border-color;
+                border-right-color: $tb-border-color;
+                border-top-color: $tb-border-color;
+        
+}
+    .k-dropdownlist.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-dropdowntree.k-picker-solid{
+        background-color: $tb-kendo-component-bg;
+                background-image: none;
+                border-bottom-color: $tb-border-color;
+                border-left-color: $tb-border-color;
+                border-right-color: $tb-border-color;
+                border-top-color: $tb-border-color;
+        
+}
+    .k-dropdowntree.k-rounded-md{
+        border-bottom-left-radius: $tb-input-border-radius;
+                border-bottom-right-radius: $tb-input-border-radius;
+                border-top-left-radius: $tb-input-border-radius;
+                border-top-right-radius: $tb-input-border-radius;
+        
+}
+    .k-dropdowntree.k-picker{
+        padding-bottom: 0.591px;
+                padding-left: 0.591px;
+                padding-right: 0.591px;
+                padding-top: 0.591px;
+        
+}
+    .k-numerictextbox.k-invalid, .k-numerictextbox.ng-invalid.ng-touched, .k-numerictextbox.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-textbox.k-input.k-input-solid.k-invalid, .k-textbox.k-input.k-input-solid.ng-invalid.ng-touched, .k-textbox.k-input.k-input-solid.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-maskedtextbox.k-invalid, .k-maskedtextbox.ng-invalid.ng-touched, .k-maskedtextbox.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-textarea.k-invalid, .k-textarea.ng-invalid.ng-touched, .k-textarea.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-dateinput.k-input.k-invalid, .k-dateinput.k-input.ng-invalid.ng-touched, .k-dateinput.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-datepicker.k-input.k-invalid, .k-datepicker.k-input.ng-invalid.ng-touched, .k-datepicker.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-timepicker.k-input.k-invalid, .k-timepicker.k-input.ng-invalid.ng-touched, .k-timepicker.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-datetimepicker.k-input.k-invalid, .k-datetimepicker.k-input.ng-invalid.ng-touched, .k-datetimepicker.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-autocomplete.k-input.k-invalid, .k-autocomplete.k-input.ng-invalid.ng-touched, .k-autocomplete.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-multiselect.k-input.k-invalid, .k-multiselect.k-input.ng-invalid.ng-touched, .k-multiselect.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-multiselecttree.k-input.k-invalid, .k-multiselecttree.k-input.ng-invalid.ng-touched, .k-multiselecttree.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-combobox.k-input.k-invalid, .k-combobox.k-input.ng-invalid.ng-touched, .k-combobox.k-input.ng-invalid.ng-dirty{
+        padding-bottom: 0px;
+                padding-left: 0px;
+                padding-right: 0px;
+                padding-top: 0px;
+        
+}
+    .k-dropdownlist.k-invalid, .k-dropdownlist.ng-invalid.ng-touched, .k-dropdownlist.ng-invalid.ng-dirty{
+        border-bottom-color: $tb-kendo-color-error;
+                border-left-color: $tb-kendo-color-error;
+                border-right-color: $tb-kendo-color-error;
+                border-top-color: $tb-kendo-color-error;
+        
+}
+    .k-dropdowntree.k-invalid, .k-dropdowntree.ng-invalid.ng-touched, .k-dropdowntree.ng-invalid.ng-dirty{
+        border-bottom-color: $tb-kendo-color-error;
+                border-left-color: $tb-kendo-color-error;
+                border-right-color: $tb-kendo-color-error;
+                border-top-color: $tb-kendo-color-error;
+        
+}

@@ -1,0 +1,40 @@
+.InfoTable {
+    $root: &;
+
+    &-header, &-content {
+        border: 1px solid var(--infotable-accent-color);
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-header {
+        background-color: var(--infotable-accent-color);
+
+        #{$root}-cell {
+            font-weight: bold;
+        }
+    }
+
+    &-content {
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #fff;
+    }
+
+    &-heading,
+    &-row {
+        display: flex;
+        flex: 1;
+    }
+
+    &-heading {
+        background-color: var(--infotable-head-bg-color);
+        font-weight: bold;
+    }
+
+    &-cell {
+        flex: 1;
+        padding: 10px 15px;
+    }
+}

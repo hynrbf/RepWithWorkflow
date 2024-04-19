@@ -1,0 +1,135 @@
+<KendoDialog ref="kendoDialog"/>
+
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        title="Owners & Controllers"
+        :description="$t('arOwnersAndControllersPage-pageDescription', { firmName: firmName })"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.arOwnersAndControllersRoute)"
+        progress-bar
+/>
+
+<Form @submit="save">
+    <FormElement ref="formElement">
+        <StackLayout orientation="vertical">
+            <TabStrip class="TabStripControllers TabStripControllers--lined"
+                      :selected="selectedControllerTabIndex"
+                      @select="onTabItemSelect" :tabs="tabs">
+                <template v-slot:IndividualTemplate>
+                    <StackLayout class="controller-detail-container"
+                                 orientation="vertical">
+                        <KendoCard class="mb-4">
+                            <KendoCardBody>
+                                <KendoYesOrNoQuestionInputComponent
+                                        :id="setUniqueIdentifier('-hasIndividualController')"
+                                        :questionText="$t('arOwnersAndControllersPage-hasIndividualControllerText', {firmName: firmName})"
+                                        @onValueChange="toggleHasIndividualControllers"
+                                        :value="hasIndividualControllers"
+                                        isValueReactive
+                                        :isDataLoadedCompletely="!isInitializing"/>
+                            </KendoCardBody>
+                        </KendoCard>
+
+                        <ScrollableTabComponent
+                                v-if="hasIndividualControllers"
+                                v-model:items="individualControllerTabs"
+                                addable
+                                removable
+                                @add="addNewIndividualControllerItem"
+                                @remove="removeIndividualControllerItem">
+                            <template
+                                    v-for="item in individualControllerItems"
+                                    :key="`tab-content-${item.individualController.id}`"
+                                    #[`content(individual-controller-${item.individualController.id})`]="{ index }">
+                                <Suspense>
+                                    <ARIndividualControllerItemComponent
+                                            class="flex-grow-1"
+                                            :identifier="'[' + item.individualController.id + ']'"
+                                            :registeredCustomer="registeredCustomer"
+                                            :individualItem="item"/>
+
+                                    <template #fallback>
+                                        <div class="d-flex justify-content-center">
+                                            <Loader style="color: var(--color-primary)"
+                                                    :size="'medium'"
+                                                    type="infinite-spinner"
+                                                    :theme-color="'info'"
+                                            />
+                                        </div>
+                                    </template>
+                                </Suspense>
+                            </template>
+                        </ScrollableTabComponent>
+
+                        <EmptyStateComponent v-else label="No Individual Controllers"/>
+                    </StackLayout>
+                </template>
+
+                <template v-slot:CorporateTemplate>
+                    <StackLayout class="controller-detail-container" orientation="vertical">
+                        <KendoCard class="mb-4">
+                            <KendoCardBody>
+                                <KendoYesOrNoQuestionInputComponent
+                                        :id="setUniqueIdentifier('-hasCorporateController')"
+                                        :questionText="$t('arOwnersAndControllersPage-hasCorporateControllerText', {firmName: firmName})"
+                                        @onValueChange="toggleHasCorporateControllers"
+                                        :value="hasCorporateControllers"
+                                        isValueReactive
+                                        :isDataLoadedCompletely="!isInitializing"/>
+                            </KendoCardBody>
+                        </KendoCard>
+
+                        <ScrollableTabComponent
+                                v-if="corporateControllersCount > 0 && selectedControllerTabIndex === 1"
+                                v-model:items="corporateControllerTabs"
+                                addable @add="addNewCorporateControllerItem"
+                                removable @remove="removeCorporateControllerItem">
+                            <template v-for="item in corporateControllerItems"
+                                      :key="`tab-content-${item.corporateController.id}`"
+                                      #[`content(corporate-controller-${item.corporateController.id})`]="{ index }">
+                                <Suspense>
+                                    <ARCorporateControllerItemComponent
+                                            class="flex-grow-1"
+                                            :individualItems="individualControllerItems"
+                                            :registeredCustomer="registeredCustomer"
+                                            :corporateItem="corporateControllerItems[index]"
+                                            :identifier="'[' + item.corporateController.id + ']'"/>
+
+                                    <template #fallback>
+                                        <div class="d-flex justify-content-center">
+                                            <Loader style="color: var(--color-primary)"
+                                                    :size="'medium'"
+                                                    type="infinite-spinner"
+                                                    :theme-color="'info'"
+                                            />
+                                        </div>
+                                    </template>
+                                </Suspense>
+                            </template>
+                        </ScrollableTabComponent>
+
+                        <EmptyStateComponent v-else label="No Corporate Controllers" icon="bank"/>
+                    </StackLayout>
+                </template>
+
+                <template v-slot:OrgChart="{props}">
+                    <IconComponent symbol="org-chart" size="20"/>
+                </template>
+            </TabStrip>
+        </StackLayout>
+    </FormElement>
+</Form>
+
+<ARIndividualControllerChartModal
+        v-model="isShowIndividualControllerChartModal"
+        @close="closeIndividualControllerChartModal"
+        :registeredCustomer="registeredCustomer"
+/>
+
+<ARCorporateControllerChartModal
+        v-model="isShowCorporateControllerChartModal"
+        @close="closeCorporateControllerChartModal"
+        :registeredCustomer="registeredCustomer"
+/>

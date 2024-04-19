@@ -1,0 +1,228 @@
+.ActivitiesNavPill {
+    margin-left: -10px;
+    margin-right: -10px;
+  }
+  
+  .ActivityCollapsiblePanel {
+    &-title {
+      display: flex;
+  
+      span {
+        min-width: 340px;
+      }
+    }
+  
+    :deep(.CollapsiblePanel-header) {
+      padding: 15px;
+    }
+  
+    :deep(.CollapsiblePanel-item) {
+      border-color: var(--infotable-accent-color);
+    }
+   
+    :deep(.CollapsiblePanel-item.is-anchored) {
+        border-width: 2px !important;
+        border-color: var(--color-primary) !important;
+    }
+    
+  }
+  
+  .ActivityInfoTable {
+    :deep(.InfoTable-header) {
+      font-size: var(--font-size-sm);
+      margin-bottom: 0;
+    }
+  
+    :deep(.InfoTable-content) {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      margin-bottom: 0;
+      border: 0;
+  
+      .InfoTable-row:not(:last-child) {
+        border-bottom: 1px solid var(--infotable-accent-color);
+      }
+    }
+  
+    :deep(.InfoTable-cell) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+  
+      &:nth-child(1) {
+        justify-content: left;
+        flex: 0 0 330px;
+        max-width: 330px;
+      }
+
+      &:nth-child(2),
+      &:nth-child(3) {
+        justify-content: center;
+        text-align: center;
+        flex: 0 0 100px;
+        max-width: 100px;
+      }
+      
+      &:nth-child(4),
+      &:nth-child(5) {
+        justify-content: center;
+        text-align: center;
+        flex: 10.5;
+      }
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(5) {
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+
+      &:nth-child(3) {
+        padding: 25px 25px;
+      }
+    }
+  }
+  
+  .CurrencyInput {
+    :deep(.k-input-prefix) {
+      background-color: var(--content-content-10);
+      padding: 5px 12px;
+      color: rgba(151, 161, 175, 1);
+      border-right: 1px solid var(--content-content-07);
+    }
+  }
+  
+  .AddButton, .DeleteButton {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: var(--color-primary);
+  }
+  
+  .TotalText {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    color: rgba(151, 161, 175, 1);
+  }
+  
+  .DescList {
+    dt {
+      font-size: var(--font-size-default);
+      margin-bottom: 10px;
+    }
+  
+    dd {
+      font-size: var(--font-size-sm);
+    }
+  }
+  
+  .DescTable {
+    width: 100%;
+  
+    th {
+      font-size: var(--font-size-xs);
+      padding: 5px 0;
+    }
+  }
+
+  .section-item label[data-v-4babe3ba] {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semi-bold);
+    line-height: 125%;
+}
+
+
+/* for sticky anchors, will consolidate soon */
+.section-item, .section-item * {
+  cursor: pointer;
+}
+
+.section-item label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semi-bold);
+  line-height: 125%; /*17.5px*/
+}
+
+.section-item svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* will move this one to scss if there are many pages using this properties */
+.sub-texts {
+  color: var(--color-black);
+  text-align: justify;
+  font-size: var(--font-size-default);
+  font-style: normal;
+  font-weight: var(--font-weight-medium);
+  line-height: 20.8px;
+}
+
+.paragraph-m-figtree-regular {
+  width: 357px;
+}
+
+.test {
+  color: red;
+}
+
+
+.section-item {
+  flex: 1; /* Adjust the flex property as needed */
+  text-align: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.section-item:nth-child(1),
+.section-item:nth-child(2) {
+  flex: 1.5; 
+}
+.section-item:nth-child(4),
+.section-item:nth-child(5),
+.section-item:nth-child(6) {
+  flex: 2; /* Larger flex value for the 3rd and 6th items */
+}
+
+.number-text-circle {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  background: var(--brand-color-brand-primary);
+
+  .number-text {
+      color: white;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 125%;
+  }
+}
+
+.ARPanels[data-v-db3e09bb]>.is-active {
+  border-width: 2px;
+  border-color: var(--color-primary);
+}
+
+.is-edited {
+  color: #cc8800;
+}
+.col-custom-activities {
+  padding: 0px !important;
+  margin-left: 39.7%;
+  width: 48.8%;
+  margin-top: 0;
+  margin-bottom: 17px;
+}
+.ActivityCollapsiblePanel .CollapsiblePanel-item.is-anchored {
+  border-width: 2px !important;
+  border-color: var(--color-primary) !important;
+}
+ 

@@ -1,0 +1,20 @@
+{
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [ "/images/*.{png,jpg,gif}", "/css/*", "/font/*", "*.ico" ]
+  },
+  "routes": [
+    {
+      "route": "/"
+    },
+    {
+      "route": "/signup"
+    },
+    {
+      "route": "/admin/forms"
+    },
+    {
+      "route": "/admin/documents"
+    }
+  ]
+}

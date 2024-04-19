@@ -1,0 +1,160 @@
+Testing 
+
+I. Basic end to end
+a. create account to end, sign proposal, get email account opening and able to signin
+b. Search Company or Firm Based on Name
+c. resetting back the app to original state by deleting cosmos schema, uiSchema, schemaAnswers, customer,
+    fcaPermissions, fcaStatuses, settings should still work good
+d. Upload, edit and save Permission
+e. when you already generate new customer, you can signup again
+f. user can schedule a meeting appointment
+g. Check fields and button Firm Details, Owners & Controllers, Individual Controller, 
+	Corporate Controllers and Close Links on portal
+h. User can back to last page after fill mandatory requirements on proposal,
+	and cannot fill mandatory requirements again clicking view proposal
+i. If user view the proposal and navigate to signup page, fields should work again properly
+j. User can auto complete Home address and Add manually using postcode
+
+the two companies with company house and fca
+AXA ART INSURANCE SE
+RICHDALE BROKERS AND FINANCIAL SERVICES LTD.
+Jacob Bernstein (sole)
+
+or use the company number, 07297692
+
+Postcode to check
+RICHDALE BROKERS AND FINANCIAL SERVICES LTD postcode:EC3V 3ND
+SUNLIFE LIMITED postcode:BS1 6HU
+SIMPLESURANCE postcode:ME15 6YE
+PRUDENTIAL DISTRIBUTION LIMITED postcode:EC3M 5AG
+DEX FINANCE LTD postcode:E5 9ND
+RSBM Finance LTD postcode:M7 4PX
+Cash Connector Limited postcode:BB1 6AY
+AXA ART INSURANCE SE postcode:EC3N 3AA
+Fidelity Payment Services Ltd postcode:N1C 4AQ
+Debit Direct LTD postcode:M25 9WS
+Marketplace platforms limited postcode:SW1Y 5JG
+
+II. FCA Search & Company House Testing
+SIMPLESURANCE (2 companies in company house) (solve it by company + postcode)
+Fidelity Payment Services Ltd  (payment services type in fca "Type of business or Individual": "Payment services firm")
+Debit Direct LTD (payment services category, same with Fidelity)
+Marketplace platforms limited, (if null, then show fca)
+DEX FINANCE LTD (should have value)
+RSBM Finance LTD (should have value)
+SUNLIFE EUROPE PROPERTIES LIMITED (should Not Currently Authorised)
+then go to here to test the FCA search more,
+    https://suntechgi.atlassian.net/wiki/spaces/DD/pages/4161537/Test+Data+for+CH+Check+and+FCA+Check
+DEBT ACTION LIMITED
+
+in email hynrbf,
+    remove all or clean email from 'signow' and 'admin@dsforgs.com'
+    also noted we cannot use mailinator because it doesn't allow attachments
+
+https://yellow-river-098162100.3.azurestaticapps.net/signup
+https://wonderful-wave-01cd8dd00.3.azurestaticapps.net/signup
+http://localhost:5173/signup
+
+III. Follow-up emails test
+Change these values, so you can get it faster
+
+FourteenDaysInSecs = 180 (3 min)
+SevenDaysInSecs = 150 = (2.5 min)
+TwoDaysInSecs = 120 (2 min)
+OneHourInSecs = 90 (1.5 min)
+TenMinutesInSecs = 60 (1 min)
+
+then put it back,
+
+FourteenDaysInSecs = 1209600
+SevenDaysInSecs =  604800
+TwoDaysInSecs = 172800
+OneHourInSecs = 3600
+TenMinutesInSecs = 600
+
+IV. Controls/Components testing
+a. All texbox controls should have profanity, has limit 100 chars
+b. foremane, lastname or name control should only 35 char
+   b1. you cannot type bad words in forename and lastname like 'fuck'
+c. contact number is max 11 if starts with 0 otherwise 10 only
+d. DOB is allowed only date that you are 18 yo
+
+V. Individual and Corp Controllers testing ex. Sunlife ltd, comp no = 05460862, and fca ref no = 769427
+Pre req. Full list of Api of fca and company house
+https://register.fca.org.uk/Developer/s/
+https://developer.company-information.service.gov.uk/
+
+Main Test
+Firm Page = https://register.fca.org.uk/s/search?q=sunlife%20limited&type=Companies
+            https://find-and-update.company-information.service.gov.uk/search?q=05460862
+
+Individual Controller = https://api.company-information.service.gov.uk/company/05460862/persons-with-significant-control (kind=individual-person-with-significant-control)
+    Directorships = https://api.company-information.service.gov.uk/company/05460862/officers
+    Controlling Interest = ?? https://api.company-information.service.gov.uk/company/05460862/persons-with-significant-control
+    nature of business = https://api.company-information.service.gov.uk/company/05460862
+        https://resources.companieshouse.gov.uk/sic/
+
+Corporate Controller = https://api.company-information.service.gov.uk/company/05460862/persons-with-significant-control (kind=corporate-entity-person-with-significant-control)
+    Directorships = https://api.company-information.service.gov.uk/company/[compNo]/officers | compNo is the companies that control
+    Controllers of Company = https://api.company-information.service.gov.uk/company/05460862/persons-with-significant-control (kind is both)
+
+VI. Companies with recursive Corp Controllers
+3rd level
+Trg Financial Services Limited | Corp | 09161378
+	Adam Norman Stretton 	| Individual | NA
+	Tania Joan Stretton 	| Individual | NA
+
+2nd level
+The Right Partnership Limited | Corp | 12945497
+	Trg Financial Services Limited | Corp | 09161378
+		Adam Norman Stretton 	| Individual | NA
+		Tania Joan Stretton 	| Individual | NA   (pls note Tania dont have controlling interest, so will not show)
+
+	A & M Wilson Holdings Ltd | Corp | 07104050 ?
+	    Gregory Wilson 			| Individual | NA
+		Amanda Margare Wilson	| Individual | NA	(issue)
+
+1st level
+The Right Mortgage Limited | Corp | 08130498
+	The Right Partnership Limited | Corp | 12945497
+		Trg Financial Services Limited | Corp | 09161378
+			Adam Norman Stretton 	| Individual | NA
+			Tania Joan Stretton 	| Individual | NA
+
+		A & M Wilson Holdings Ltd | Corp | 07104050 ?
+			Gregory Wilson 			| Individual | NA
+			Amanda Margare Wilson	| Individual | NA
+
+3rd level
+Barclays Bank Plc | Corp | 01026167
+	Barclays Plc | Corp | 00048839
+
+2nd level
+Barclays Bank Plc | Corp | 01026167
+	Barclays Plc | Corp | 00048839
+	
+Barclays Shea Limited | Corp | 07419590
+	Barclays Bank Plc | Corp | 01026167
+		Barclays Plc | Corp | 00048839
+
+1st level
+BARCLAYS CCP FUNDING LLP | Corp | OC359024
+	Barclays Bank Plc | Corp | 01026167
+		Barclays Plc | Corp | 00048839
+	
+	Barclays Shea Limited | Corp | 07419590
+		Barclays Bank Plc | Corp | 01026167
+			Barclays Plc | Corp | 00048839
+
+2nd level
+Deloitte Nse No3 Limited | Corp | 12967301
+	Deloitte Nse Llp | Corp | OC417204
+
+1st level
+DELOITTE LLP | Corp | OC303675
+	Deloitte Nse No3 Limited | Corp | 12967301
+		Deloitte Nse Llp | Corp | OC417204
+	
+	Deloitte Nse Llp | Corp | OC41720
+
+

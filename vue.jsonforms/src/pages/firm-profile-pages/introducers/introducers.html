@@ -1,0 +1,42 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent title="Introducers" :description="pageDescription"
+                         :routeName="helperService.removeStringSpacesThenSlash(AppConstants.introducersRoute)"/>
+
+<IntroducerFormModal
+    ref="introducerFormModal"
+    v-if="isShowIntroducerForm"
+    :introducer="introducer" 
+    :isAdd="isAdd"
+    :isCompany="isCompany"
+    @close="closeForm"
+    @submit="saveIntroducersDetailsAsync"
+    @request="requestToComplete"
+/>
+
+<div v-if="isShowIntroducerAsList">
+    <IntroducerList
+            :introducers="customerIntroducers"
+            @addIntroducer="addIntroducer"
+            @viewIntroducerList="viewIntroducer"
+            @editIntroducerList="editIntroducer"
+            @viewIntroducerCard="viewIntroducer"
+            @editIntroducerCard="editIntroducer"            
+    />
+</div>
+
+<ViewIntroducerModal
+        v-model="isShowIntroducerViewer"
+        :introducer="introducer"
+        @close="closeForm"
+        @edit-introducer="editIntroducer"
+        @view-introducer-permissions="viewIntroducerPermissions"
+/>
+
+<ViewIntroducerPermissions
+    v-if="isShowIntroducerPermissions"
+    :items="permissionsCategorized"
+    @close="closeForm"
+/>

@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="dashboard-circle" clip-path="url(#clip0_47_144207)">
+<g id="dashboard-circle--app-application-dashboard-home-layout-circle">
+<path id="Vector" d="M5.04409 8.6785C7.05104 8.6785 8.67801 7.05153 8.67801 5.04457C8.67801 3.03761 7.05104 1.41064 5.04409 1.41064C3.03713 1.41064 1.41016 3.03761 1.41016 5.04457C1.41016 7.05153 3.03713 8.6785 5.04409 8.6785Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M14.9542 8.6785C16.9612 8.6785 18.5882 7.05153 18.5882 5.04457C18.5882 3.03761 16.9612 1.41064 14.9542 1.41064C12.9473 1.41064 11.3203 3.03761 11.3203 5.04457C11.3203 7.05153 12.9473 8.6785 14.9542 8.6785Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M5.04409 18.5891C7.05104 18.5891 8.67801 16.9622 8.67801 14.9552C8.67801 12.9483 7.05104 11.3213 5.04409 11.3213C3.03713 11.3213 1.41016 12.9483 1.41016 14.9552C1.41016 16.9622 3.03713 18.5891 5.04409 18.5891Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M14.9542 18.5891C16.9612 18.5891 18.5882 16.9622 18.5882 14.9552C18.5882 12.9483 16.9612 11.3213 14.9542 11.3213C12.9473 11.3213 11.3203 12.9483 11.3203 14.9552C11.3203 16.9622 12.9473 18.5891 14.9542 18.5891Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_144207">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

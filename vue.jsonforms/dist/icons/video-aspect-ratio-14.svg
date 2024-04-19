@@ -1,0 +1,14 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="video-aspect-ratio-14" clip-path="url(#clip0_47_145571)">
+<g id="video-aspect-ratio">
+<path id="Rectangle 53" d="M18.9648 17.5865V2.4141C18.9648 2.4141 18.9648 1.03479 17.5855 1.03479H2.41312C2.41312 1.03479 1.03381 1.03479 1.03381 2.4141V17.5865C1.03381 17.5865 1.03381 18.9658 2.41312 18.9658H17.5855C17.5855 18.9658 18.9648 18.9658 18.9648 17.5865Z" stroke="black" stroke-width="2.06897" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 54" d="M13.4453 17.7824V7.74099C13.4453 7.74099 13.4453 6.55754 12.2619 6.55754H2.22049C2.22049 6.55754 1.03704 6.55754 1.03704 7.74099V17.7824C1.03704 17.7824 1.03704 18.9658 2.22049 18.9658H12.2619C12.2619 18.9658 13.4453 18.9658 13.4453 17.7824Z" stroke="black" stroke-width="2.06897" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Rectangle 55" d="M7.87891 17.7824V13.3051C7.87891 13.3051 7.87891 12.1217 6.69546 12.1217H2.21822C2.21822 12.1217 1.03477 12.1217 1.03477 13.3051V17.7824C1.03477 17.7824 1.03477 18.9658 2.21822 18.9658H6.69546C6.69546 18.9658 7.87891 18.9658 7.87891 17.7824Z" stroke="black" stroke-width="2.06897" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_145571">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

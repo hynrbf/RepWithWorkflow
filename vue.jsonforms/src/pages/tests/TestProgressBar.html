@@ -1,0 +1,45 @@
+<div class="d-flex flex-column main">
+    <KendoPageTitleComponent
+            class="title-component"
+            title="Test Page"
+            :description="pageDescription"
+            progress-bar
+    />
+
+    <!-- KendoProgressBarComponent/ -->
+
+    <div class="d-flex flex-column form-component">
+        <Form @submit="handleSubmit">
+            <KendoFormElementComponent ref="formElement">
+                <StackLayout
+                        orientation="vertical"
+                >
+                    <KendoGenericInputComponent
+                            name="firstName"
+                            id="firstName"
+                            label="First Name"
+                            :isRequired="true"
+                            :value="firstName"
+                            placeholder="Type"
+                            @onValueChange="(v: string) => firstName = v"
+                            :isValueReactive="true"
+                            :isDataLoadedCompletely="!isInitializing"
+                    />
+
+                    <KendoGenericInputComponent
+                            style="margin-top: 20px"
+                            name="lastName"
+                            id="lastName"
+                            label="Last Name"
+                            :isRequired="true"
+                            :value="lastName"
+                            placeholder="Type"
+                            @onValueChange="(v: string) => lastName = v"
+                            :isValueReactive="true"
+                            :isDataLoadedCompletely="!isInitializing"
+                    />
+                </StackLayout>
+            </KendoFormElementComponent>
+        </Form>
+    </div>
+</div>

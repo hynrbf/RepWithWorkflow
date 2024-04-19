@@ -1,0 +1,18 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="3d-rotate-z-axis-49" clip-path="url(#clip0_47_141593)">
+<g id="3d-rotate-z-axis">
+<path id="Ellipse 1114" d="M9.33984 10.0001C9.33984 10.1753 9.40945 10.3434 9.53336 10.4673C9.65727 10.5912 9.82533 10.6608 10.0006 10.6608C10.1758 10.6608 10.3438 10.5912 10.4678 10.4673C10.5917 10.3434 10.6613 10.1753 10.6613 10.0001C10.6613 9.82484 10.5917 9.65678 10.4678 9.53287C10.3438 9.40897 10.1758 9.33936 10.0006 9.33936C9.82533 9.33936 9.65727 9.40897 9.53336 9.53287C9.40945 9.65678 9.33984 9.82484 9.33984 10.0001Z" stroke="black" stroke-width="1.5"/>
+<path id="Ellipse 1115" d="M18.5899 10.0001C18.5899 5.25632 14.7444 1.41077 10.0006 1.41077C6.68686 1.41077 3.81137 3.28734 2.37891 6.03577" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Ellipse 1116" d="M17.8671 13.4559C17.4838 14.3272 16.9598 15.1227 16.3242 15.8137" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Ellipse 1117" d="M10 18.5895C11.2372 18.5895 12.4133 18.3279 13.476 17.8571" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Ellipse 1118" d="M6.52497 17.857C5.66819 17.4774 4.88511 16.9618 4.20312 16.3375" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Ellipse 1119" d="M1.64062 11.9822C1.76117 12.4925 1.92724 12.9852 2.13432 13.4559" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector" d="M1.41016 3.39294V6.69652H4.71373" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_141593">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

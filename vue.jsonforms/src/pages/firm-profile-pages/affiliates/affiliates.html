@@ -1,0 +1,53 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent title="Affiliates"
+                         :routeName="helperService.removeStringSpacesThenSlash(AppConstants.affiliatesRoute)">
+    <template #description>
+        <p>
+            {{ $t('affiliates-description', {FirmName: firmName}) }}
+        </p>
+    </template>
+</KendoPageTitleComponent>
+
+<AffiliatesList
+        v-if="isShowAffiliatesList"
+        :affiliates-values="affiliateList"
+        @add-new-affiliate="addNewAffiliate"
+        @view-affiliate-list="viewAffiliate"
+        @view-affiliate-card="viewAffiliate"
+        @edit-affiliate-list="editAffiliate"
+        @edit-affiliate-card="editAffiliate"
+/>
+
+<AffiliatesCard
+        v-if="isShowAffiliatesCard"
+        :affiliates-values="affiliateList"
+        @view-affiliate="viewAffiliate"
+        @edit-affiliate="editAffiliate"
+/>
+
+<AddAffiliatesModal v-if="isAffiliateModalVisible"
+                    :affiliate-values="affiliateList"
+                    :affiliate="affiliate"
+                    :isAdd="isAdd"
+                    @close="closeForm"
+                    @submit="saveAffiliateDetailsAsync"
+                    @requestToComplete="requestToComplete"
+                    ref="affiliateFormModal"
+/>
+
+<ViewAffiliateModal
+        v-if="isShowAffiliateViewer"
+        :affiliate="affiliate"
+        @close="closeForm"
+        @view-edit-affiliate="viewEditAffiliate"
+        @view-affiliate-permissions="viewAffiliatePermissions"
+/>
+
+<ViewAffiliatePermissions
+        v-if="isShowAffiliatePermissions"
+        :items="permissionsCategorized"
+        @close="closeForm"
+/>

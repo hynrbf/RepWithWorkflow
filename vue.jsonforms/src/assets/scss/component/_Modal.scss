@@ -1,0 +1,66 @@
+// With https://www.telerik.com/kendo-vue-ui/components/dialogs/dialog/
+
+.Modal {
+    $padding-x: 20px;
+    $padding-y: 20px;
+
+    &-title {
+        font-size: var(--font-size-2xl);
+        color: var(--color-primary);
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    &-icon-title {
+        font-size: var(--font-size-default);
+        color: var(--color-black);
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    &-close {
+        color: var(--color-black);
+        margin-left: auto;
+    }
+
+    .k-dialog {
+        border-radius: 8px;
+        width: 610px;
+    }
+
+    .k-dialog-titlebar {
+        background-color: transparent;
+        border-bottom-color: transparent;
+        padding: #{$padding-y} #{$padding-x};
+    }
+
+    .k-dialog-title {
+        padding: 0;
+        margin: 0;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .k-dialog-content {
+        padding: 0 #{$padding-x} !important;
+    }
+
+    .k-dialog-actions {
+        border-top-color: transparent;
+        padding: #{$padding-y} #{$padding-x};
+    }
+
+    &--autoScrollContent {
+        .k-dialog-content {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+    }
+
+    &--fixedHeight {
+        .k-dialog-content {
+            height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+    }
+}

@@ -1,0 +1,9 @@
+.OverviewList {
+    :deep(.NumberList-bullet) {
+        margin-top: 4px;
+    }
+
+    :deep(.NumberList-text) {
+        text-align: justify;
+    }
+}

@@ -1,0 +1,48 @@
+/*
+note this roboto is custom and downloaded from here
+https://fonts.google.com/specimen/Roboto?preview.text=Data%20Display%20Period&preview.text_type=custom
+*/
+html, body {
+    height: 100%;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Medium.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Italic.ttf") format("truetype");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Segoe UI Bold.ttf") format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Segoe UI Italic.ttf") format("truetype");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Segoe UI.ttf") format("truetype");
+}
+
+/* extended
+ notes: remove this to see original kendo styles
+ This is manually added to override the kendo theme. You can use theme as well to do this.
+
+ Do not add css already below here... please add to _basic.scss
+ */

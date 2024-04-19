@@ -1,0 +1,1266 @@
+import { IOrganizationalStructureService } from "@/infra/dependency-services/rest/organizational-structure/IOrganizationalStructureService";
+import { container, singleton } from "tsyringe";
+import { Employee } from "@/entities/firm-details/Employee";
+import {
+  IHelperService,
+  IHelperServiceInfo,
+} from "@/infra/dependency-services/helper/IHelperService";
+import { AppConstants } from "@/infra/AppConstants";
+import Role from "@/entities/org-structure/Role";
+
+@singleton()
+export default class OrganizationalStructureMockService
+implements IOrganizationalStructureService
+{
+  private readonly employees: Employee[] = [];
+  private isMultiRootData = true;
+  private isFirstLoadScenario = true;
+  private helperService = container.resolve<IHelperService>(
+    IHelperServiceInfo.name,
+  );
+
+  constructor() {
+    if (this.isFirstLoadScenario) {
+      this.employees = this.getMockDataFirstLoadScenario();
+      return;
+    }
+
+    this.employees = this.isMultiRootData
+      ? this.getMockDataDoubleRoot()
+      : this.getMockDataSingleRoot();
+  }
+
+  async getEmployeeByEmailAsync(email: string): Promise<Employee | undefined> {
+    return this.employees.find(employee => employee.email === email);
+  }
+
+  async saveOrUpdateEmployeeAsync(employee: Employee): Promise<Employee> {
+    const found = this.employees.find((e) => e.id === employee.id);
+
+    if (!found) {
+      this.employees.push(employee);
+    } else {
+      const indexToRemove = this.employees.indexOf(found);
+      this.employees.splice(indexToRemove, 1, employee);
+    }
+
+    return employee;
+  }
+
+  async getEmployeesAsync(_companyNumber: string): Promise<Employee[]> {
+    return this.employees;
+  }
+
+  private getMockDataSingleRoot(): Employee[] {
+    return [
+      {
+        // Parent
+        id: "848e6002-8a92-447d-951b-1ffd5e695577",
+        title: "Mr",
+        firstName: "Elston",
+        lastName: "Gullan",
+        productType: [
+          {
+            label: "Mortgage Broking - Owner Occupier Mortgages",
+            value: "Mortgage Broking - Owner Occupier Mortgages",
+          },
+        ],
+        email: "elstongullan@email.com",
+        contactNumber: {
+          number: "07084652794",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        img_id: "default-staff-avatar.png",
+        isRoot: true,
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [
+          {
+            name: "Insurance Broker",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+        ],
+        employmentStatus: "Active",
+        tasks: [
+          {
+            name: "Implement compliance tools",
+            description:
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            dueDate: this.helperService.dateToEpoch(new Date("01/31/2024")),
+          },
+        ],
+      },
+      // Children
+      {
+        id: "848e6002-8a92-447d-951b-1ffd5e695579",
+        title: "Ms",
+        firstName: "Cayla",
+        lastName: "Brister",
+        productType: [
+          {
+            label: "Mortgage Broking - Owner Occupier Mortgages",
+            value: "Mortgage Broking - Owner Occupier Mortgages",
+          },
+          {
+            label: "Protection Broking - Life - Fixed Term",
+            value: "Protection Broking - Life - Fixed Term",
+          },
+        ],
+        email: "caylabrister@email.com",
+        contactNumber: {
+          number: "07047300582",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        img_id: "default-staff-avatar.png",
+        isRoot: false,
+        lineManager: {
+          id: "848e6002-8a92-447d-951b-1ffd5e695577",
+          title: "Mr",
+          firstName: "Elston",
+          lastName: "Gullan",
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [
+            {
+              name: "Insurance Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: true,
+            },
+            {
+              name: "Protection Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: false,
+            },
+          ],
+          img_id: "default-line-manager-avatar.png",
+        },
+        primaryRole: {
+          name: "Compliance Oversight (SMF16)",
+          state: AppConstants.addedState,
+          isModified: true,
+          isPending: false,
+          isFcaAuthorised: false,
+        },
+        otherRoles: [
+          {
+            name: "Anti Money Laundering (SMF17)",
+            state: AppConstants.removedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+          {
+            name: "Responsible for Mortgage Intermediation of the Firm",
+            state: AppConstants.removedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+        ],
+        employmentStatus: "Onboarding",
+        tasks: [
+          {
+            name: "Conduct periodic internal reviews or audits",
+            description:
+              "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+            dueDate: this.helperService.dateToEpoch(new Date("12/16/2024")),
+          },
+          {
+            name: "Developing company policies",
+            description:
+              "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            dueDate: this.helperService.dateToEpoch(new Date("11/12/2024")),
+          },
+        ],
+      },
+      {
+        id: "848e6002-8a92-447d-951b-1ffd5e695580",
+        title: "Mr",
+        firstName: "Kukuh",
+        lastName: "Andik",
+        productType: [
+          {
+            label: "Mortgage Broking - Owner Occupier Mortgages",
+            value: "Mortgage Broking - Owner Occupier Mortgages",
+          },
+          {
+            label: "Protection Broking - Life - Fixed Term",
+            value: "Protection Broking - Life - Fixed Term",
+          },
+        ],
+        email: "kukuhandik@email.com",
+        contactNumber: {
+          number: "07033504552",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        img_id: "default-staff-avatar.png",
+        isRoot: false,
+        lineManager: {
+          id: "848e6002-8a92-447d-951b-1ffd5e695577",
+          title: "Mr",
+          firstName: "Elston",
+          lastName: "Gullan",
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [
+            {
+              name: "Insurance Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: true,
+            },
+            {
+              name: "Protection Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: false,
+            },
+          ],
+          img_id: "default-line-manager-avatar.png",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [
+          {
+            name: "Mortgage Broker",
+            state: AppConstants.removedState,
+            isModified: true,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+          {
+            name: "Insurance Broker",
+            state: AppConstants.removedState,
+            isModified: true,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+        ],
+        employmentStatus: "Suspended",
+        tasks: [
+          {
+            name: "Document compliance activities",
+            description:
+              "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+            dueDate: this.helperService.dateToEpoch(new Date("02/4/2024")),
+          },
+          {
+            name: "Report compliance violations",
+            description:
+              "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+            dueDate: this.helperService.dateToEpoch(new Date("02/14/2024")),
+          },
+          {
+            name: "Conducting compliance audits",
+            description:
+              "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+            dueDate: this.helperService.dateToEpoch(new Date("03/11/2024")),
+          },
+        ],
+      },
+      {
+        id: "848e6002-8a92-447d-951b-1ffd5e695581",
+        title: "Mr",
+        firstName: "Elston",
+        lastName: "Gullan",
+        productType: [
+          {
+            label: "Mortgage Broking - Owner Occupier Mortgages",
+            value: "Mortgage Broking - Owner Occupier Mortgages",
+          },
+          {
+            label: "Protection Broking - Life - Fixed Term",
+            value: "Protection Broking - Life - Fixed Term",
+          },
+        ],
+        email: "elstongullan@email.com",
+        contactNumber: {
+          number: "07084652794",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        img_id: "default-staff-avatar.png",
+        isRoot: false,
+        lineManager: {
+          id: "848e6002-8a92-447d-951b-1ffd5e695577",
+          title: "Mr",
+          firstName: "Elston",
+          lastName: "Gullan",
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [
+            {
+              name: "Insurance Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: true,
+            },
+            {
+              name: "Protection Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: false,
+            },
+          ],
+          img_id: "default-line-manager-avatar.png",
+        },
+        primaryRole: {
+          name: "Mortgage Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [],
+        employmentStatus: "Terminated",
+      },
+      {
+        id: "848e6002-8a92-447d-951b-1ffd5e695582",
+        title: "Mr",
+        firstName: "James Yap",
+        lastName: "Gullan",
+        productType: [
+          {
+            label: "Mortgage Broking - Owner Occupier Mortgages",
+            value: "Mortgage Broking - Owner Occupier Mortgages",
+          },
+          {
+            label: "Protection Broking - Life - Fixed Term",
+            value: "Protection Broking - Life - Fixed Term",
+          },
+        ],
+        email: "jamesyapgullan@email.com",
+        contactNumber: {
+          number: "07729303238",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        img_id: "default-staff-avatar.png",
+        isRoot: false,
+        lineManager: {
+          id: "848e6002-8a92-447d-951b-1ffd5e695577",
+          title: "Mr",
+          firstName: "Elston",
+          lastName: "Gullan",
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [
+            {
+              name: "Insurance Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: true,
+            },
+            {
+              name: "Protection Broker",
+              state: AppConstants.removedState,
+              isModified: false,
+              isPending: false,
+              isFcaAuthorised: false,
+            },
+          ],
+          img_id: "default-line-manager-avatar.png",
+        },
+        primaryRole: {
+          name: "Manager of Certification Employee(s) (i.e. Supervisor)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: false,
+        },
+        otherRoles: [
+          {
+            name: "Anti Money Laundering (SMF17)",
+            state: AppConstants.removedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+          {
+            name: "Responsible for Mortgage Intermediation of the Firm",
+            state: AppConstants.removedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: false,
+          },
+        ],
+        employmentStatus: "Active",
+      },
+    ] as Employee[];
+  }
+
+  private getMockDataDoubleRoot(): Employee[] {
+    return [
+      // Roots
+      {
+        id: "e53a5c7a-0b07-40c0-81d4-5d12eb0c41a3",
+        isRoot: true,
+        title: "Ms",
+        firstName: "Nancy",
+        lastName: "Cohen",
+        email: "nancycohen@domain.com",
+        contactNumber: {
+          number: "7988296780",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "f0b47e4e-d055-4b6f-854e-a668c97d97b3",
+        isRoot: true,
+        title: "Mr",
+        firstName: "Abraham",
+        lastName: "Gregg",
+        email: "abrahangregg@domain.com",
+        contactNumber: {
+          number: "706408 2170",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      // First Level Children
+      {
+        id: "e493edc1-ea80-4e3e-9eca-fcab5ff6b8e7",
+        isRoot: false,
+        title: "Mrs",
+        firstName: "Blanche",
+        lastName: "Lloyd",
+        email: "blanchelloyd@domain.com",
+        contactNumber: {
+          number: "7813781064",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "e53a5c7a-0b07-40c0-81d4-5d12eb0c41a3",
+          isRoot: true,
+          title: "Ms",
+          firstName: "Nancy",
+          lastName: "Cohen",
+          email: "nancycohen@domain.com",
+          contactNumber: {
+            number: "7988296780",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "ed730b23-02ed-4e41-ab9e-2a5d0cb53f64",
+        isRoot: false,
+        title: "Mr",
+        firstName: "William",
+        lastName: "Putnam",
+        email: "williamputnam@domain.com",
+        contactNumber: {
+          number: "7930685215",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "e53a5c7a-0b07-40c0-81d4-5d12eb0c41a3",
+          isRoot: true,
+          title: "Ms",
+          firstName: "Nancy",
+          lastName: "Cohen",
+          email: "nancycohen@domain.com",
+          contactNumber: {
+            number: "7988296780",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "116bf9c2-0fc1-47dd-a830-3817008005bf",
+        isRoot: false,
+        title: "Ms",
+        firstName: "Gina",
+        lastName: "Hertzog",
+        email: "ginahertzog@domain.com",
+        contactNumber: {
+          number: "7858137351",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Compliance Oversight (SMF16)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "f0b47e4e-d055-4b6f-854e-a668c97d97b3",
+          isRoot: true,
+          title: "Mr",
+          firstName: "Abraham",
+          lastName: "Gregg",
+          email: "abrahangregg@domain.com",
+          contactNumber: {
+            number: "706408 2170",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "1f19641c-5edd-4758-a578-549c86b80e5f",
+        isRoot: false,
+        title: "Dr",
+        firstName: "Frank",
+        lastName: "Weiss",
+        email: "frankweiss@domain.com",
+        contactNumber: {
+          number: "7721018449",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Compliance Oversight (SMF16)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+        lineManager: {
+          id: "e53a5c7a-0b07-40c0-81d4-5d12eb0c41a3",
+          isRoot: true,
+          title: "Ms",
+          firstName: "Nancy",
+          lastName: "Cohen",
+          email: "nancycohen@domain.com",
+          contactNumber: {
+            number: "7988296780",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+      },
+      // Second level children
+      {
+        id: "e309fae3-9351-4b44-b00f-e30b5ff50906",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Harry",
+        lastName: "Struck",
+        email: "harrystruck@domain.com",
+        contactNumber: {
+          number: "7901600569",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Compliance Oversight (SMF16)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "e493edc1-ea80-4e3e-9eca-fcab5ff6b8e7",
+          isRoot: false,
+          title: "Mrs",
+          firstName: "Blanche",
+          lastName: "Lloyd",
+          email: "blanchelloyd@domain.com",
+          contactNumber: {
+            number: "7813781064",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Anti Money Laundering (SMF17)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "de67a0ae-2600-4f2e-a065-5e0b32abfe3b",
+        isRoot: false,
+        title: "Ms",
+        firstName: "Kelly",
+        lastName: "Morgan",
+        email: "kellymorgan@domain.com",
+        contactNumber: {
+          number: "7819109725",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        lineManager: {
+          id: "f0b47e4e-d055-4b6f-854e-a668c97d97b3",
+          isRoot: true,
+          title: "Mr",
+          firstName: "Abraham",
+          lastName: "Gregg",
+          email: "abrahangregg@domain.com",
+          contactNumber: {
+            number: "706408 2170",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Director (SMF3)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "e6112de9-5a61-431f-a7f1-12201d54bfba",
+        isRoot: false,
+        title: "Mr",
+        firstName: "John",
+        lastName: "Anderson",
+        email: "johnanderson@domain.com",
+        contactNumber: {
+          number: "7066578965",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "ed730b23-02ed-4e41-ab9e-2a5d0cb53f64",
+          isRoot: false,
+          title: "Mr",
+          firstName: "William",
+          lastName: "Putnam",
+          email: "williamputnam@domain.com",
+          contactNumber: {
+            number: "7930685215",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Anti Money Laundering (SMF17)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "637f9e20-0f3a-43f3-bb1f-07d4ed3ebde4",
+        isRoot: false,
+        title: "Ms",
+        firstName: "Cindy",
+        lastName: "Kirk",
+        email: "cindykirk@domain.com",
+        contactNumber: {
+          number: "7745101985",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Protection Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "116bf9c2-0fc1-47dd-a830-3817008005bf",
+          isRoot: false,
+          title: "Ms",
+          firstName: "Gina",
+          lastName: "Hertzog",
+          email: "ginahertzog@domain.com",
+          contactNumber: {
+            number: "7858137351",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Onboarding",
+      },
+      {
+        id: "1a7bda22-fec2-40ec-9ccc-e84d22fbdd2a",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Kenneth",
+        lastName: "Hembree",
+        email: "@domain.com",
+        contactNumber: {
+          number: "7901996144",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "General Insurance Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "116bf9c2-0fc1-47dd-a830-3817008005bf",
+          isRoot: false,
+          title: "Ms",
+          firstName: "Gina",
+          lastName: "Hertzog",
+          email: "ginahertzog@domain.com",
+          contactNumber: {
+            number: "7858137351",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "12cee698-c26f-4235-b791-5753c9624886",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Tom",
+        lastName: "Underwood",
+        email: "tomunderwood@domain.com",
+        contactNumber: {
+          number: "7063493647",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Insurance Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "e309fae3-9351-4b44-b00f-e30b5ff50906",
+          isRoot: false,
+          title: "Mr",
+          firstName: "Harry",
+          lastName: "Struck",
+          email: "harrystruck@domain.com",
+          contactNumber: {
+            number: "7901600569",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Terminated",
+      },
+      {
+        id: "",
+        isRoot: false,
+        title: "Engr",
+        firstName: "Michael",
+        lastName: "Harrell",
+        email: "michaelharrell@domain.com",
+        contactNumber: {
+          number: "7810861809",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Insurance Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "e309fae3-9351-4b44-b00f-e30b5ff50906",
+          isRoot: false,
+          title: "Mr",
+          firstName: "Harry",
+          lastName: "Struck",
+          email: "harrystruck@domain.com",
+          contactNumber: {
+            number: "7901600569",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+      {
+        id: "8bce3645-36cc-40d6-83cf-bb139036c43f",
+        isRoot: false,
+        title: "Ms",
+        firstName: "Sarah",
+        lastName: "Swindell",
+        email: "sarahswindell@domain.com",
+        contactNumber: {
+          number: "7087616253",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "General Insurance Broker",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        lineManager: {
+          id: "1f19641c-5edd-4758-a578-549c86b80e5f",
+          isRoot: false,
+          title: "Dr",
+          firstName: "Frank",
+          lastName: "Weiss",
+          email: "frankweiss@domain.com",
+          contactNumber: {
+            number: "7721018449",
+            dialCode: "+44",
+            country: "gb",
+            countryCode: "United Kingdom",
+          },
+          primaryRole: {
+            name: "Compliance Oversight (SMF16)",
+            state: AppConstants.addedState,
+            isModified: false,
+            isPending: false,
+            isFcaAuthorised: true,
+          },
+          otherRoles: [] as Role[],
+          employmentStatus: "Active",
+        },
+        employmentStatus: "Active",
+      },
+    ] as Employee[];
+  }
+
+  private getMockDataFirstLoadScenario(): Employee[] {
+    return [
+      {
+        id: "525d619f-c128-4b5b-8269-9e0ff5ce4289",
+        isRoot: true,
+        title: "Mrs",
+        firstName: "Jeannie",
+        lastName: "Burns",
+        email: "jeannieburns@domain.com",
+        contactNumber: {
+          number: "07015657016",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "81267f05-22a3-4129-af06-2efc9ab6baa4",
+        isRoot: true,
+        title: "Mr",
+        firstName: "Landon",
+        lastName: "Yoakum",
+        email: "landomyoakum@domain.com",
+        contactNumber: {
+          number: "07975285930",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "cc742bf8-2f93-4ac3-bcfe-259088e3a572",
+        isRoot: true,
+        title: "Ms",
+        firstName: "Jacqueline",
+        lastName: "Anderson",
+        email: "jacquelineanderson@domain.com",
+        contactNumber: {
+          number: "07017558892",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Director (SMF3)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      // Children
+      {
+        id: "cf82c606-9884-4380-a0ef-aa77a4ac4b5d",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Wilson",
+        lastName: "Howell",
+        email: "wilsonhowell@domain.com",
+        contactNumber: {
+          number: "07010081826",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "e63ab690-9539-4062-aa7a-4ff46d6de461",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Jessie",
+        lastName: "Benner",
+        email: "jessiebenner@domain.com",
+        contactNumber: {
+          number: "07874650271",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Active",
+      },
+      {
+        id: "8aec3d90-97e5-4765-b1c4-bdb4b27588c4",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Paul",
+        lastName: "Campbell",
+        email: "paulcampbell@domain.com",
+        contactNumber: {
+          number: "07054468950",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Onboarding",
+      },
+      {
+        id: "b0e3ac44-ce2d-4a0f-87fd-f6fe29ba8fff",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Michael",
+        lastName: "Lachance",
+        email: "michaellachance@domain.com",
+        contactNumber: {
+          number: "07786452113",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Onboarding",
+      },
+      {
+        id: "480667c5-bca4-498d-a3f1-69332a0c0c19",
+        isRoot: false,
+        title: "Mr",
+        firstName: "Matthew",
+        lastName: "Cordes",
+        email: "mattcordes@domain.com",
+        contactNumber: {
+          number: "07089885935",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Suspended",
+      },
+      {
+        id: "cfed63ed-7416-493b-93f5-972845e02747",
+        isRoot: false,
+        title: "Ms",
+        firstName: "Stacy",
+        lastName: "Crossley",
+        email: "stacycrossley@domain.com",
+        contactNumber: {
+          number: "07879538262",
+          dialCode: "+44",
+          country: "gb",
+          countryCode: "United Kingdom",
+        },
+        primaryRole: {
+          name: "Anti Money Laundering (SMF17)",
+          state: AppConstants.addedState,
+          isModified: false,
+          isPending: false,
+          isFcaAuthorised: true,
+        },
+        otherRoles: [] as Role[],
+        employmentStatus: "Terminated",
+      },
+    ] as Employee[];
+  }
+}

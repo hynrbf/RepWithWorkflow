@@ -1,0 +1,47 @@
+import { FileEntity } from "../FileEntity";
+import { Money } from "../Money";
+import { LimitIndemnity } from "./LimitIndemnity";
+import { PolicyExcess } from "./PolicyExcess";
+import { PolicyExclusion } from "./PolicyExclusion";
+import { ContactNumber } from "../ContactNumber";
+
+export class ProfessionalIndemnity {
+  public insurerName: string | undefined;
+  public companyNumber: string | undefined;
+  public firmReferenceNumber: string | undefined;
+  public piiBrokerName: string | undefined;
+  public brokerCompanyNumber: string | undefined;
+  public brokerFirmReferenceNumber: string | undefined;
+  public policyNumber: string | undefined;
+  public premiumAmount: Money | undefined;
+  public annualIncome: Money | undefined;
+  public retroactiveStartDate: number | undefined;
+  public startDate: number | undefined;
+  public endDate: number | undefined;
+  public businessLinesCovered: string[] = [];
+  public limitIndemnitiesSingle: LimitIndemnity[] = [];
+  public limitIndemnitiesAggregate: LimitIndemnity[] = [];
+  public policyExcesses: PolicyExcess[] = [];
+  public policyExclusions: PolicyExclusion[] = [];
+  public appointedRepresentatives: string[] = [];
+  public businessLineSubjectToLimitOfIndemnityItemsSingle: string[] = [];
+  public businessLineSubjectToLimitOfIndemnityItemsAggregate: string[] = [];
+  public businessLineCategoriesSubjectToPolicyExclusions: string[] = [];
+  public businessLineCategoriesSubjectToPolicyExcess: string[] = [];
+  public proposalFormFile: FileEntity[] = [];
+  public schedOfInsurance: FileEntity[] = [];
+  public insurerRegisteredAddress: string | undefined;
+  public insurerTradingAddress: string | undefined;
+  public insurerIsTradingSameAsRegisteredAddress: boolean = false;
+  public insurerEmailAddress: string | undefined;
+  public insurerContactNumber: ContactNumber | undefined;
+  public insurerWebsite: string | undefined;
+  public isBrokerResponsible: boolean | null = null;
+  public isBrokerCompany: boolean | null = true;
+  public brokerRegisteredAddress: string | undefined;
+  public brokerTradingAddress: string | undefined;
+  public brokerIsTradingSameAsRegisteredAddress: boolean = false;
+  public brokerEmailAddress: string | undefined;
+  public brokerContactNumber: ContactNumber | undefined;
+  public brokerWebsite: string | undefined;
+}

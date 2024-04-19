@@ -1,0 +1,32 @@
+:root {
+  @include serializeCssVars();
+
+  --color-content-50: #{$color-neutral-gray-500};
+  --neutral-gray-300: #{$color-neutral-gray-300};
+  --color-grey-classic-200: #{$color-grey-classic-200};
+  --color-success-50: #{$color-success-50};
+  --color-success-600: #{$color-success-600};
+  --color-success-700: #{$color-success-700};
+  --color-error-50: #{$color-error-50};
+  --color-error-600: #{$color-error-600};
+  --color-error-700: #{$color-error-700};
+  --color-primary-50: #{$color-primary-50};
+  --color-warning-50: #{$color-warning-50};;
+  --color-warning-600: #{$color-warning-600};
+  --color-warning-700: #{$color-warning-700};
+
+  --text-text-primary: #{$color-primary-900};
+  --text-text-secondary: #{$color-neutral-gray-800};
+  --text-text-tertiary: #{$color-neutral-gray-600};
+  --text-text-disabled: #{$color-neutral-gray-400};
+  --error-color-error-primary: #{$color-error-600};
+
+  --brand-color-brand-primary: #{$color-primary-1};
+  --brand-color-brand-light: #B3D9FF;
+  --screen-background-background-primary: #FFF;
+  --screen-background-background-secondary: #{$color-neutral-gray-50};
+  --content-content-05: #{$color-neutral-gray-500};
+  --content-content-06: #{$color-neutral-gray-400};
+  --content-content-07: #{$color-neutral-gray-300};
+  --content-content-10: #{$color-neutral-gray-50};
+}

@@ -1,0 +1,466 @@
+<KendoLoadingComponent
+  :isLoading="isLoading"
+  :isShowSavingText="isShowSavingText"
+/>
+
+<!-- Start Breadcrumbs -->
+<Breadcrumb />
+<!-- End Breadcrumbs -->
+
+<KendoPageTitleComponent
+  :title="$t('clientMoneyPage-title')"
+  :description="$t('clientMoneyPage-description', { firmName: currentFirmName })"
+  :routeName="helperService.removeStringSpacesThenSlash(AppConstants.clientMoneyRoute)"
+/>
+
+<KendoForm @submit="submit">
+  <KendoFormElementComponent ref="formElement" v-slot="{ form }">
+    <ScrollableTabComponent
+      v-model:items="providersTabs"
+      addable
+      removable
+      @add="addProvider"
+      @remove="removeProvider"
+    >
+      <template
+        v-for="tab in providersTabs"
+        :key="`tab-content-${tab.id}`"
+        #[`content(${tab.id})`]="{ index }"
+      >
+        <CollapsiblePanelComponent ref="clientMoneyPanel" :items="[tab]">
+          <template #before-content="{ item }">
+            <NavPillComponent
+              :items="makeProviderNav(item.id)"
+              class="clientMoneyNavPill"
+              v-sticky="{
+              parentSelector: '.CollapsiblePanel-body',
+              stickyClass: 'is-bg-white',
+              marginTop: 54,
+              delay: 1e3
+            }"
+              anchorable
+            ></NavPillComponent>
+          </template>
+          <template #content="{ item }">
+            <CollapsiblePanelComponent
+              :items="makeSubProviderPanels(item.id)"
+              :accordion="false"
+              :hidden-items="
+              ![ClassificationEnum.MGA, ClassificationEnum.WholesaleBroker].includes(providers[index].classification)
+                ? [`insurance-provider-details-${item.id}`]
+                :[]
+            "
+            >
+              <template #[`content-provider-details-${item.id}`]>
+                <div class="row gy-3">
+                  <div class="col-lg-6">
+                    <KendoDropdownListComponent
+                      v-model="providers[index].classification"
+                      :id="setUniqueIdentifier(`-classification-${index}`)"
+                      :name="`classification-${index}`"
+                      label="Classification"
+                      :data-items="classificationOptions"
+                      value-primitive
+                    />
+                  </div>
+                  <div class="col-lg-6">
+                    <InsurerRating
+                      v-model="providers[index].insurerRating"
+                      :name="`insurerRating-${index}`"
+                      label="Insurer Rating"
+                      :unrated="!providers[index].insurerRating"
+                    />
+                  </div>
+                  <div class="col-lg-10">
+                    <KendoFirmFinderComponentAsync
+                      :id="setUniqueIdentifier(`-companyInfo-${index}`)"
+                      companyNameLabel="Provider Name"
+                      :company="{}"
+                      :companyName="providers[index].providerName"
+                      :companyNumber="providers[index].companyNumber"
+                      :firmReferenceNumber="providers[index].firmReferenceNumber"
+                      @onCompanyDetailUpdated="(value) => {
+                      providers[index].providerName = value.firmName;
+                      providers[index].companyNumber = value.companyNumber;
+                      providers[index].firmReferenceNumber = value.firmReferenceNumber;
+                      populateRelatedFieldsAsync(providers[index], value.firmReferenceNumber, value.firmName);
+                    }"
+                      :isInitializing="isInitializing"
+                    />
+                  </div>
+                  <div class="col-lg-2">
+                    <KendoSwitchToggleComponent
+                      v-model="providers[index].isPraAuthorized"
+                      :id="setUniqueIdentifier(`-isPraAuthorized-${index}`)"
+                      :name="`isPraAuthorized-${index}`"
+                      label="PRA Authorized"
+                      no-text
+                    />
+                  </div>
+                  <div class="col-lg-12">
+                    <KendoPostCodeInputComponent
+                      v-model="providers[index].registeredAddress"
+                      :id="setUniqueIdentifier(`-registeredAddress-${index}`)"
+                      :name="`registeredAddress-${index}`"
+                      label="Registered Address"
+                    />
+                  </div>
+                  <div class="col-lg-12">
+                    <KendoPostCodeInputComponent
+                      v-model="providers[index].tradingAddress"
+                      :id="setUniqueIdentifier(`-tradingAddress-${index}`)"
+                      :name="`tradingAddress-${index}`"
+                      label="Trading Address"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoEmailAddressInputComponent
+                      v-model="providers[index].emailAddress"
+                      :id="setUniqueIdentifier(`-emailAddress-${index}`)"
+                      :name="`emailAddress-${index}`"
+                      label="Email Address"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoTelInputComponent
+                      v-model="providers[index].contactNumber"
+                      :id="setUniqueIdentifier(`-contactNumber-${index}`)"
+                      :name="`contactNumber-${index}`"
+                      label="Contact Number"
+                      :isDataLoadedCompletely="!isInitializing"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoGenericInputComponent
+                      v-model="providers[index].website"
+                      :id="setUniqueIdentifier(`-website-${index}`)"
+                      :name="`website-${index}`"
+                      type="url"
+                      label="Website"
+                    />
+                  </div>
+                  <div class="col-lg-12">
+                    <ToggleButtonComponent
+                      v-model="providers[index].withBindingAuthority"
+                      reverse
+                      wide
+                    >
+                      <template #text>
+                        Does {{ providers[index].providerName }} provide {{
+                        currentFirmName }} with Binding Authority?
+                      </template>
+                    </ToggleButtonComponent>
+                  </div>
+                  <div
+                    class="col-lg-12"
+                    v-if="providers[index].withBindingAuthority"
+                  >
+                    <div class="row align-items-center">
+                      <div class="col-lg-8">
+                        What was the date on which Terms of Business were agreed
+                        between {{ providers[index].providerName }} and {{
+                        currentFirmName }}?
+                      </div>
+                      <div class="col-lg-4">
+                        <KendoDatePickerInputComponent
+                          v-model="providers[index].dateAgreed"
+                          :name="`dateAgreed-${index}`"
+                          :id="setUniqueIdentifier(`-dateAgreed-${index}`)"
+                          epoch
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <template #[`content-insurance-provider-details-${item.id}`]>
+                <p class="font-weight-normal">
+                  {{ $t('clientMoneyPage-insuranceProviderDetailsBelow', {
+                  providerName: providers[index].providerName }) }}
+                </p>
+                <InuranceProviderTabs v-model="providers[index].insuranceProviders" />
+              </template>
+
+              <template #[`content-risk-transfer-funds-${item.id}`]>
+                <NumberListComponent
+                  :items="[
+                  `Do you have a Risk Transfer Agreement in place with ${providers[index].providerName || ''}?`,
+                  `Does ${providers[index].providerName || ''} allow commingling of Risk Transfer Funds with Client Money?`,
+                  'Please specify the Account Type in which you collect and hold Premium payments.'
+                ]"
+                  :disabled-items="[!providers[index].haveRiskTransferAgreement && 2]"
+                >
+                  <template #item-1="{ item }">
+                    <ToggleButtonComponent
+                      v-model="providers[index].haveRiskTransferAgreement"
+                      reverse
+                      wide
+                      :text="item"
+                    />
+                  </template>
+                  <template #item-2="{ item }">
+                    <ToggleButtonComponent
+                      v-model="providers[index].allowComminglingOfRiskTransferFunds"
+                      reverse
+                      wide
+                      :text="item"
+                      :disabled="!providers[index].haveRiskTransferAgreement"
+                    />
+                  </template>
+                  <template #item-3="{ item }">
+                    <div class="row align-items-center">
+                      <div class="col-lg-8">{{ item }}</div>
+                      <div class="col-lg-4 text-right">
+                        <KendoDropdownListComponent
+                          v-model="providers[index].accountType"
+                          :name="`accountType-${index}`"
+                          :id="setUniqueIdentifier(`-accountType-${index}`)"
+                          label="Account Type"
+                          :data-items="accountTypeOptions"
+                          :disabled-values="
+                          !providers[index].haveRiskTransferAgreement ||
+                          !providers[index].allowComminglingOfRiskTransferFunds
+                            ? disabledAccountTypes
+                            : []
+                        "
+                          addable
+                          value-primitive
+                          @add-custom="addCustomAccountTypeOption"
+                        >
+                        </KendoDropdownListComponent>
+                      </div>
+                    </div>
+                  </template>
+                </NumberListComponent>
+
+                <template v-if="providers[index].haveRiskTransferAgreement">
+                  <p class="mb-2 font-weight-normal">
+                    Please Update Risk Transfer Agreement (Accepted file types:
+                    pdf, jpg, doc, Maximum 25 MB file size)
+                  </p>
+                  <KendoUploadInputComponent
+                    class="mb-3"
+                    :name="`riskTransferAgreement-${index}`"
+                    :id="setUniqueIdentifier(`-riskTransferAgreement-${index}`)"
+                    stretched
+                    multiple
+                    dropzone
+                    :value="providers[index].haveRiskTransferAgreement"
+                    :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                  />
+                </template>
+
+                <template
+                  v-if="providers[index].accountType?.value === 'Statutory Client Account'"
+                >
+                  <p class="mb-2 font-weight-normal">
+                    Please Upload Statutory Trust Client Account Confirmation
+                    Letter (Accepted file types: pdf, jpg, doc, Maximum 25 MB
+                    file size)
+                  </p>
+                  <KendoUploadInputComponent
+                    :name="`statutoryTrustLetter-${index}`"
+                    :id="setUniqueIdentifier(`-statutoryTrustLetter-${index}`)"
+                    stretched
+                    multiple
+                    dropzone
+                    :value="providers[index].StatutoryTrustLetter"
+                    :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+                  />
+                </template>
+              </template>
+
+              <template #[`content-representative-details-${item.id}`]>
+                <div class="row gy-3">
+                  <div class="col-lg-4">
+                    <KendoNameTitleComponent
+                      v-model="providers[index].firmRepresentative.title"
+                      :name="`firmRepresentative.title-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.title-${index}`)"
+                      label="Title"
+                      :is-required="false"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoGenericInputComponent
+                      v-model="providers[index].firmRepresentative.forename"
+                      :name="`firmRepresentative.forename-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.forename-${index}`)"
+                      label="Forename(s)"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoGenericInputComponent
+                      v-model="providers[index].firmRepresentative.surname"
+                      :name="`firmRepresentative.surname-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.surname-${index}`)"
+                      label="Surname"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoEmailAddressInputComponent
+                      v-model="providers[index].firmRepresentative.emailAddress"
+                      :name="`firmRepresentative.emailAddress-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.emailAddress-${index}`)"
+                      label="Email Address"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoTelInputComponent
+                      v-model="providers[index].firmRepresentative.contactNumber"
+                      :name="`firmRepresentative.contactNumber-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.contactNumber-${index}`)"
+                      label="Contact Number"
+                      :isDataLoadedCompletely="!isInitializing"
+                    />
+                  </div>
+                  <div class="col-lg-4">
+                    <KendoGenericInputComponent
+                      v-model="providers[index].firmRepresentative.jobTitle"
+                      :name="`firmRepresentative.jobTitle-${index}`"
+                      :id="setUniqueIdentifier(`-firmRepresentative.jobTitle-${index}`)"
+                      label="Job Title"
+                      :is-required="false"
+                    />
+                  </div>
+                </div>
+              </template>
+            </CollapsiblePanelComponent>
+          </template>
+        </CollapsiblePanelComponent>
+      </template>
+    </ScrollableTabComponent>
+  </KendoFormElementComponent>
+</KendoForm>
+
+<KendoForm>
+  <KendoFormElementComponent v-slot="{ form }">
+    <PanelComponent>
+      <template #title>
+        <span class="font-size-xl">
+          {{ $t('clientMoneyPage-clientMoneyAudit') }}
+        </span>
+      </template>
+      <NumberListComponent
+        class="ClientMoneyAuditList"
+        :items="[
+          `Please specify the highest Account Balance between ${moment.unix(accountPeriodStartOn).format('DD/MM/Y')} and ${moment.unix(accountPeriodEndOn).format('DD/MM/Y')}`,
+          `Please specify the highest Account Balance since ${moment.unix(accountMadeUpTo).format('DD/MM/Y')}`,
+          `Has ${currentFirmName || ''} obtained a client money audit in the last 12 months?`,
+          `Does ${currentFirmName || ''} undertake a client account reconciliation at least once every 25 business days?`,
+        ]"
+      >
+        <template #item-1="{ item }">
+          <p>{{ item }}</p>
+          <div class="row">
+            <KendoCurrencyInputComponent
+              class="col-lg-6"
+              name="highestAmount1"
+              label="Amount"
+              :id="setUniqueIdentifier('-client-money-highest-amount1')"
+              :value="clientMoneyAudit.highestAmount1"
+              @onValueChange="clientMoneyAudit.highestAmount1 = $event"
+            />
+            <!-- ToDo. Check if still needed. -->
+            <!-- <KendoDatePickerInputComponent
+                                class="col-lg-4"
+                                v-model="clientMoneyAudit.highestAmount1From"
+                                label="From"
+                                name="highestAmount1From"
+                                epoch
+                              />
+                              <KendoDatePickerInputComponent
+                                class="col-lg-4"
+                                v-model="clientMoneyAudit.highestAmount1To"
+                                label="To"
+                                name="highestAmount1To"
+                                epoch
+                              /> -->
+          </div>
+        </template>
+        <template #item-2="{ item }">
+          <p>{{ item }}</p>
+          <div class="row">
+            <KendoCurrencyInputComponent
+              class="col-lg-6"
+              name="highestAmount2"
+              label="Amount"
+              :id="setUniqueIdentifier('-client-money-highest-amount2')"
+              :value="clientMoneyAudit.highestAmount2"
+              @onValueChange="clientMoneyAudit.highestAmount2 = $event"
+            />
+            <!-- ToDo. Check if still needed. -->
+            <!-- <KendoDatePickerInputComponent
+                                class="col-lg-6"
+                                v-model="clientMoneyAudit.highestAmount2From"
+                                label="From"
+                                name="highestAmount2From"
+                                epoch
+                              /> -->
+          </div>
+        </template>
+        <template #item-3="{ item }">
+          <ToggleButtonComponent
+            v-model="clientMoneyAudit.hasObtainedInLastYear"
+            reverse
+            wide
+            :text="item"
+          />
+          <div
+            v-if="clientMoneyAudit.hasObtainedInLastYear"
+            class="row gy-3 mb-3"
+          >
+            <KendoDatePickerInputComponent
+              class="col-lg-4"
+              v-model="clientMoneyAudit.reviewPeriodStartDate"
+              label="Review Period Start Date"
+              name="reviewPeriodStartDate"
+              :id="setUniqueIdentifier('-reviewPeriodStartDate')"
+              epoch
+            />
+            <KendoDatePickerInputComponent
+              class="col-lg-4"
+              v-model="clientMoneyAudit.reviewPeriodEndtDate"
+              label="Review Period End Date"
+              name="reviewPeriodEndDate"
+              :id="setUniqueIdentifier('-reviewPeriodEndDate')"
+              epoch
+            />
+            <KendoDatePickerInputComponent
+              class="col-lg-4"
+              v-model="clientMoneyAudit.reportDate"
+              label="Date of Report"
+              name="reportDate"
+              :id="setUniqueIdentifier('-reportDate')"
+              epoch
+            />
+            <div class="col-lg-12">
+              <p class="mb-2 font-weight-normal">
+                Please upload a copy of the most recent Client Money Audit
+                <span class="fineprint">
+                  (Accepted file types: pdf, jpg, doc, Maximum 25 MB file size)
+                </span>
+              </p>
+              <KendoUploadInputComponent
+                name="StatutoryTrustLetter"
+                stretched
+                multiple
+                dropzone
+                :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx']"
+              />
+            </div>
+          </div>
+        </template>
+        <template #item-4="{ item }">
+          <ToggleButtonComponent
+            v-model="clientMoneyAudit.undertakeClientAccountRecon"
+            reverse
+            wide
+            :text="item"
+          />
+        </template>
+      </NumberListComponent>
+    </PanelComponent>
+  </KendoFormElementComponent>
+</KendoForm>

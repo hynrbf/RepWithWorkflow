@@ -1,0 +1,8 @@
+@mixin tabItemStyles() {
+  color: var(--text-text-disabled);
+  font-size: var(--font-size-sm);
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 125%; /* 17.5px */
+}

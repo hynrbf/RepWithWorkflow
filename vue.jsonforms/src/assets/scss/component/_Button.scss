@@ -1,0 +1,23 @@
+// With https://www.telerik.com/kendo-vue-ui/components/buttons/button/
+
+.Button {
+    &.k-button-flat-primary {
+        z-index: 1;
+
+        &::before {
+            background-color: var(--color-primary-tint);
+        }
+
+        &.k-selected,
+        &:hover,
+        &.k-hover {
+            &::before {
+                opacity: 1;
+            }
+        }
+
+        .k-button-text {
+            z-index: 1;
+        }
+    }
+}

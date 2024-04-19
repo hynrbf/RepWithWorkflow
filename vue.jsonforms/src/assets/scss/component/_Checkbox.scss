@@ -1,0 +1,35 @@
+// With https://www.telerik.com/kendo-vue-ui/components/inputs/checkbox/
+
+.Checkbox {
+    .k-checkbox {
+        border-color: var(--color-primary);
+    }
+
+    &--plus {
+        $icon-blue: url("data:image/svg+xml,%3Csvg width='10' height='11' viewBox='0 0 10 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 1.53564V9.46422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M1.03564 5.4H8.96422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+        $icon-white: url("data:image/svg+xml,%3Csvg width='10' height='11' viewBox='0 0 10 11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 1.53564V9.46422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M1.03564 5.4H8.96422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+
+        .k-checkbox {
+            background-image: $icon-blue;
+            background-size: 70%;
+
+            &:checked, &.k-checked {
+                background-image: $icon-white;
+            }
+        }
+    }
+
+    &--minus {
+        $icon-blue: url("data:image/svg+xml,%3Csvg width='10' height='3' viewBox='0 0 10 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.03564 1.5H8.96422' stroke='%23003366' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+        $icon-white: url("data:image/svg+xml,%3Csvg width='10' height='3' viewBox='0 0 10 3' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.03564 1.5H8.96422' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+
+        .k-checkbox {
+            background-image: $icon-blue;
+            background-size: 70%;
+
+            &:checked, &.k-checked {
+                background-image: $icon-white;
+            }
+        }
+    }
+}

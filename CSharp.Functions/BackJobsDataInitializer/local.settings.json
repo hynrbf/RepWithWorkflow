@@ -1,0 +1,32 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDbAccount": "https://complydexdb.documents.azure.com:443/",
+    "CosmosDbKey": "6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==",
+    "Database": "complydexdbinstance",
+    "WebScrapsContainer": "webScraps",
+    "FcaPermissionsContainer": "fcaPermissions",
+    "CustomerContainer": "customer",
+    "FinancialPromotionsContainer": "financialPromotions",
+    "OrganizationalEmployeesContainer": "organizationEmployees",
+    "AppointedRepresentativesContainer": "appointedRepresentatives",
+    "FcaRolesContainer": "fcaRoles",
+    "IsEnable": "true",
+    "IsEnableAR": "true",
+    "ScheduleExpression": "*/15 * * * * *",
+    "ScheduleExpressionAR": "*/10 * * * * *",
+    "CompanyHouseApiKey": "fce23565-e5b0-4ad5-a1b8-68bb7b234f2a",
+    "FcaUserName": "tech@suntech.gi",
+    "FcaApiKey": "48cd8a7cb3379385cb1ec45f79f1c305",
+    "AzureStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sunstorageaccntfncstg;AccountKey=UD5NCx58zSlR96KE0Q8X5xrvSp3p1fl9XaVKy8tqZ1eH12ym2H28KrKN2NAmWbu2qz5pw7PVDI29+AStyQLyMw==;EndpointSuffix=core.windows.net",
+    "AzureStorageBaseUrl": "https://sunstorageaccntfncstg.blob.core.windows.net/",
+    "BlobStorageContainerName": "complydexcontainer"
+  },
+  "Host": {
+    "LocalHttpPort": 7374,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}

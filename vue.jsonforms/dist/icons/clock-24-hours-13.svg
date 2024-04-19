@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="clock-24-hours-13" clip-path="url(#clip0_47_148479)">
+<g id="clock-24-hours--clock-24-twentyfour-hours-time-reset-stopwatch-circle-measure">
+<path id="vector 7" d="M14.283 11.1746H10.6518C10.4946 11.1746 10.3672 11.0472 10.3672 10.89C10.3672 10.821 10.3922 10.7544 10.4376 10.7026L13.0278 7.74237C13.0789 7.68393 13.1528 7.65039 13.2305 7.65039C13.3792 7.65039 13.4998 7.77098 13.4998 7.91975V12.3494" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="vector 3" d="M8.84749 12.3494H5.71484V11.6819C5.71484 11.2151 5.99114 10.7927 6.41873 10.6056L8.16187 9.843C8.57837 9.66077 8.84749 9.24928 8.84749 8.79467C8.84749 8.16269 8.33518 7.65039 7.70322 7.65039H6.88958C6.37809 7.65039 5.94295 7.97729 5.78168 8.43356" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 1524" d="M17.9304 6.69685C16.6361 3.59288 13.5725 1.41113 9.99944 1.41113C5.25571 1.41113 1.41016 5.25669 1.41016 10.0004C1.41016 14.7442 5.25571 18.5897 9.99944 18.5897C14.061 18.5897 17.4641 15.7707 18.3589 11.9826" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector" d="M18.5887 3.39355V6.69713H15.2852" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_148479">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

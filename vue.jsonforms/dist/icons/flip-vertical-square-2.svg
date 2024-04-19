@@ -1,0 +1,16 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="flip-vertical-square-2" clip-path="url(#clip0_47_144708)">
+<g id="flip-vertical-square-2--design-up-flip-reflect-vertical">
+<path id="Vector" d="M18.5882 4.0535V2.73207C18.5882 2.3816 18.4489 2.0455 18.2011 1.79768C17.9534 1.54987 17.6172 1.41064 17.2667 1.41064H15.9453" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M11.9799 1.41064H8.01562" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M1.41016 4.0535V2.73207C1.41016 2.3816 1.54938 2.0455 1.79719 1.79768C2.04501 1.54987 2.38112 1.41064 2.73158 1.41064H4.05301" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M1.41016 13.3037V17.268C1.41016 17.6184 1.54938 17.9546 1.79719 18.2024C2.04501 18.4501 2.38112 18.5894 2.73158 18.5894H17.2673C17.6177 18.5894 17.9539 18.4501 18.2017 18.2024C18.4494 17.9546 18.5887 17.6184 18.5887 17.268V13.3037" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_5" d="M1.41016 8.01758V9.99972H18.5887V8.01758" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_144708">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

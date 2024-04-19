@@ -1,0 +1,24 @@
+.Panel {
+    border: 0.3px solid var(--color-neutral);
+    background-color: var(--color-white);
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    &-head {
+        padding: 20px 20px 0;
+    }
+
+    &-body {
+        padding: 20px;
+    }
+
+    &-title {
+        margin: 0;
+        font-size: var(--font-size-lg);
+        color: var(--color-primary);
+    }
+
+    &-description {
+        margin-top: 10px;
+    }
+}

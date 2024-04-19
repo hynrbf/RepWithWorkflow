@@ -1,0 +1,7 @@
+.collapsible-panel {
+    &.indicator-hidden {
+        .k-expander-indicator {
+            visibility: hidden;
+        }
+    }
+}

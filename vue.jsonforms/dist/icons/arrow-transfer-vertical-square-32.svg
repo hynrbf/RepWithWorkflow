@@ -1,0 +1,14 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="arrow-transfer-vertical-square-32" clip-path="url(#clip0_47_142819)">
+<g id="arrow-transfer-vertical-square--arrow-square-data-internet-transfer-network-vertical">
+<path id="Vector" d="M14.6244 1.41071H5.37444C3.18503 1.41071 1.41016 3.18558 1.41016 5.37499V14.625C1.41016 16.8145 3.18503 18.5893 5.37444 18.5893H14.6244C16.8139 18.5893 18.5887 16.8145 18.5887 14.625V5.37499C18.5887 3.18558 16.8139 1.41071 14.6244 1.41071Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M14.6233 11.3214L11.9805 13.9643V6.03571" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M5.375 8.67856L8.01786 6.03571V13.9643" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_142819">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

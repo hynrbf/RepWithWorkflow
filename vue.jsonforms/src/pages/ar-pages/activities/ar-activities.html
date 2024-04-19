@@ -1,0 +1,289 @@
+<KendoLoadingComponent
+        :isLoading="isLoading"
+        :isShowSavingText="isShowSavingText"
+/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        :title="$t('ar-activities-header', { arFirmName: currentArFirmName })"
+        :description="$t('ar-activities-description', { firmName: customerCompanyName, arFirmName: currentArFirmName })"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.arActivitiesRoute)"
+        class="PageTitle"
+        progress-bar
+/>
+
+<!-- Anchors -->
+<NavPillComponent
+        :items="activitiesNavPill"
+        class="ActivitiesNavPill page-tab-anchors is-sticky-top "
+        anchorable
+        @update:items="openActivityPanel"
+/>
+
+<div class="mb-3"></div>
+
+<KendoForm>
+    <FormElement ref="formElement">
+        <StackLayout
+                orientation="vertical"
+                :gap="20"
+                style="margin-top: 20px" >
+            <CollapsiblePanelComponent
+                    ref="activityCollapsiblePanel"
+                    class="ActivityCollapsiblePanel"
+                    :items="activitiesPanels"
+                    :accordion="false" >
+                <template #title="{ item }">
+                    <div class="ActivityCollapsiblePanel-title">
+                        <span>{{ item.title }}</span>
+                    </div>
+                </template>
+
+                <template #content="{ item, item: { product } }">
+                    <InfoTableComponent
+                            class="ActivityInfoTable"
+                            :id="item.content"
+                            :columns="columns"
+                            :data="[{ items: getItems(item.content), footer: true }]" >
+                        <template #cell-product="{ item, item: { product }, id }">
+                            <KendoInput
+                                    v-if="product === 'add-more'"
+                                    name="add-more"
+                                    placeholder="Add Product"
+                                    :model-value="newItems[id]?.title ?? ''"
+                                    @update:model-value="attachNewItem(id, { title: $event })"
+                                    :isRequired="false" />
+
+                            <span
+                                    v-else
+                                    :class="{'is-edited': activityValues[product]?.isModified || activityValues[product]?.hasPendingApplication}"
+                            >{{ getProduct(product)?.title }}</span>
+                        </template>
+
+                        <template #cell-appointment="{ item, item: { product }, id }">
+                            <img v-if="activityValues[product]?.isAppointed"
+                                 src="/approved-icon.svg"
+                                 alt="Authorised"
+                                 title="Authorised"
+                                 width="16"
+                                 height="16" />
+
+                            <img v-else
+                                 src="/rejected-grey-icon.svg"
+                                 alt="Non-Authorised"
+                                 title="Non-Authorised"
+                                 width="16"
+                                 height="16" />
+                        </template>
+                        <template #cell-requestStatus="{ item, item: { product } }">
+                            <div v-if="product === 'add-more'">
+                                <KendoCheckbox
+                                        :disabled="true"
+                                        class="Checkbox Checkbox--plus"
+                                        :isRequired="false" />
+                            </div>
+
+                            <div v-else>
+                                <KendoCheckbox
+                                        v-if="activityValues[product]?.isAppointed"
+                                        class="Checkbox Checkbox--minus"
+                                        :checked="activityValues[product]?.isModified"
+                                        @change="
+                                            updateRequestsValue(
+                                                product,
+                                                {
+                                                  isModified: $event?.value ?? 0
+                                                },
+                                                AppConstants.seekAuthRemove,
+                                              )
+                                            " />
+
+                                <KendoCheckbox
+                                        v-if="!activityValues[product]?.isAppointed"
+                                        class="Checkbox Checkbox--plus"
+                                        :checked="activityValues[product]?.hasPendingApplication"
+                                        @change="
+                                            updateRequestsValue(
+                                                product,
+                                                {
+                                                  hasPendingApplication: $event?.value ?? 0
+                                                },
+                                                AppConstants.seekAuthAdd
+                                              )
+                                            " />
+                            </div>
+                        </template>
+
+                        <template #cell-annualFeeIncome="{ item, item: { product }, id }">
+                            <KendoCurrencyInputComponent
+                                    v-if="product === 'add-more'"
+                                    :name="`annualFeeIncome-${product}`"
+                                    :id="setUniqueIdentifier(`-annualFeeIncome-${product}`)"
+                                    :placeholder="'Enter Amount'"
+                                    :hasLabel="false"
+                                    :value="newItems[id]?.annualFeeIncome"
+                                    :minimumValue="new Money(0, 'EUR')"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    @onValueChange="
+                                        attachNewItem(id, {
+                                          annualFeeIncome: $event ?? new Money(0, 'EUR'),
+                                        })" />
+
+                            <KendoCurrencyInputComponent
+                                    v-else
+                                    :name="`annualFeeIncome-${product}`"
+                                    :id="setUniqueIdentifier(`-annualFeeIncome-${product}`)"
+                                    :placeholder="'Enter Amount'"
+                                    :hasLabel="false"
+                                    :disabled="!activityValues[product]?.isAppointed && !activityValues[product]?.isNewProduct"
+                                    :value="activityValues[product]?.annualFeeIncome"
+                                    :minimumValue="new Money(0, 'EUR')"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    @onValueChange="
+                                        updateValue(product, {
+                                          annualFeeIncome: $event ?? new Money(0, 'EUR'),
+                                        })" />
+                        </template>
+
+                        <template #cell-annualCommissionIncome="{ item, item: { product }, id }">
+                            <KendoCurrencyInputComponent
+                                    v-if="product === 'add-more'"
+                                    :name="`annualCommissionIncome-${product}`"
+                                    :id="setUniqueIdentifier(`-annualCommissionIncome-${product}`)"
+                                    :placeholder="'Enter Amount'"
+                                    :hasLabel="false"
+                                    :value="newItems[id]?.annualCommissionIncome"
+                                    :minimumValue="new Money(0, 'EUR')"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    @onValueChange="
+                                    attachNewItem(id, {
+                                      annualCommissionIncome: $event ?? new Money(0, 'EUR'),
+                                    })"
+                            />
+
+                            <KendoCurrencyInputComponent
+                                    v-else
+                                    :name="`annualCommissionIncome-${product}`"
+                                    :id="setUniqueIdentifier(`-annualCommissionIncome-${product}`)"
+                                    :placeholder="'Enter Amount'"
+                                    :hasLabel="false"
+                                    :disabled="!activityValues[product]?.isAppointed && !activityValues[product]?.isNewProduct"
+                                    :value="activityValues[product]?.annualCommissionIncome"
+                                    :minimumValue="new Money(0, 'EUR')"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    @onValueChange="
+                                        updateValue(product, {
+                                          annualCommissionIncome: $event ?? new Money(0, 'EUR'),
+                                        })"
+                            />
+                        </template>
+
+                        <template #cell-hasLimitation="{ item, item: { product }, id }">
+                            <KendoSwitchToggleComponent
+                                    :id="setUniqueIdentifier(`-limitation-${product}`)"
+                                    v-if="product === 'add-more'"
+                                    :name="`limitation-${product}`"
+                                    :is-required="false"
+                                    no-text
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    :value="newItems[id]?.hasLimitation ?? false"
+                                    @onValueChange="attachNewItem(id, { hasLimitation: $event })"
+                            />
+
+                            <KendoSwitchToggleComponent
+                                    :id="setUniqueIdentifier(`-limitation-${product}`)"
+                                    v-else
+                                    :name="`limitation-${product}`"
+                                    :is-required="false"
+                                    :disabled="!activityValues[product]?.isAppointed"
+                                    no-text
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    :value="activityValues[product]?.hasLimitation ?? false"
+                                    @onValueChange="
+                                        updateValue(product, { hasLimitation: $event })
+                                      "
+                            />
+                        </template>
+
+                        <template #expanded-content="{ item, item: { product }, id }">
+                            <div class="mt-0">
+                                <KendoGenericInputComponent
+                                        v-if="product === 'add-more' && newItems[id]?.hasLimitation"
+                                        :id="setUniqueIdentifier(`-limitations-${product}-1`)"
+                                        :name="`limitations-${product}`"
+                                        class="col-custom-activities"
+                                        :placeholder="'Please Type Limitations'"
+                                        :value="newItems[id]?.limitations"
+                                        :isRequired="false"
+                                        isValueReactive
+                                        :isDataLoadedCompletely="!isInitializing"
+                                        :model-value="newItems[id]?.limitations ?? ''"
+                                        @update:model-value="attachNewItem(id, { limitations: $event })"
+                                />
+
+                                <KendoGenericInputComponent
+                                        v-if="activityValues[product]?.hasLimitation"
+                                        :id="setUniqueIdentifier(`-limitations-${product}-2`)"
+                                        :name="`limitations-${product}`"
+                                        class="col-custom-activities"
+                                        :placeholder="'Please Type Limitations'"
+                                        :value="activityValues[product]?.limitations"
+                                        :isRequired="false"
+                                        @onValueChange="
+                                          updateValue(product, { limitations: $event })
+                                        "
+                                />
+                            </div>
+                        </template>
+
+                        <template #cell-action="{ item, item: { product }, id }">
+                            <div v-if="product === 'add-more'">
+                                <button class="AddButton" @click.prevent="addNewItem(id)">
+                                    <IconComponent symbol="add-circle-27" size="20"/>
+                                </button>
+                            </div>
+
+                            <div v-else-if="activityValues[product]?.isNewProduct">
+                                <button class="DeleteButton" @click.prevent="deleteItem(product)">
+                                    <IconComponent symbol="trash" class="text-error" size="20"/>
+                                </button>
+                            </div>
+                        </template>
+
+                        <template #footer-cell-product>
+                            <div class="py-1">
+                                <strong>Total</strong>
+                            </div>
+                        </template>
+
+                        <template #footer-cell-annualFeeIncome="{ id }">
+                            <div class="py-1">
+                              <span class="TotalText">
+                                {{ formatMoney(getTotal(id, "annualFeeIncome")) }}
+                              </span>
+                            </div>
+                        </template>
+
+                        <template #footer-cell-annualCommissionIncome="{ id }">
+                            <div class="py-1">
+                              <span class="TotalText">
+                                {{ formatMoney(getTotal(id, "annualCommissionIncome")) }}
+                              </span>
+                            </div>
+                        </template>
+                    </InfoTableComponent>
+                </template>
+            </CollapsiblePanelComponent>
+        </StackLayout>
+    </FormElement>
+</KendoForm>
+
+
+ 

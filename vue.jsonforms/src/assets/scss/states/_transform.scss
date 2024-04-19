@@ -1,0 +1,6 @@
+$rotation: 45, 90, 180, 270;
+@each $rotate in $rotation {
+    .is-rotate#{$rotate} {
+        transform: rotate(#{$rotate}deg);
+    }
+}

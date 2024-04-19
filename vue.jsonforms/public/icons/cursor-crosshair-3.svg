@@ -1,0 +1,16 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="cursor-crosshair-3" clip-path="url(#clip0_47_143989)">
+<g id="cursor-crosshair--cursor-crosshair-target-aim-cross">
+<path id="Vector" d="M9.99777 11.9821C11.0925 11.9821 11.9799 11.0947 11.9799 9.99997C11.9799 8.90525 11.0925 8.01782 9.99777 8.01782C8.90306 8.01782 8.01562 8.90525 8.01562 9.99997C8.01562 11.0947 8.90306 11.9821 9.99777 11.9821Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10 5.37493V1.41064" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M10 18.5893V14.625" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M14.625 10H18.5893" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_5" d="M1.41016 10H5.37444" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_143989">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

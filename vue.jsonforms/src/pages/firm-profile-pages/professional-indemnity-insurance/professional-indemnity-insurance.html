@@ -1,0 +1,793 @@
+<KendoLoadingComponent
+        :isLoading="isLoading"
+        :isShowSavingText="isShowSavingText"
+/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent
+        title="Professional Indemnity Insurance (PII)"
+        :description="$t('professionalIndemnityInsurancePage-description', {firmName: firmName})"
+        :routeName="helperService.removeStringSpacesThenSlash(AppConstants.professionalIndemnityRoute)"
+        progress-bar
+/>
+
+<KendoForm>
+    <KendoFormElementComponent ref="formElement">
+        <ScrollableTabComponent
+                v-model:items="piiTabs"
+                addable
+                removable
+                @add="addInitialProfessionalIndemnityItem"
+                @remove="removeProfessionalIndemnityItem">
+            <template
+                    v-for="item in professionalIndemnityItems"
+                    :key="`tab-content-${item.id}`"
+                    #[`content(pii-${item.id})`]="{ index }">
+                <CollapsiblePanelComponent
+                        :items="[{
+                            id: `pii-${index}`,
+                            title: getInsurerNameTitle($t('professionalIndemnityInsurancePage-formTitleText'), item.pii.insurerName),
+                            content: '',
+                            active: true,
+                          }]">
+                    <template #before-content>
+                        <NavPillComponent
+                                :items="makePiiNav(index)"
+                                class="piiNavPill"
+                                v-sticky="{
+                                    parentSelector: '.CollapsiblePanel-body',
+                                    stickyClass: 'is-bg-white is-zindex-base',
+                                    marginTop: 54,
+                                    delay: 1e3
+                                  }"
+                                anchorable
+                        >
+                        </NavPillComponent>
+                    </template>
+
+                    <template #content>
+                        <!-- Section1 -->
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `pii-details-${index}`,
+                                    title: $t('professionalIndemnityInsurancePage-insurerDetails'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <div class="row gy-3">
+                                    <KendoFirmFinderComponentAsync
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-insurerName')"
+                                            companyNameLabel="Insurer Name"
+                                            :company="item.piiInsurerInputFirm"
+                                            :companyName="item.pii.insurerName"
+                                            :companyNumber="item.pii.companyNumber"
+                                            :firmReferenceNumber="item.pii.firmReferenceNumber"
+                                            @onCompanyDetailUpdated="(value) => onPiiInsurerDetailUpdated(value, index)"
+                                            :isInitializing="isInitializing"
+                                    />
+
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-insurerAddress')"
+                                            :name="`registeredAddress-${index}`"
+                                            label="Registered Address"
+                                            :value="item.pii.insurerRegisteredAddress"
+                                            @onValueChange="
+                                                (value: string) => {
+                                                    item.pii.insurerRegisteredAddress = value;
+                                                }
+                                              "
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoPostCodeInputWithSameAsComponent
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-tradingAddress')"
+                                            :name="`tradingAddress-${index}`"
+                                            label="Trading Address"
+                                            isRequired
+                                            isShowCheckBox
+                                            :isChecked="item.pii.insurerIsTradingSameAsRegisteredAddress"
+                                            :value="item.pii.insurerTradingAddress"
+                                            @onValueChange="item.pii.insurerTradingAddress = $event"
+                                            @onToggle="
+                                              () => {
+                                                item.pii.insurerIsTradingSameAsRegisteredAddress =
+                                                  !item.pii.insurerIsTradingSameAsRegisteredAddress;
+
+                                                if (item.pii.insurerIsTradingSameAsRegisteredAddress) {
+                                                  item.pii.insurerTradingAddress = item.pii.insurerRegisteredAddress;
+                                                } else {
+                                                  item.pii.insurerTradingAddress = '';
+                                                }
+                                              }
+                                            "
+                                            :sameAsLabel="$t('same-as-registered-address')"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-emailAddress')"
+                                            label="Email Address"
+                                            name="emailAddress"
+                                            :value="item.pii.insurerEmailAddress"
+                                            @onValueChange="(value: string) => item.pii.insurerEmailAddress = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-contactNumber')"
+                                            name="contactNumber"
+                                            label="Contact Number"
+                                            :value="item.pii.insurerContactNumber"
+                                            @onValueChange="(value: ContactNumber) => item.pii.insurerContactNumber = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-website')"
+                                            label="Website"
+                                            name="website"
+                                            type="url"
+                                            :value="item.pii.insurerWebsite"
+                                            @onValueChange="(value: string) => item.pii.insurerWebsite = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `broker-details-${index}`,
+                                    title: $t('professionalIndemnityInsurancePage-brokerDetails'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <ToggleButtonComponent
+                                        v-model="item.pii.isBrokerResponsible"
+                                        reverse
+                                        wide
+                                        class="mb-3"
+                                >
+                                    <template #text>
+                    <span class="font-weight-semi-bold">
+                      Is a Broker responsible for the arranging or
+                      administration of this policy?
+                    </span>
+                                    </template>
+                                </ToggleButtonComponent>
+
+                                <ToggleButtonComponent
+                                        v-if="item.pii.isBrokerResponsible"
+                                        v-model="item.pii.isBrokerCompany"
+                                        reverse
+                                        wide
+                                        on-label="Company"
+                                        off-label="Sole Trader"
+                                        class="mb-3"
+                                >
+                                    <template #text>
+                                        <span class="font-weight-semi-bold">
+                                          Is the Broker a Company or a Sole Trader?
+                                        </span>
+                                    </template>
+                                </ToggleButtonComponent>
+
+                                <div v-if="item.pii.isBrokerResponsible && item.pii.isBrokerCompany"
+                                     class="row gy-3">
+                                    <KendoFirmFinderComponentAsync
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerName')"
+                                            companyNameLabel="Broker Name"
+                                            :company="item.piiBrokerInputFirm"
+                                            :companyName="item.pii.piiBrokerName"
+                                            :companyNumber="item.pii.brokerCompanyNumber"
+                                            :firmReferenceNumber="item.pii.brokerFirmReferenceNumber"
+                                            @onCompanyDetailUpdated="(value) => onPiiBrokerDetailUpdated(value,index)"
+                                            :isInitializing="isInitializing"/>
+
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerRegisteredAddress')"
+                                            :value="item.pii.brokerRegisteredAddress"
+                                            @onValueChange="
+                                                (value: string) => {
+                                                    item.pii.brokerRegisteredAddress = value;
+                                                }
+                                              "
+                                            :name="`brokerRegisteredAddress-${index}`"
+                                            label="Registered Address"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"/>
+
+                                    <KendoPostCodeInputWithSameAsComponent
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerTradingAddress')"
+                                            name="brokerTradingAddress"
+                                            label="Trading Address"
+                                            :value="item.pii.brokerTradingAddress"
+                                            isShowCheckBox
+                                            :isChecked="item.pii.brokerIsTradingSameAsRegisteredAddress"
+                                            @onValueChange="item.pii.brokerTradingAddress = $event"
+                                            @onToggle="
+                                              () => {
+                                                item.pii.brokerIsTradingSameAsRegisteredAddress =
+                                                  !item.pii.brokerIsTradingSameAsRegisteredAddress;
+
+                                                if (item.pii.brokerIsTradingSameAsRegisteredAddress) {
+                                                  item.pii.brokerTradingAddress = item.pii.brokerRegisteredAddress;
+                                                } else {
+                                                  item.pii.brokerTradingAddress = '';
+                                                }
+                                              }
+                                            "
+                                            :sameAsLabel="$t('same-as-registered-address')"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerEmailAddress')"
+                                            label="Email Address"
+                                            name="brokerEmailAddress"
+                                            :value="item.pii.brokerEmailAddress"
+                                            @onValueChange="(value: string) => item.pii.brokerEmailAddress = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerContactNumber')"
+                                            name="brokerContactNumber"
+                                            label="Contact Number"
+                                            :value="item.pii.brokerContactNumber"
+                                            @onValueChange="(value: ContactNumber) => item.pii.brokerContactNumber = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerWebsite')"
+                                            label="Website"
+                                            name="brokerWebsite"
+                                            type="url"
+                                            :value="item.pii.brokerWebsite"
+                                            @onValueChange="(value: string) => item.pii.brokerWebsite = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+
+                                <div v-if="item.pii.isBrokerResponsible && item.pii.isBrokerCompany === false"
+                                     class="row gy-3">
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerForename')"
+                                            name="brokerForename"
+                                            label="Forename(s)"
+                                            :value="item.pii.forename"
+                                            @onValueChange="(value: string) => item.pii.forename = value"
+                                            isCapitalizeFirstLetter
+                                            isCheckForProfanity
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerSurname')"
+                                            name="brokerSurname"
+                                            label="Surname"
+                                            :value="item.pii.surname"
+                                            @onValueChange="(value: string) => item.pii.surname = value"
+                                            isCapitalizeFirstLetter
+                                            isCheckForProfanity
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-3"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerFirmReferenceNumber')"
+                                            name="brokerFirmReferenceNumber"
+                                            label="Firm Reference Number"
+                                            :value="item.pii.firmReferenceNumber"
+                                            @onValueChange="(value: string) => item.pii.firmReferenceNumber = value"
+                                            isCapitalizeFirstLetter
+                                            isCheckForProfanity
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoPostCodeInputComponent
+                                            class="col-lg-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerTradingAddress')"
+                                            :value="item.pii.brokerTradingAddress"
+                                            @onValueChange="(value: string) => item.pii.brokerTradingAddress = value"
+                                            :name="`brokerTradingAddress-${index}`"
+                                            label="Trading Address"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoEmailAddressInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerEmailAddress')"
+                                            label="Email Address"
+                                            name="brokerEmailAddress"
+                                            :value="item.pii.brokerEmailAddress"
+                                            @onValueChange="(value: string) => item.pii.brokerEmailAddress = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoTelInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerContactNumber')"
+                                            name="brokerContactNumber"
+                                            label="Contact Number"
+                                            :value="item.pii.brokerContactNumber"
+                                            @onValueChange="(value: ContactNumber) => item.pii.brokerContactNumber = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-brokerWebsite')"
+                                            label="Website"
+                                            name="brokerWebsite"
+                                            type="url"
+                                            :value="item.pii.brokerWebsite"
+                                            @onValueChange="(value: string) => item.pii.brokerWebsite = value"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `summary-of-cover-${index}`,
+                                    title: $t('professionalIndemnityInsurancePage-summaryOfCover'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <div class="row gy-3">
+                                    <KendoGenericInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-policyNumber')"
+                                            label="Policy Number"
+                                            :name="'policyNumber' + index"
+                                            @onValueChange="((value) => item.pii.policyNumber = value)"
+                                            :value="item.pii.policyNumber"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-premiumAmount')"
+                                            label="Premium Amount (excl. IPT)"
+                                            :name="'premiumAmount' + index"
+                                            @onValueChange="(value) => item.pii.premiumAmount = value"
+                                            :value="item.pii.premiumAmount"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoCurrencyInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-annualIncome')"
+                                            label="Annual Income (as declared on Proposal Form)"
+                                            :name="'annualIncome' + index"
+                                            @onValueChange="(value) => item.pii.annualIncome = value"
+                                            :value="item.pii.annualIncome"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-retroactiveStartDate')"
+                                            label="Retroactive Start Date"
+                                            :name="'retroactiveStartDate' + index"
+                                            @onValueChange="((value) => onRetroactiveStartDateChange(value, item.pii))"
+                                            :value="convertEpochValueToDate(item?.pii?.retroactiveStartDate)"
+                                            :isRequired="false"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-startDate')"
+                                            label="Start Date"
+                                            :name="'startDate' + index"
+                                            @onValueChange="((value) => onPiiStartDateChange(value, item.pii))"
+                                            :value="convertEpochValueToDate(item?.pii?.startDate)"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoDatePickerInputComponent
+                                            class="col-lg-4"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-endDate')"
+                                            label="End Date"
+                                            :name="'endDate' + index"
+                                            @onValueChange="((value) => onPiiEndDateChange(value, item.pii))"
+                                            :minDate="convertEpochValueToDate(item?.pii?.startDate )"
+                                            :value="convertEpochValueToDate(item?.pii?.endDate )"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoMultiSelectInputComponent
+                                            class="col-12"
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-businessLinesCovered')"
+                                            label="Business Lines Covered"
+                                            placeholder="Please Select Applicable Business Lines"
+                                            :name="'businessLinesCovered' + index"
+                                            @onValueChange="((value: string[]) => onBusinessLineCoveredValueChange(value, item.pii))"
+                                            :dataItems="businessLinesCoveredItems"
+                                            :value="item.pii?.businessLinesCovered ?? []"
+                                            checkbox
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+
+                                    <KendoMultiSelectInputComponent
+                                            class="col-12"
+                                            v-if="hasAppointedRepresentatives"
+                                            label="Appointed Representative Covered Under Policy"
+                                            :dataItems="coveredUnderPolicy"
+                                            placeholder="Select Appointed Representatives"
+                                            :name="'coveredUnderPolicyTemp' + index "
+                                            :id="setUniqueIdentifier( `[${item.id}]` + '-coveredUnderPolicyTemp')"
+                                            :value="item.pii?.appointedRepresentatives ?? []"
+                                            @onValueChange="((value: string[]) => item.pii.appointedRepresentatives = value)"
+                                            isValueReactive
+                                            :isDataLoadedCompletely="!isInitializing"
+                                    />
+                                </div>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <!-- Section2 -->
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `limit-exclusions-${index}`,
+                                    title: $t('professionalIndemnityInsurancePage-section-limit-exclusions-title'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <StackLayout orientation="vertical" :gap="20">
+                                    <!--Limitations-->
+                                    <label
+                                            class="limit-subsection-title col-md-12"
+                                            style="padding: 0; margin: 0"
+                                    >{{
+                                            $t("professionalIndemnityInsurancePage-section-limit-exclusions-limit-title")
+                                        }}</label
+                                    >
+
+                                    <!-- SINGLE INDEMNITY LIMIT -->
+                                    <div v-for="(singleIndemnityLimit, idx) of item.pii.limitIndemnitiesSingle"
+                                         class="col-md-12">
+                                        <StackLayout
+                                                orientation="horizontal"
+                                                :align="{ horizontal: 'stretch', vertical: 'middle' }"
+                                                :gap="15"
+                                        >
+                                            <KendoCurrencyInputComponent
+                                                    :id="setUniqueIdentifier( `[${item.id}]` + '-indemnitySingle-' + idx)"
+                                                    label="Limit of Indemnity: Single"
+                                                    :name="'indemnitySingle' + index + '-' +idx"
+                                                    :isFloorValueEnabled="true"
+                                                    :minimumValue="new Money(AppConstants.singleIndemnityLimit, singleIndemnityLimit?.limitIndemnityValue?.currency, singleIndemnityLimit?.limitIndemnityValue?.symbol)"
+                                                    :value="singleIndemnityLimit?.limitIndemnityValue"
+                                                    @onValueChange="((value) => singleIndemnityLimit.limitIndemnityValue = value)"
+                                                    class="first-child"
+                                                    isValueReactive
+                                                    :isDataLoadedCompletely="!isInitializing"
+                                            />
+
+                                            <div class="container-pii">
+                                                <kendoDropDownInputComponent
+                                                        :id="setUniqueIdentifier( `[${item.id}]` + '-indemnitySingle.subjectToLimit')"
+                                                        label="Business Line Subject to Limit of Indemnity"
+                                                        placeholder="Please Select"
+                                                        :name="'indemnitySingle.subjectToLimit' + index + '-' +idx"
+                                                        @onValueChange="((value) => singleIndemnityLimit.businessLineSubject = value)"
+                                                        :value="singleIndemnityLimit?.businessLineSubject"
+                                                        :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsSingle"
+                                                        class="flex-grow-1"
+                                                        isValueReactive
+                                                        :isDataLoadedCompletely="!isInitializing"
+                                                />
+
+                                                <div class="flex-grow-0 ps-2 pb-2"
+                                                     style="
+                                                        display: flex;
+                                                        justify-content: flex-end;
+                                                        align-items: flex-end;
+                                                      "
+                                                     v-if="item.pii.limitIndemnitiesSingle.length && item.pii.limitIndemnitiesSingle.length === idx + 1">
+                                                    <a href="#">
+                                                        <IconComponent
+                                                                symbol="add-circle-27"
+                                                                size="20"
+                                                                @click.prevent="addLimitOfIndemnitySingle(item.pii)"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </StackLayout>
+                                    </div>
+
+                                    <div v-for="(aggregateIndemnityLimit, idx) of item.pii.limitIndemnitiesAggregate"
+                                         class="col-md-12">
+                                        <StackLayout
+                                                orientation="horizontal"
+                                                :align="{ horizontal: 'stretch', vertical: 'middle' }"
+                                                :gap="15">
+                                            <KendoCurrencyInputComponent
+                                                    :id="setUniqueIdentifier( `[${item.id}]` + '-indemnityAggregate-' + idx)"
+                                                    label="Limit of Indemnity: Aggregate"
+                                                    :name="'indemnityAggregate' + index + '-' +idx"
+                                                    :isFloorValueEnabled="true"
+                                                    :minimumValue="new Money(AppConstants.aggregateIndemnityLimit, aggregateIndemnityLimit?.limitIndemnityValue?.currency, aggregateIndemnityLimit?.limitIndemnityValue?.symbol)"
+                                                    :value="aggregateIndemnityLimit?.limitIndemnityValue"
+                                                    @onValueChange="((value) => aggregateIndemnityLimit.limitIndemnityValue = value)"
+                                                    class="first-child"
+                                                    isValueReactive
+                                                    :isDataLoadedCompletely="!isInitializing"
+                                            />
+
+                                            <div class="container-pii">
+                                                <kendoDropDownInputComponent
+                                                        :id="setUniqueIdentifier( `[${item.id}]` + '-indemnityAggregate.subjectToLimit-' + idx)"
+                                                        label="Business Line Subject to Limit of Indemnity"
+                                                        placeholder="Please Select"
+                                                        :name="'indemnityAggregate.subjectToLimit' + index + '-' +idx"
+                                                        @onValueChange="((value) => aggregateIndemnityLimit.businessLineSubject = value)"
+                                                        :value="aggregateIndemnityLimit?.businessLineSubject"
+                                                        :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsAggregate"
+                                                        class="flex-grow-1"
+                                                        isValueReactive
+                                                        :isDataLoadedCompletely="!isInitializing"
+                                                />
+
+                                                <div class="flex-grow-0 ps-2 pb-2"
+                                                     style="
+                                                            display: flex;
+                                                            justify-content: flex-end;
+                                                            align-items: flex-end;
+                                                          "
+                                                     v-if="item.pii.limitIndemnitiesAggregate.length && item.pii.limitIndemnitiesAggregate.length === idx + 1">
+                                                    <a href="#">
+                                                        <IconComponent
+                                                                symbol="add-circle-27"
+                                                                size="20"
+                                                                @click.prevent="addLimitOfIndemnityAggregate(item.pii)"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </StackLayout>
+                                    </div>
+
+                                    <!-- POLICY EXCESSES -->
+                                    <label class="limit-subsection-title col-md-12"
+                                           style="padding: 0; margin: 0">{{
+                                            $t("professionalIndemnityInsurancePage-section-limit-exclusions-policy-title")
+                                        }}</label
+                                    >
+
+                                    <div v-for="(policyExcess, idx) of item.pii.policyExcesses"
+                                         class="col-md-12">
+                                        <StackLayout
+                                                orientation="horizontal"
+                                                :align="{ horizontal: 'stretch', vertical: 'middle' }"
+                                                :gap="15">
+                                            <KendoCurrencyInputComponent
+                                                    :id="setUniqueIdentifier( `[${item.id}]` + '-policyExcess-' + idx)"
+                                                    label="Policy Excess"
+                                                    :name="'policyExcess' + index + '-' +idx"
+                                                    :value="policyExcess?.policyExcessValue"
+                                                    @onValueChange="((value) => policyExcess.policyExcessValue = value)"
+                                                    class="first-child"
+                                                    isValueReactive
+                                                    :isDataLoadedCompletely="!isInitializing"
+                                            />
+
+                                            <div class="container-pii">
+                                                <KendoDropDownInputComponent
+                                                        :id="setUniqueIdentifier( `[${item.id}]` + '-policyExcess.subjectToPolicyExcess-' + idx)"
+                                                        label="Business Line Subject to Policy Excess"
+                                                        placeholder="Please Select"
+                                                        :name="'policyExcess.subjectToPolicyExcess' + index + '-' +idx"
+                                                        @onValueChange="((value) => policyExcess.businessLineSubject = value)"
+                                                        :value="policyExcess?.businessLineSubject"
+                                                        :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExcess"
+                                                        class="flex-grow-1"
+                                                        isValueReactive
+                                                        :isDataLoadedCompletely="!isInitializing"
+                                                />
+
+                                                <div class="flex-grow-0 ps-2 pb-2"
+                                                     style="
+                                                            display: flex;
+                                                            justify-content: flex-end;
+                                                            align-items: flex-end;
+                                                          "
+                                                     v-if="item.pii.policyExcesses.length && item.pii.policyExcesses.length === idx + 1">
+                                                    <a href="#">
+                                                        <IconComponent
+                                                                symbol="add-circle-27"
+                                                                size="20"
+                                                                @click.prevent="addPolicyExcess(item.pii)"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </StackLayout>
+                                    </div>
+
+                                    <!-- POLICY EXCLUSIONS -->
+                                    <label class="limit-subsection-title col-md-12"
+                                           style="padding: 0; margin: 0">{{
+                                            $t("professionalIndemnityInsurancePage-section-limit-exclusions-policy-exclusions-title")
+                                        }}</label
+                                    >
+
+                                    <div v-for="(policyExclusion, idx) of item.pii.policyExclusions"
+                                         class="col-md-12">
+                                        <StackLayout
+                                                orientation="horizontal"
+                                                :align="{ horizontal: 'stretch', vertical: 'middle' }"
+                                                :gap="15">
+                                            <KendoDropDownInputComponent
+                                                    :id="setUniqueIdentifier( `[${item.id}]` + '-subjectToPolicyExclusion-' + idx)"
+                                                    label="Business Line Category Subject to Policy Exclusion"
+                                                    placeholder="Business Line Category Subject to Policy Exclusion"
+                                                    :name="'subjectToPolicyExclusion' + index + '-' +idx"
+                                                    @onValueChange="((value) => policyExclusion.businessLineCategorySubject = value)"
+                                                    :value="policyExclusion?.businessLineCategorySubject"
+                                                    :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExclusions"
+                                                    class="first-child"
+                                                    isValueReactive
+                                                    :isDataLoadedCompletely="!isInitializing"
+                                            />
+
+                                            <KendoDropDownInputComponent
+                                                    :id="setUniqueIdentifier( `[${item.id}]` + '-subjectToPolicyExclusion.typesOfExclusionTemp-' + idx)"
+                                                    label="Type of Exclusion"
+                                                    :dataItems="typesOfExclusion"
+                                                    placeholder="All Business"
+                                                    :name="'subjectToPolicyExclusion.typesOfExclusionTemp' + index + '-' +idx"
+                                                    :value="policyExclusion?.exclusionType"
+                                                    @onValueChange="((value) => policyExclusion.exclusionType = value)"
+                                                    isValueReactive
+                                                    :isDataLoadedCompletely="!isInitializing"
+                                            />
+
+                                            <div class="container-pii">
+                                                <KendoDropDownInputComponent
+                                                        :id="setUniqueIdentifier( `[${item.id}]` + '-subjectToPolicyExclusion.timeOfExclusionTemp-' + idx)"
+                                                        label="Time Period of Exclusion"
+                                                        :dataItems="timePeriodOfExclusion"
+                                                        placeholder="Past and future business"
+                                                        :name="'subjectToPolicyExclusion.timeOfExclusionTemp' + index + '-' +idx"
+                                                        :value="policyExclusion?.exclusionTimePeriod"
+                                                        @onValueChange="((value) => policyExclusion.exclusionTimePeriod = value)"
+                                                        :isRequired="false"
+                                                        class="flex-grow-1"
+                                                />
+
+                                                <div class="flex-grow-0 ps-2 pb-2"
+                                                     style="
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: flex-end;
+                          "
+                                                     v-if="item.pii.policyExclusions.length && item.pii.policyExclusions.length === idx + 1">
+                                                    <a href="#">
+                                                        <IconComponent
+                                                                symbol="add-circle-27"
+                                                                size="20"
+                                                                @click.prevent="addPolicyExclusion(item.pii)"
+                                                        />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </StackLayout>
+                                    </div>
+                                </StackLayout>
+                            </template>
+                        </CollapsiblePanelComponent>
+
+                        <!-- Section3 -->
+                        <CollapsiblePanelComponent
+                                :items="[{
+                                    id: `document-upload-${index}`,
+                                    title: $t('professionalIndemnityInsurancePage-section-document-upload-title'),
+                                    content: '',
+                                    active: true,
+                                  }]"
+                                panel-class="PiiSubPanel"
+                        >
+                            <template #content>
+                                <p class="font-weight-normal mb-2">
+                                    {{
+                                        $t("professionalIndemnityInsurancePage-section-document-upload-proposal-text")
+                                    }}
+                                </p>
+
+                                <KendoUploadInputComponent
+                                        class="mb-4"
+                                        :button-text="$t('professionalIndemnityInsurancePage-section-document-upload-proposal-button-text')"
+                                        :name="`document-proposalFormFile-${index}`"
+                                        stretched
+                                        dropzone
+                                        multiple
+                                        :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx', '.txt']"
+                                        asFileModel
+                                        :uploadFor="`PII-${customer.companyNumber}`"
+                                        :value="item.pii.proposalFormFile ?? []"
+                                        @updated="(value) => item.pii.proposalFormFile = value"
+                                />
+
+                                <p class="font-weight-normal mb-2">
+                                    {{
+                                        $t("professionalIndemnityInsurancePage-section-document-upload-insurance-text")
+                                    }}
+                                </p>
+
+                                <KendoUploadInputComponent
+                                        :button-text="$t('professionalIndemnityInsurancePage-section-document-upload-insurance-button-text')"
+                                        :name="`document-scheduleOfInsurance-${index}`"
+                                        stretched
+                                        dropzone
+                                        multiple
+                                        :allowed-extensions="['.pdf', '.jpg', 'doc', 'docx', '.txt']"
+                                        asFileModel
+                                        :uploadFor="`PII-${customer.companyNumber}`"
+                                        :value="item.pii.schedOfInsurance ?? []"
+                                        @updated="(value) => item.pii.schedOfInsurance = value"
+                                />
+                            </template>
+                        </CollapsiblePanelComponent>
+                    </template>
+                </CollapsiblePanelComponent>
+            </template>
+        </ScrollableTabComponent>
+    </KendoFormElementComponent>
+</KendoForm>

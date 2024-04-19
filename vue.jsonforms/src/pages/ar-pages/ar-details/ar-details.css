@@ -1,0 +1,138 @@
+.trading-name-item-container {
+    border: 1px solid #D6D0D0;
+    border-radius: 5px;
+    background-color: #FEFEFE;
+}
+
+.link-text {
+    color: var(--color-primary);
+    font-size: var(--font-size-default);
+    font-style: normal;
+    font-weight: var(--font-weight-bold);
+    line-height: 20.8px;
+    text-decoration: underline;
+    padding-top: 0px;
+}
+
+/* remove the underline color from the link text */
+.k-button-link:hover {
+    text-decoration-color: transparent;
+}
+
+.btn-border-radius {
+    border-radius: 10px;
+}
+
+.firm-button {
+    border-radius: 100px;
+    background: var(--color-primary-50);
+}
+
+.firm-button-unactive {
+    border-radius: 100px;
+    background: #FFF;
+}
+
+.firm-detail-section.focused {
+    border: 1.5px solid var(--color-primary);
+}
+
+.firm-representative-details-section.focused {
+    border: 1.5px solid var(--color-primary);
+}
+
+/*#locum-section {*/
+/*    border: 1.5px solid var(--color-primary);*/
+/*}*/
+
+/*#account-department-details-section {*/
+/*    border: 1.5px solid var(--color-primary);*/
+/*}*/
+
+a:link {
+    text-decoration: none;
+}
+
+span > a {
+    color: #202B37;
+}
+
+/* for sticky anchors, will consolidate soon */
+.section-item, .section-item * {
+    cursor: pointer;
+}
+
+.section-item label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semi-bold);
+    line-height: 125%; /*17.5px*/
+}
+
+.section-item svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* will move this one to scss if there are many pages using this properties */
+.sub-texts {
+    color: var(--color-black);
+    text-align: justify;
+    font-size: var(--font-size-default);
+    font-style: normal;
+    font-weight: var(--font-weight-medium);
+    line-height: 20.8px;
+}
+
+.paragraph-m-figtree-regular {
+    width: 357px;
+}
+
+.test {
+    color: red;
+}
+
+
+.section-item {
+    flex: 1; /* Adjust the flex property as needed */
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .section-item:nth-child(2) {
+    flex: 1.5; 
+  }
+  .section-item:nth-child(4),
+  .section-item:nth-child(5),
+  .section-item:nth-child(6) {
+    flex: 2; /* Larger flex value for the 3rd and 6th items */
+  }
+
+  .number-text-circle {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    border-radius: 18px;
+    background: var(--brand-color-brand-primary);
+
+    .number-text {
+        color: white;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 125%;
+    }
+  }
+
+.question-text{
+    font-size: var(--font-size-default);
+    font-weight: var(--font-weight-medium);
+    font-style: normal;
+    line-height: 130%;
+    color: var(--color-black);
+}

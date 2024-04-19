@@ -1,0 +1,18 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="pathfinder-crop" clip-path="url(#clip0_47_146662)">
+<g id="pathfinder-crop_2">
+<path id="Vector 2589" d="M1.41016 2.73256C1.41016 2.00276 2.00178 1.41113 2.73158 1.41113" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 2590" d="M11.9805 1.41113C12.7103 1.41113 13.3019 2.00276 13.3019 2.73256" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 2591" d="M1.41016 11.9824C1.41016 12.7122 2.00178 13.3039 2.73158 13.3039" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 2593" d="M1.41016 8.67899V6.03613" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector 2594" d="M6.03516 1.41113H8.67801" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector" d="M8.01674 6.69727C7.28694 6.69727 6.69531 7.2889 6.69531 8.01869V11.983C6.69531 12.7128 7.28694 13.3044 8.01674 13.3044H11.981C12.7108 13.3044 13.3025 12.7128 13.3025 11.983V8.01869C13.3025 7.2889 12.7108 6.69727 11.981 6.69727H8.01674Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M15.9453 6.69727H17.2667C17.6172 6.69727 17.9534 6.83649 18.2011 7.0843C18.4489 7.33212 18.5882 7.66822 18.5882 8.01869V17.2687C18.5882 17.6191 18.4489 17.9553 18.2011 18.2031C17.9534 18.4508 17.6172 18.5901 17.2667 18.5901H8.01674C7.66627 18.5901 7.33017 18.4508 7.08235 18.2031C6.83454 17.9553 6.69531 17.6191 6.69531 17.2687V15.9473" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_146662">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

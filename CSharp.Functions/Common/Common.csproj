@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+		<PropertyGroup>
+				<TargetFramework>net6.0</TargetFramework>
+				<ImplicitUsings>enable</ImplicitUsings>
+				<Nullable>enable</Nullable>
+		</PropertyGroup>
+
+		<ItemGroup>
+				<PackageReference Include="Aspose.Email" Version="23.5.0" />
+				<PackageReference Include="Aspose.PDF" Version="23.4.0" />
+				<PackageReference Include="CsvHelper" Version="30.0.1" />
+				<PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
+				<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+				<PackageReference Include="Aspose.Words" Version="23.5.0" />
+				<PackageReference Include="AutoMapper" Version="12.0.1" />
+				<PackageReference Include="Azure.Storage.Blobs" Version="12.15.0" />
+				<PackageReference Include="DocumentFormat.OpenXml" Version="2.19.0" />
+				<PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+				<PackageReference Include="Microsoft.AspNetCore.HttpOverrides" Version="2.2.0" />
+				<PackageReference Include="Microsoft.Azure.Cosmos" Version="3.32.0" />
+				<PackageReference Include="Polly" Version="7.2.3" />
+				<PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
+		</ItemGroup>
+
+</Project>

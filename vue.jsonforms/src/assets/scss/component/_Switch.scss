@@ -1,0 +1,32 @@
+.Switch {
+    .k-switch-off .k-switch-track {
+        max-width: 36px;
+        height: 20px;
+        border-color: transparent;
+        color: transparent;
+        background-color: var(--neutral-gray-300);
+    }
+        
+    .k-switch-on .k-switch-track {
+        max-width: 36px;
+        height: 20px;
+        border-color: transparent;
+        color: transparent;
+        background-color: var(--brand-color-brand-primary);
+    }
+        
+    .k-switch-sm .k-switch-thumb {
+        margin-left: -2px;
+        background: var(--color-white);
+        width: 16px;
+        height: 16px;
+    }
+
+    .k-switch.k-switch-sm.k-rounded-full.k-switch-on {
+        width: 40px;
+    }
+
+    .k-switch.k-switch-sm.k-rounded-full.k-switch-off {
+        width: 40px;
+    }
+}

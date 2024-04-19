@@ -1,0 +1,22 @@
+.parent {
+    background-color: white;
+    min-height: 95vh
+}
+
+.question-text {
+    font-weight: var(--font-weight-normal);
+}
+
+.numericInput {
+    width:100px;
+}
+
+.btn-border-radius {
+    border-radius: 10px;
+}
+
+.controller-detail-container {
+    display: flex;
+    flex-direction: row;
+    gap:20px;
+}

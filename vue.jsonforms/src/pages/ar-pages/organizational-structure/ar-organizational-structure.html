@@ -1,0 +1,269 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent title="Appointed Representative Organisational Structure Chart"
+                         :routeName="helperService.removeStringSpacesThenSlash(AppConstants.arOrganizationalStructureRoute)">
+    <template #description>
+        <p>
+            {{ $t("organizationStructurePage-description", {currentFirmName: appService.getCustomerArFirmName()}) }}
+        </p>
+    </template>
+</KendoPageTitleComponent>
+
+<!--ToDo. make this component soon -->
+<div class="d-flex">
+    <KendoButton
+            type="button"
+            size="small"
+            fill-mode="flat"
+            rounded="full"
+            shape="square"
+            theme-color="primary"
+            :style="{color: getIconColor(isShowOrganizationalStructureList)}"
+            class="Button"
+            :selected="isShowOrganizationalStructureList"
+            @click="toggleOrganizationalStructureList()">
+        <IconComponent symbol="bullet-list-17" size="20"/>
+    </KendoButton>
+
+    <KendoButton
+            style="margin-left: 20px;"
+            type="button"
+            size="small"
+            fill-mode="flat"
+            rounded="full"
+            shape="square"
+            theme-color="primary"
+            class="Button"
+            :style="{color: getIconColor(isShowOrganizationalStructureCard)}"
+            :selected="isShowOrganizationalStructureCard"
+            @click="toggleOrganizationalStructureCard()">
+        <IconComponent symbol="dashboard-square-4" size="20"/>
+    </KendoButton>
+
+    <KendoButton
+            style="margin-left: 20px;"
+            type="button"
+            size="small"
+            fill-mode="flat"
+            rounded="full"
+            shape="square"
+            theme-color="primary"
+            class="Button"
+            :style="{color: getIconColor(isShowOrganizationalStructureChart)}"
+            :selected="isShowOrganizationalStructureChart"
+            @click="toggleOrganizationalStructureChart()">
+        <IconComponent symbol="hierarchy-14-6" size="22"/>
+    </KendoButton>
+
+    <KendoTabStrip
+            class="TabStrip TabStrip--lined"
+            style="height: 20px; margin-top: 4px; margin-left: 20px;"
+            :selected="currentTab"
+            :tabs="tabs"
+            @select="selectTab">
+    </KendoTabStrip>
+
+    <KendoButton
+            style="margin-left: auto;"
+            type="button"
+            theme-color="primary"
+            icon="plus"
+            @click="handleAddEmployee">
+        Add New Staff
+    </KendoButton>
+</div>
+
+<!--ToDo. Top section search and export, to be partial soon -->
+<div class="d-flex mt-4" v-if="isShowOrganizationalStructureList || isShowOrganizationalStructureCard">
+    <div class="search-section">
+        <StackLayout style="position: relative;"
+                     orientation="horizontal"
+                     class="control-container"
+                     :style="{ borderRadius: '100px', border: '0.3px solid var(--text-text-disabled)', padding: '0 10px' }"
+                     :align="{ horizontal: 'start', vertical: 'middle' }">
+            <IconComponent symbol="search-icon" :size="'20'" class="magnifier" style="color: var(--color-primary)"/>
+
+            <KendoAutoCompleteInputComponent
+                    :data-items="employeesSuggestions"
+                    placeholder="Search Name, Email Address"
+                    :id="setUniqueIdentifier('-selected-employee')"
+                    :fillMode="null"
+                    :style="{ borderColor: 'transparent', width: '300px'}"
+                    :value="selectedEmployee"
+                    item-render="itemTemplate"
+                    @select="onSelectAsync"
+                    @change="onInput"
+                    isValueReactive
+                    :isDataLoadedCompletely="!isInitializing">
+                <template v-slot:itemTemplate="{props}">
+                    <li :class="['k-item', props.class, props.dataItem.class && props.dataItem.class]"
+                        @click="props.onClick" style="cursor: pointer">
+                        <Label style="display: block">{{ props.dataItem?.foreName }} {{
+                                props.dataItem?.surName
+                            }}</Label>
+                    </li>
+                </template>
+            </KendoAutoCompleteInputComponent>
+
+            <div v-if="hasSearchSelection"
+                 class="search-clear" @click="onClearSearch">
+                <IconComponent symbol="close" size="10"/>
+            </div>
+        </StackLayout>
+
+        <KendoButton
+                ref="filterButton"
+                fill-mode="outline"
+                theme-color="primary"
+                :class="[
+                    'GridCardTable-filterButton',
+                    isFilterOpen && 'is-filter-open',
+                  ]"
+                @click.prevent="isFilterOpen = true"
+        >
+            <IconComponent symbol="filter-2-58" width="15" class="me-1"/>
+
+            Filters {{ filterCount }}
+            <KendoButton
+                    v-if="isFilterOpen"
+                    type="button"
+                    size="small"
+                    rounded="full"
+                    shape="square"
+                    theme-color="light"
+                    title="View"
+                    class="filterClose"
+                    @click.stop="
+                      () => {
+                        isFilterOpen = false;
+                      }
+                    ">
+                <IconComponent symbol="clear" size="10"/>
+            </KendoButton>
+        </KendoButton>
+
+        <KendoPopup
+                anchor="filterButton"
+                :show="isFilterOpen"
+                popup-class="FilterPopup"
+        >
+            <div ref="filterBody" class="FilterPopup-body">
+                <KendoForm>
+                    <FormElement>
+                        <slot name="filter-fields">
+                            <KendoMultiSelectTreeComponent
+                                    :data-items="roles"
+                                    name="rolesFilter"
+                                    :id="setUniqueIdentifier('-rolesFilter')"
+                                    :value="selectedRolesForFilter"
+                                    @onValueChange="handleRolesChange"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                                    class="mb-3"
+                                    label="Role(s)">
+                                <template #tagTemplate="{ tagProps, item, onClose }">
+                                    <KendoTooltip anchor-element="target" position="top">
+                                        <PillComponent
+                                                theme-color="white"
+                                                size="lg"
+                                                class="font-weight-semi-bold"
+                                                text-class="is-truncated"
+                                                closeable
+                                                @close="onClose(item)"
+                                        >
+                                            <span :title="tagProps?.tagData.text">
+                                              {{ tagProps?.tagData.text }}
+                                            </span>
+                                        </PillComponent>
+                                    </KendoTooltip>
+                                    <a
+                                            href="#"
+                                            v-if="
+                                            tagProps?.dataItems.length > 4 &&
+                                            tagProps?.dataItems.length - 1 === tagProps?.index
+                                          "
+                                    >
+                                        <b>+{{ tagProps?.dataItems.length - 4 }}</b>
+                                    </a>
+                                </template>
+                            </KendoMultiSelectTreeComponent>
+
+                            <KendoDropdownListComponent
+                                    name="status"
+                                    :id="setUniqueIdentifier('-status')"
+                                    label="Status"
+                                    :data-items="getStatuses()"
+                                    class="mb-3"
+                                    :value="selectedStatusForFilter"
+                                    @onValueChange="handleStatusChange"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+                        </slot>
+
+                        <div class="FilterPopup-buttons">
+                            <KendoButton @click="clearFilter" theme-color="light"
+                            >Clear
+                            </KendoButton>
+
+                            <KendoButton
+                                    @click="
+                                      () => {
+                                        filter();
+                                        isFilterOpen = false;
+                                      }
+                                    "
+                                    theme-color="primary"
+                            >Apply Filters
+                            </KendoButton>
+                        </div>
+                    </FormElement>
+                </KendoForm>
+            </div>
+        </KendoPopup>
+    </div>
+
+    <KendoButton
+            style="margin-left: auto; padding-left: 40px;"
+            type="button"
+            fill-mode="outline"
+            theme-color="primary"
+            @click="addExport()">
+        Export
+        <IconComponent symbol="arrow-up-square-87" style="position: absolute; right: 76px; bottom: 12px;" size="18"/>
+    </KendoButton>
+</div>
+
+<div v-if="isShowOrganizationalStructureList">
+    <AROrganizationalStructureList :employeesValues="employeesFiltered" @viewUser="this.isEdit = true"
+                                   @editUser="handleEditEmployee" @exportingPDF="handleExportingPDF"/>
+</div>
+
+<div v-if="isShowOrganizationalStructureCard" style="margin-top: 30px;">
+    <AROrganizationalStructureCard :employeesValues="employeesFiltered" @editUser="handleEditEmployee"/>
+</div>
+
+<div v-if="isShowOrganizationalStructureChart" style="margin-top: 30px;">
+    <AROrganizationalStructureChart :employeesValues="employeesFiltered"/>
+</div>
+
+<ARAddStaffModal
+        v-if="isStaffModalVisible"
+        :employeeValues="employeesFiltered"
+        :employee="currentEmployee"
+        :saving="isFormSaving"
+        :isEdit="isEdit"
+        @close="closeForm"
+        @submit="saveOrUpdateOrgStructureEmployee"
+        @requestStaffToCompleteDetails="requestStaffToCompleteDetailsAsync"
+/>
+
+<pdfexport ref="gridPdfExport">
+    <grid
+            v-show="false"
+            :data-items="itemsToPDF"
+            :columns="columnsToPDF">
+    </grid>
+</pdfexport>

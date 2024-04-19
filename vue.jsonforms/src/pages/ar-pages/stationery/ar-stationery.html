@@ -1,0 +1,159 @@
+<KendoLoadingComponent :isLoading="isLoading" />
+
+<Breadcrumb />
+
+<KendoTabStrip
+  class="TabStrip TabStrip--lined"
+  :selected="currentTab"
+  :tabs="tabs"
+  @select="selectTab"
+>
+  <template v-slot:stationery>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t("ar-stationaryPage-stationery") }}
+    </h2>
+    <p>
+      <div class="alert alert-primary border-0">
+        {{ $t("ar-stationaryPage-stationeryDescription", { currentFirmName:
+          currentArFirmName, }) }}
+      </div>
+    </p>
+
+    <GridCardTable
+      :columns="stationeryColumns"
+      :items="stationeries"
+      class="stationeries-table mt-4"
+      add-button-text="Add Stationery"
+      @add="isStationeryModalVisible = true"
+    >
+      <template v-slot:cell-stationeryName="{ item: { name, icon } }">
+        <IconTextComponent :icon="icon">
+          <template #text>
+            <strong class="font-size-default">{{ name }}</strong>
+          </template>
+        </IconTextComponent>
+      </template>
+      <template v-slot:cell-filesUploaded="{ item: { files } }">
+        {{ files.length }}
+      </template>
+      <template v-slot:cell-status="{ item: { status } }">
+        <StatusLabelComponent :status="status" />
+      </template>
+      <template v-slot:cell-lastUpdated="{ item: { updatedAt } }">
+        <DateTimeComponent :value="moment(updatedAt * 1000).toDate()" />
+      </template>
+      <template v-slot:cell-actions="{ item }">
+        <Actions
+          :stationery="item"
+          @view="viewStationery"
+          @upload="uploadStationery"
+          @download="viewStationery"
+        />
+      </template>
+
+      <template
+        v-slot:card-content="{ item: { id, name, icon, status, files, updatedAt } }"
+      >
+        <div class="d-flex align-items-center mb-3">
+          <div class="flex-grow-1">
+            <IconTextComponent :icon="icon">
+              <template #text>
+                <strong class="font-size-default">{{ name }}</strong>
+                <DividerComponent />
+                <small>
+                  <!-- @TODO Put in localization plural -->
+                  {{ files.length }} {{ files.length > 1 ? "files" : "file" }}
+                </small>
+              </template>
+            </IconTextComponent>
+          </div>
+          <div class="flex-shrink-1">
+            <StatusLabelComponent :status="status" />
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <small>
+            <DateTimeComponent :value="updatedAt" />
+          </small>
+          <Actions
+            :stationery="{ id, files }"
+            @view="viewStationery"
+            @upload="uploadStationery"
+            @download="viewStationery"
+          />
+        </div>
+      </template>
+    </GridCardTable>
+  </template>
+  <template v-slot:disclosures>
+    <h2 class="font-size-xl text-primary mb-3">
+      {{ $t("ar-stationaryPage-disclosures") }}
+    </h2>
+    <div class="alert alert-primary border-0">
+      {{ $t("ar-stationaryPage-disclosuresDescription") }}
+    </div>
+    <NavPillComponent
+      :items="disclosuresNav"
+      v-sticky="{ marginTop: 55, stickyClass: 'is-bg-from-body is-zindex-base' }"
+      anchorable
+    ></NavPillComponent>
+
+    <div class="mb-3"></div>
+
+    <PanelComponent
+      v-for="disclosureType in disclosureTypes"
+      :key="`disclosure-${disclosureType.id}`"
+      :id="disclosureType.id"
+      :title="disclosureType.title"
+      class="DisclosurePanel"
+    >
+      <template #description>
+        <div v-html="disclosureType.description" class="alert alert-primary border-0"></div>
+      </template>
+
+      <ContentListBoxComponent
+        v-model="disclosure"
+        :blocks="disclosuresListBox[disclosureType.id]"
+      >
+        <template #empty="{ blockId, emptyText }">
+          <div class="text-center text-neutral">
+            <IconComponent size="27" symbol="text-square-17" />
+            <div class="mt-2">{{ emptyText }}</div>
+          </div>
+        </template>
+        <template #create-form="{ setValue, getValue }">
+          <RichTextComponent
+            :model-value="getValue('content', '')"
+            @update:model-value="setValue('content', $event)"
+          />
+        </template>
+        <template #item-edit-footer="{ getValue, setValue }">
+          <RichTextComponent
+            :model-value="getValue('content')"
+            @update:model-value="setValue('content', $event)"
+          />
+        </template>
+        <template #item-content="{ props }">
+          <ExcerptTextComponent :text="props.dataItem?.content" />
+        </template>
+      </ContentListBoxComponent>
+    </PanelComponent>
+  </template>
+</KendoTabStrip>
+
+<ARStationeryModal
+  v-model="isStationeryModalVisible"
+  :initialValues="stationery"
+  :saving="isSavingStationery"
+  @submit="saveStationeryAsync"
+  @update="updateStationeryDataAsync"
+  @close="clearStationery"
+/>
+
+<ARViewStationeryModal
+  v-model="isViewStationeryModalVisible"
+  :stationery="selectedStationery"
+  :isView="isActionView"
+  @update="updateStationeryDataAsync"
+  @close="clearStationery"
+/>

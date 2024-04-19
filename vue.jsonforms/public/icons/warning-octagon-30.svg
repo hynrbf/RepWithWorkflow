@@ -1,0 +1,17 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="warning-octagon-30" clip-path="url(#clip0_47_141842)">
+<g id="warning-octagon--frame-alert-warning-octagon-exclamation-caution">
+<path id="Vector" d="M13.69 18.2022C13.4422 18.45 13.1061 18.5893 12.7557 18.5893H7.24322C6.89276 18.5893 6.55664 18.45 6.30884 18.2022L1.79719 13.6906C1.54938 13.4428 1.41016 13.1067 1.41016 12.7562V7.24377C1.41016 6.89331 1.54938 6.55719 1.79719 6.30939L6.30884 1.79774C6.55664 1.54993 6.89276 1.41071 7.24322 1.41071H12.7557C13.1061 1.41071 13.4422 1.54993 13.69 1.79774L18.2017 6.30939C18.4494 6.55719 18.5887 6.89331 18.5887 7.24377V12.7562C18.5887 13.1067 18.4494 13.4428 18.2017 13.6906L13.69 18.2022Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M10 6.03571V10.3303" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Group 2605">
+<path id="Ellipse 1111" d="M9.99833 13.9643C9.81588 13.9643 9.66797 13.8164 9.66797 13.6339C9.66797 13.4515 9.81588 13.3036 9.99833 13.3036" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Ellipse 1112" d="M10 13.9643C10.1824 13.9643 10.3304 13.8164 10.3304 13.6339C10.3304 13.4515 10.1824 13.3036 10 13.3036" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_141842">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>

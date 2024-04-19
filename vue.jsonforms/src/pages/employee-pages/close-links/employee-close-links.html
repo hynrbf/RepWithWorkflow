@@ -1,0 +1,205 @@
+<KendoLoadingComponent :isLoading="isLoading" :isShowSavingText="isShowSavingText"/>
+
+<Breadcrumb/>
+
+<KendoPageTitleComponent title="Employee Close Links"
+                         :routeName="helperService.removeStringSpacesThenSlash(AppConstants.employeeCloseLinkRoute)"
+                         progress-bar>
+    <template #description>
+        <p>
+            {{ $t("closeLinkPage-description") }}
+            <a href="javascript:;" @click="goToOwnersAndControllersAsync">
+                <strong>{{ $t("closeLinkPage-description1") }}</strong>
+            </a>
+            {{ $t("closeLinkPage-description2", {currentFirmName: currentEmployeeFirmName}) }}<br/>
+            {{ $t("closeLinkPage-description3", {currentFirmName: currentEmployeeFirmName}) }}
+        </p>
+    </template>
+</KendoPageTitleComponent>
+
+<KendoCard class="mb-4">
+    <KendoCardBody>
+        <StackLayout
+                :orientation="orientation"
+                :align="{ horizontal: 'start', vertical: 'middle' }"
+                :gap="15"
+        >
+            <p class="mb-0">
+                {{ $t("closeLinkPage-question", {currentFirmName: currentEmployeeFirmName}) }}
+                <a href="javascript:;" @click="goToOwnersAndControllersAsync">
+                    <strong>{{ $t("closeLinkPage-description1") }}</strong>
+                </a>
+                {{ $t("closeLinkPage-question1") }}
+            </p>
+            <ToggleButtonComponent
+                    v-model="hasOtherCloseLinks"
+                    class="ms-auto"
+                    @update:model-value="toggleHasOtherCloseLink"
+            />
+        </StackLayout>
+    </KendoCardBody>
+</KendoCard>
+
+<KendoForm
+        v-if="hasOtherCloseLinks"
+        :initial-values="{ closeLinks }"
+>
+    <FormElement ref="formElement">
+        <ScrollableTabComponent
+                v-model:items="closeLinkTabs"
+                addable
+                removable
+                @add="addCloseLink"
+                @remove="removeCloseLink">
+            <template v-for="(item, index) in collapsibleCloseLinkItems"
+                      :key="item.closeLink.id"
+                      #[`content(close-link-${item.closeLink.id})`]="{ index }">
+                <CollapsiblePanel
+                        :title="item.closeLink?.companyName ?
+                            `Close Link: ${item.closeLink.companyName}` :
+                            'Close Links Details'"
+                        :collapse="item.isCollapsed"
+                        @onToggleCollapse="((value) => item.isCollapsed = value)"
+                        class="mb-4"
+                >
+                    <div class="row gy-4">
+                        <KendoDropDownInputComponent
+                                :id="setUniqueIdentifier(`-${item.closeLink.id}-natureOfCloseLink`)"
+                                class="col-md-12"
+                                :name="`closeLinks.${item.closeLink.id}.natureOfCloseLink`"
+                                label="Nature of Close Link"
+                                placeholder="Please select"
+                                :data-items="natureOfCloseLink"
+                                :value="item.closeLink?.natureOfCloseLink"
+                                @onValueChange="(value) => item.closeLink.natureOfCloseLink = value"
+                        />
+
+                        <KendoFirmFinderComponentAsync
+                                :id="setUniqueIdentifier(`-${item.closeLink.id}` + '-firm')"
+                                companyNameLabel="Company Name"
+                                :company="item.closeLink?.firm"
+                                :companyName="item.closeLink?.companyName"
+                                :companyNumber="item.closeLink?.companyNumber"
+                                :firmReferenceNumber="item.closeLink?.firmReferenceNumber"
+                                :isInitializing="isInitializing"
+                                @onCompanyDetailUpdated="(value) => onCloseLinkUpdated(value, index)"
+                        />
+
+                        <KendoBusinessIncorporationComponent
+                                :id="setUniqueIdentifier(`-${item.closeLink.id}-natureOfBusiness`)"
+                                :isInitializing="isInitializing"
+                                :value="
+                                    mapCountryAndNatureOfBusinessToBusinessIncorporation(
+                                        item.closeLink,
+                                    )
+                                "
+                                @onBusinessIncorporationChange="
+                                    (businessNature: BusinessIncorporation) =>
+                                    onBusinessIncorporationChange(
+                                        businessNature,
+                                        item.closeLink,
+                                    )
+                                "
+                        />
+
+                        <KendoPostCodeInputComponent
+                                :id="setUniqueIdentifier(`-${item.closeLink.id}-registeredAddress`)"
+                                class="col-md-12"
+                                :name="`closeLinks.${item.closeLink.id}.regAddress`"
+                                label="Registered Address"
+                                :value="item.closeLink?.registeredAddress"
+                                @onValueChange="(value) => item.closeLink.registeredAddress = value"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"  />
+
+                        <KendoPostCodeInputWithSameAsComponent
+                                :id="setUniqueIdentifier(`-${item.closeLink.id}-tradingAddress`)"
+                                :name="`closeLink.${item.closeLink.id}.tradingAddress`"
+                                label="Trading Address"
+                                :value="item.closeLink?.tradingAddress"
+                                :isChecked="item.closeLink.isTradingSameAsRegisteredAddress"
+                                :isUserModified="item.closeLink.isTradingAddressChanged"
+                                @onValueChange="(value) => onTradingAddressChanged(value, item.closeLink)"
+                                @onLostFocus="(id: string, hasChanged: boolean) => onTradingAddressDoneTyping(id, hasChanged, item.closeLink)"
+                                @onToggle="onToggleTradingAddress(index)"
+                                :sameAsLabel="$t('same-as-registered-address')"
+                                isValueReactive
+                                :isDataLoadedCompletely="!isInitializing"
+                        />
+
+                        <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
+                            <KendoPercentageInputComponent
+                                    :id="setUniqueIdentifier(`-${item.closeLink.id}-percentCapital`)"
+                                    class="col"
+                                    :name="`closeLinks.${item.closeLink.id}.percentCapital`"
+                                    :minLimit="20"
+                                    :maxLimit="100"
+                                    KendoNumericInputComponent
+                                    label="Percentage of Capital (Ownership)"
+                                    placeholder="0"
+                                    @onValueChange="(value) => onPercentageCapitalValueChange(value, item.closeLink)"
+                                    :value="item.closeLink?.percentageOfCapital"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+
+                            <KendoPercentageInputComponent
+                                    :id="setUniqueIdentifier(`-${item.closeLink.id}-percentVotingRights`)"
+                                    class="col"
+                                    :name="`closeLinks.${item.closeLink.id}.percentVotingRights`"
+                                    :minLimit="20"
+                                    :maxLimit="100"
+                                    KendoNumericInputComponent
+                                    label="Percentage of Capital (Ownership)"
+                                    placeholder="0"
+                                    @onValueChange="(value: number | null) => item.closeLink.percentageOfVotingRights = value"
+                                    :value="item.closeLink?.percentageOfVotingRights"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+                        </StackLayout>
+
+                        <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
+                            <KendoEmailAddressInputComponent
+                                    :id="setUniqueIdentifier(`-${item.closeLink.id}-emailAddress`)"
+                                    class="col"
+                                    :name="`closeLinks.${item.closeLink.id}.emailAddress`"
+                                    label="Email Address"
+                                    :value="item.closeLink?.emailAddress"
+                                    @onValueChange="(value) => item.closeLink.emailAddress = value"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+
+                            <KendoTelInputComponent
+                                    :id="setUniqueIdentifier(`-${item.closeLink.id}-contactNumber`)"
+                                    :name="`closeLinks.${item.closeLink.id}.contactNumber`"
+                                    label="Contact Number"
+                                    class="col"
+                                    :value="item.closeLink?.contactNumber"
+                                    @onValueChange="(value) => item.closeLink.contactNumber = value"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+
+                            <KendoGenericInputComponent
+                                    :id="setUniqueIdentifier(`-${item.closeLink.id}-website`)"
+                                    class="col"
+                                    type="url"
+                                    :name="`closeLinks.${item.closeLink.id}.website`"
+                                    label="Website"
+                                    :isRequired="false"
+                                    :value="item.closeLink?.website"
+                                    @onValueChange="(value) => item.closeLink.website = value"
+                                    isValueReactive
+                                    :isDataLoadedCompletely="!isInitializing"
+                            />
+                        </StackLayout>
+                    </div>
+                </CollapsiblePanel>
+            </template>
+        </ScrollableTabComponent>
+    </FormElement>
+</KendoForm>
+
+<EmptyStateComponent v-else icon="no-poverty" label="No Close Links"/>

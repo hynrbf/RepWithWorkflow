@@ -1,0 +1,34 @@
+<KendoDialog ref="kendoDialog"/>
+
+<div class="m-4 d-flex flex-column gap-2">
+    <div class="d-flex gap-2 align-items-center">
+        <DropDownList :data-items="documentNames" @change="selectName"/>
+
+        <input type="file"
+               ref="doc"
+               :disabled="!name"
+               accept=".doc,.docx"
+               @change="onConvertWordToHtmlAsync"/>
+    </div>
+
+    <div>
+        <Editor :api-key="apiKey"
+                :init="{
+         height: 500,
+         menubar: false,
+         plugins: [],
+         toolbar:
+           'undo redo | formatselect | bold italic backcolor | \
+           alignleft aligncenter alignright alignjustify | \
+           bullist numlist outdent indent | removeformat | help'
+       }" v-model="content">
+        </Editor>
+    </div>
+
+    <div>
+        <button class="my-2 btn btn-success"
+                style="width:80px"
+                @click="saveContent">Save
+        </button>
+    </div>
+</div>

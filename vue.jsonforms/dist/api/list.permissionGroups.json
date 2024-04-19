@@ -1,0 +1,90 @@
+[
+  {
+    "permissionGroupName": "Owner Occupier Mortgages",
+    "categoryName": "Mortgage Broker",
+    "subPermissions": [
+      "Advising on Regulated Mortgage Contracts",
+      "Arranging (bringing about) Regulated Mortgage Contracts",
+      "Making Arrangements with a view to Regulated Mortgage Contracts"
+    ]
+  },
+  {
+    "permissionGroupName": "Consumer Buy to Let Mortgages",
+    "categoryName": "Mortgage Broker",
+    "subPermissions": [
+      "Acting as a CBTL Advisor",
+      "Acting as a CBTL Arranger"
+    ]
+  },
+  {
+    "permissionGroupName": "Home Reversion Plans",
+    "categoryName": "Mortgage Broker",
+    "subPermissions": [
+      "Advising on a Home Reversion Plan",
+      "Arranging (bringing about) a Home Reversion Plan",
+      "Making Arrangements with a view to a Home Reversion Plan"
+    ]
+  },
+  {
+    "permissionGroupName": "Home Purchase Plans",
+    "categoryName": "Mortgage Broker",
+    "subPermissions": [
+      "Advising on a Home Purchase Plan",
+      "Arranging (bringing about) a Home Purchase Plan",
+      "Making Arrangements with a view to a Home Purchase Plan"
+    ]
+  },
+  {
+    "permissionGroupName": "Debt Consolidation",
+    "categoryName": "Mortgage Broker",
+    "subPermissions": [
+      "Debt Counselling",
+      "Debt Adjusting"
+    ]
+  },
+  {
+    "permissionGroupName": "Advising deals in Investments",
+    "categoryName": "Insurance Broker",
+    "subPermissions": [
+      "Advising on Investments (limited to non-investment insurance contracts)"
+    ]
+  },
+  {
+    "permissionGroupName": "Arranging deals in Investments",
+    "categoryName": "Insurance Broker",
+    "subPermissions": [
+      "Arranging Deals in Investments (limited to non-investment insurance contracts)"
+    ]
+  },
+  {
+    "permissionGroupName": "Making Arrangements…",
+    "categoryName": "Insurance Broker",
+    "subPermissions": [
+      "Making Arrangements with a view to Transactions in Investments (limited to non-investment insurance contracts)"
+    ]
+  },
+  {
+    "permissionGroupName": "Incepting a policy on behalf of the Insurer or Insured",
+    "categoryName": "Insurance Broker",
+    "subPermissions": [
+      "Assisting in the Administration & Performance of a Contract of Insurance"
+    ]
+  },
+  {
+    "permissionGroupName": "Providing ongoing support during the term of the policy",
+    "categoryName": "Insurance Broker",
+    "subPermissions": [
+      "Dealing in Investments as Agent (limited to non-investment insurance contracts)"
+    ]
+  },
+  {
+    "permissionGroupName": "Credit Broking",
+    "categoryName": "Additional Authorisation",
+    "subPermissions": []
+  },
+  {
+    "permissionGroupName": "Hold and Control Client Money",
+    "categoryName": "Additional Authorisation",
+    "subPermissions": []
+  }
+]

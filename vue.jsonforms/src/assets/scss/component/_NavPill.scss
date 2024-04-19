@@ -1,0 +1,39 @@
+.NavPill {
+    $root: &;
+
+    list-style-type: none;
+    display: flex;
+    gap: 10px;
+    margin: 0;
+    padding: 10px;
+
+    &-item {
+        margin: 0;
+        padding: 0;
+        flex: 1;
+
+        &.is-active,
+        &:hover {
+            #{$root}-link {
+                background-color: var(--navpill-link-active-bg-color);
+                color: var(--navpill-link-active-color);
+            }
+        }
+    }
+
+    &-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        text-align: center;
+        text-decoration: none;
+        color: var(--navpill-link-color);
+        font-size: var(--navpill-font-size);
+        font-weight: var(--font-weight-semi-bold);
+        padding: 6px;
+        border-radius: 100px;
+        transition: 0.3s ease all;
+        background-color: #fff;
+    }
+}

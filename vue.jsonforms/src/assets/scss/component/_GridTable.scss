@@ -1,0 +1,65 @@
+// With https://www.telerik.com/kendo-vue-ui/components/grid/
+
+.GridTable {
+    border-color: transparent;
+    background-color: transparent;
+
+    .k-toolbar {
+        padding: 0 0 25px 0;
+    }
+
+    .k-grid-header {
+        padding-right: 0 !important;
+    }
+
+    .k-grid-aria-root {
+        border: 1px solid var(--gridtable-border-color);
+        box-shadow: 0px 0.5px 0px 0px #14000040;
+        border-radius: 8px;
+    }
+
+    .k-table {
+        font-size: 14px;
+    }
+
+    .k-table-thead {
+        background-color: var(--gridtable-head-bg-color);
+        font-size: 12px;
+        font-weight: var(--font-weight-bold);
+
+        .k-table-th {
+            .k-link[class*=k-cursor-default] .k-column-title {
+                display: block;
+                width: 100%;
+            }
+        }
+    }
+
+    .k-table-tbody {
+        .k-table-row {
+            &:hover {
+                background-color: var(--color-light) !important;
+            }
+        }
+    }
+
+    .k-table-th, .k-table-td {
+        border-left-color: transparent;
+        border-right-color: transparent;
+    }
+
+    .k-table-th {
+        .k-link {
+            padding: 10px 15px !important;
+        }
+    }
+
+    .k-table-td {
+        padding: 12px 15px;
+        border-bottom-width: 1px;
+    }
+
+    .k-table-row.k-table-alt-row {
+        background-color: transparent;
+    }
+}

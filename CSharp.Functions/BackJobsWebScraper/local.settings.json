@@ -1,0 +1,27 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDbAccount": "https://complydexdb.documents.azure.com:443/",
+    "CosmosDbKey": "6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==",
+    "Database": "complydexdbinstance",
+    "WebScrapsContainer": "webScraps",
+    "FinancialPromotionsContainer": "financialPromotions",
+    "IsWebScraperEnabled": "true",
+    "WebScraperSchedule": "*/10 * * * * *",
+    "IsWebScrapToFpEnabled": "false",
+    "WebScrapToFpSchedule": "*/8 * * * * *",
+    "AzureStorageConnectionString": "DefaultEndpointsProtocol=https;AccountName=sunstorageaccntfncstg;AccountKey=UD5NCx58zSlR96KE0Q8X5xrvSp3p1fl9XaVKy8tqZ1eH12ym2H28KrKN2NAmWbu2qz5pw7PVDI29+AStyQLyMw==;EndpointSuffix=core.windows.net",
+    "AzureStorageBaseUrl": "https://sunstorageaccntfncstg.blob.core.windows.net/",
+    "BlobStorageContainerName": "complydexcontainer",
+    "SubUrlsPerRunLimit": "20", //Max number of subUrls per job run; 0 for all
+    "SubUrlsLimit": 0, // Max number of subUrls before a url is marked scrape complete; 0 for all
+    "ScrapeIntervalInDays": 7
+  },
+  "Host": {
+    "LocalHttpPort": 7374,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}

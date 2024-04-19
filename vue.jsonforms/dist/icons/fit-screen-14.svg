@@ -1,0 +1,15 @@
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="fit-screen-14" clip-path="url(#clip0_47_146583)">
+<g id="fit-screen--fit-screen-adjust-display-artboard-frame-corner">
+<path id="Vector" d="M7.35659 1.41113H2.07087C1.89564 1.41113 1.72758 1.48074 1.60368 1.60465C1.47977 1.72856 1.41016 1.89662 1.41016 2.07185V7.35756" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M18.5871 7.35756V2.07185C18.5871 1.89662 18.5174 1.72856 18.3936 1.60465C18.2696 1.48074 18.1016 1.41113 17.9263 1.41113H12.6406" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M12.6406 18.59H17.9263C18.1016 18.59 18.2696 18.5203 18.3936 18.3965C18.5174 18.2726 18.5871 18.1045 18.5871 17.9293V12.6436" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M1.41016 12.6436V17.9293C1.41016 18.1045 1.47977 18.2726 1.60368 18.3965C1.72758 18.5203 1.89564 18.59 2.07087 18.59H7.35659" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_47_146583">
+<rect width="20" height="20" fill="white"/>
+</clipPath>
+</defs>
+</svg>
