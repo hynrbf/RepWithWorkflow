@@ -10,4 +10,5 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
+      - run: sudo npm install
       - run: sudo npm run lint
