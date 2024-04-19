@@ -10,5 +10,5 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install -g --unsafe-perm=true --allow-root eslint
+      - run: npm install eslint
       - run: npm run lint
