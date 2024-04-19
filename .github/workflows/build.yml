@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - run: npm install eslint
       - run: npm run lint
-      
+
   run-build:
     runs-on: ubuntu-latest
     defaults:
@@ -20,6 +20,5 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install vue-tsc
-      - run: npm install vite
+      - run: npm install vue-tsc vite
       - run: npm run build
