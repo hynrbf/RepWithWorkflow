@@ -20,5 +20,5 @@ jobs:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: sudo npm install 
+      - run: npm install vite vite-ssg vue-tsc
       - run: npm run build
