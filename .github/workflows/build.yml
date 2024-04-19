@@ -3,5 +3,6 @@ jobs:
   first-job:
       runs-on: windows-latest
       steps:
+        - uses: actions/checkout@v4
         - run: npm run lint
         - run: npm run build
