@@ -1,13 +1,13 @@
-on: push
+on: 
+  push:
+    paths:
+      - vue.jsonforms/**
 jobs:
   build:
-      runs-on: ubuntu-latest
-      container: node:16
-      steps:
-        - run: node --version
-        - run: npm --version
-        - uses: actions/checkout@v4
-          with: 
-            sparse-checkout: vue.jsonforms
-        - run: npm install
-        - run: npm run lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vue.jsonforms
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm run lint
