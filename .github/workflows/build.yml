@@ -5,6 +5,7 @@ on: push
 jobs:
   run-lint:
     runs-on: ubuntu-latest
+    container: node:16
     defaults:
       run:
         working-directory: vue.jsonforms
@@ -15,6 +16,7 @@ jobs:
 
   run-build:
     runs-on: ubuntu-latest
+    container: node:16
     defaults:
       run:
         working-directory: vue.jsonforms
