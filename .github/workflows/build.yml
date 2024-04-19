@@ -5,7 +5,6 @@ on: push
 jobs:
   run-lint:
     runs-on: ubuntu-latest
-    container: node:16
     defaults:
       run:
         working-directory: vue.jsonforms
@@ -16,11 +15,10 @@ jobs:
 
   run-build:
     runs-on: ubuntu-latest
-    container: node:16
     defaults:
       run:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install --include=dev
+      - run: npm install vue vue-router vite vue-tsc
       - run: npm run build
