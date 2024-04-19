@@ -3,12 +3,12 @@ on: push
   #   paths:
   #     - vue.jsonforms/**
 jobs:
-  build:
+  build-lint:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: vue.jsonforms
     steps:
       - uses: actions/checkout@v4
-      - run: npm install eslint
+      - run: npm install
       - run: npm run lint
