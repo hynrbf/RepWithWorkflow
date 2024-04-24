@@ -1,0 +1,7 @@
+{
+  "extensions":[
+    { "name": "Startup", "typeName":"BackJobsChangeHistory.Startup, BackJobsChangeHistory, Version=1.0.37.0, Culture=neutral, PublicKeyToken=null"},
+    { "name": "CosmosDB", "typeName":"Microsoft.Azure.WebJobs.Extensions.CosmosDB.CosmosDBWebJobsStartup, Microsoft.Azure.WebJobs.Extensions.CosmosDB, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"},
+    { "name": "ServiceBus", "typeName":"Microsoft.Azure.WebJobs.ServiceBus.ServiceBusWebJobsStartup, Microsoft.Azure.WebJobs.Extensions.ServiceBus, Version=5.14.0.0, Culture=neutral, PublicKeyToken=92742159e12e44c8"}
+  ]
+}

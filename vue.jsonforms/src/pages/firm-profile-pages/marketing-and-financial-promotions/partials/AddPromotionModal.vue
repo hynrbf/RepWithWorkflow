@@ -165,7 +165,7 @@ const setUniqueIdentifier = (value: string): string => {
                 :value="form.values.provider"
                 :disabled="!isNot3rdParty(form.values.type)"
                 value-primitive
-                addable
+                :addable="true"
                 @add-custom="addProviderName"
               />
             </div>

@@ -29,7 +29,7 @@
               name="licenseNumber"
               label="Data Protection Licence Number"
               v-model="dataProtectionLicence.licenseNumber"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
               :input-class="isFieldModified('licenseNumber') ? 'is-border-warn' : ''"
             />
@@ -42,7 +42,7 @@
               v-model="dataProtectionLicence.endDate"
               :input-class="isFieldModified('endDate') ? 'is-border-warn' : ''"
               epoch
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -54,7 +54,7 @@
               v-model="dataProtectionLicence.renewalDate"
               :input-class="isFieldModified('renewalDate') ? 'is-border-warn' : ''"
               epoch
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
           </div>
@@ -117,7 +117,7 @@
                 class="col-lg-4"
                 name="forename"
                 label="Forename(s)"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
                 v-model="dataProtectionLicence.dataProtectionOfficer.forename"
               />
@@ -127,7 +127,7 @@
                 class="col-lg-4"
                 name="surname"
                 label="Surname"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
                 v-model="dataProtectionLicence.dataProtectionOfficer.surname"
               />
@@ -151,7 +151,7 @@
 
             <KendoEmailAddressInputComponent
               :id="setUniqueIdentifier( '-email')"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
               class="col-lg-4"
               name="email"
@@ -161,7 +161,7 @@
 
             <KendoTelInputComponent
               :id="setUniqueIdentifier( '-contactNumber')"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
               class="col-lg-4"
               name="contactNumber"
@@ -174,7 +174,7 @@
                 :id="setUniqueIdentifier( '-role')"
                 name="role"
                 label="Role"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
                 v-model="dataProtectionLicence.dataProtectionOfficer.role"
               />

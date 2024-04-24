@@ -47,8 +47,8 @@
     <FormElement ref="formElement">
         <ScrollableTabComponent
                 v-model:items="closeLinkTabs"
-                addable
-                removable
+                :addable="true"
+                :removable="true"
                 @add="addCloseLink"
                 @remove="removeCloseLink"
         >
@@ -123,7 +123,7 @@
                                 @onLostFocus="(id: string, hasChanged: boolean) => onTradingAddressDoneTyping(id, hasChanged, item.closeLink)"
                                 @onToggle="onToggleTradingAddress(index)"
                                 :sameAsLabel="$t('same-as-registered-address')"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
 

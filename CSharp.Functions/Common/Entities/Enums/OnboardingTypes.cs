@@ -8,7 +8,8 @@ namespace Common.Entities
         Ar,
         Employee,
         Provider,
-        Introducer
+        Introducer,
+        Affiliate
     }
 
     public enum ProfileStatuses

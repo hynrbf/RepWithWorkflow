@@ -55,6 +55,7 @@ namespace Api
         private readonly IWebScrapsRepository _webScrapsRepository;
         private readonly IOrganizationalStructureRepository _organizationalStructureRepository;
         private readonly IProvidersRepository _providersRepository;
+        private readonly IAffiliatesRepository _affiliatesRepository;
         private readonly IIntroducersRepository _introducersRepository;
         private readonly IFinancialPromotionRepository _financialPromotionRepository;
         private readonly IAppointedRepresentativeRepository _appointedRepresentativeRepository;
@@ -100,6 +101,7 @@ namespace Api
             IWebContentsScrapping webContentsScrapping,
             IOrganizationalStructureRepository organizationalStructureRepository,
             IProvidersRepository providersRepository,
+            IAffiliatesRepository affiliatesRepository,
             IIntroducersRepository introducersRepository,
             IWebScrapsRepository webScrapsRepository,
             IFinancialPromotionRepository financialPromotionRepository,
@@ -138,6 +140,7 @@ namespace Api
             _webContentsScrapping = webContentsScrapping;
             _organizationalStructureRepository = organizationalStructureRepository;
             _providersRepository = providersRepository;
+            _affiliatesRepository = affiliatesRepository;
             _introducersRepository = introducersRepository;
             _webScrapsRepository = webScrapsRepository;
             _csvLookupService = csvLookupService;
@@ -814,6 +817,15 @@ namespace Api
                 await _introducersRepository.SaveOrUpdateIntroducersAsync(existingIntroducer);
                 SetChangeInfo(existingIntroducer, req);
             }
+            else if (credentials.OnboardingType == OnboardingTypes.Affiliate.ToString())
+            {
+                var existingAffiliate =
+                    await _affiliatesRepository.GetAffiliateByEmailAsync(email)
+                    ?? throw new Exception("User should be existing by now.");
+                existingAffiliate.IsUserPasswordSet = true;
+                await _affiliatesRepository.SaveOrUpdateAffiliatesAsync(existingAffiliate);
+                SetChangeInfo(existingAffiliate, req);
+            }
             else
             {
                 var existingCustomer = await _customerRepository.GetCustomerByEmailAsync(email) ??
@@ -993,6 +1005,67 @@ namespace Api
             }
 
             return new OkObjectResult(savedIntroducer);
+        }
+
+        #endregion
+
+        #region Affiliate
+
+        [FunctionName(nameof(GetAffiliateByEmailAsync))]
+        public async Task<IActionResult> GetAffiliateByEmailAsync(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get",
+                Route = $"{nameof(GetAffiliateByEmailAsync)}/{{email}}")]
+            HttpRequest req,
+            ILogger log,
+            string email)
+        {
+            var providerResult =
+                await _affiliatesRepository.GetAffiliateByEmailAsync(email);
+            return new OkObjectResult(providerResult);
+        }
+
+        [FunctionName(nameof(GetAffiliateByCustomerIdAsync))]
+        public async Task<IActionResult> GetAffiliateByCustomerIdAsync(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get",
+                Route = $"{nameof(GetAffiliateByCustomerIdAsync)}/{{customerId}}")]
+            HttpRequest req,
+            ILogger log,
+            string customerId)
+        {
+            var providerResult =
+                await _affiliatesRepository.GetAffiliatesByCustomerIdAsync(customerId);
+            return new OkObjectResult(providerResult);
+        }
+
+        [FunctionName(nameof(DeleteAffiliateAsync))]
+        public async Task<IActionResult> DeleteAffiliateAsync(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete",
+                Route = $"{nameof(DeleteAffiliateAsync)}/{{id}}")]
+            HttpRequest req,
+            ILogger log,
+            string id)
+        {
+            var providerResult =
+                await _affiliatesRepository.DeleteAffiliateAsync(id);
+            return new OkObjectResult(providerResult);
+        }
+
+        [FunctionName(nameof(SaveOrUpdateAffiliatesAsync))]
+        public async Task<IActionResult> SaveOrUpdateAffiliatesAsync(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", "put", Route = null)]
+            HttpRequest req,
+            ILogger log)
+        {
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var provider = JsonConvert.DeserializeObject<Affiliate>(requestBody);
+            var savedAffiliate = await _affiliatesRepository.SaveOrUpdateAffiliatesAsync(provider);
+
+            if (savedAffiliate.ProfileStatus.Equals(ProfileStatuses.Full.ToString()))
+            {
+                await _auth0Service.CreateOnboardingUserAsync(savedAffiliate);
+            }
+
+            return new OkObjectResult(savedAffiliate);
         }
 
         #endregion
@@ -1248,7 +1321,7 @@ namespace Api
                 .Select(s => s.Enabler);
 
             var customerProducts = new List<CustomerProduct>();
-            
+
             foreach (var pageName in pageNames)
             {
                 var customerProduct = new CustomerProduct { PageName = pageName };

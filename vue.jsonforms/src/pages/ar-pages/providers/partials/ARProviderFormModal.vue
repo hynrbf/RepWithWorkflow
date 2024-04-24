@@ -243,7 +243,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                 :name="`providerIntroducerDetails.praAuthorised`"
                 :isRequired="true"
                 @onValueChange="onIsPraAuthorisedChanged"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -261,7 +261,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                 }
               "
               :value="provider?.details?.registeredAddress"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -283,7 +283,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
               "
               @onToggle="onToggleTradingAddress()"
               :sameAsLabel="$t('same-as-registered-address')"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -304,7 +304,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -320,7 +320,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -338,7 +338,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -369,7 +369,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -386,7 +386,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -403,7 +403,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -425,7 +425,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -441,7 +441,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -458,7 +458,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                     }
                   }
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>

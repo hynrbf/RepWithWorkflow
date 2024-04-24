@@ -1,0 +1,5 @@
+{
+  "extensions":[
+    { "name": "Startup", "typeName":"BackJobsDataInitializer.Startup, BackJobsDataInitializer, Version=1.0.57.0, Culture=neutral, PublicKeyToken=null"}
+  ]
+}

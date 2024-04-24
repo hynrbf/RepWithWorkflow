@@ -19,6 +19,7 @@ namespace BackJobs
             builder.Services.AddSingleton<IAppointedRepresentativeRepository, AppointedRepresentativeRepository>();
             builder.Services.AddSingleton<IOrganizationalStructureRepository, OrganizationalStructureRepository>();
             builder.Services.AddSingleton<IProvidersRepository, ProvidersRepository>();
+            builder.Services.AddSingleton<IAffiliatesRepository, AffiliatesRepository>();
             builder.Services.AddSingleton<IIntroducersRepository, IntroducersRepository>();
             builder.Services.AddSingleton<ISaveFieldsRepository, SaveFieldsRepository>();
             builder.Services.AddSingleton<IEmailService, EmailService>();

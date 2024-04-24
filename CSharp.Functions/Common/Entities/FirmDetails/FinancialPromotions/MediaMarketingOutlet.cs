@@ -9,5 +9,8 @@
         public bool Archived { get; set; }
         public string Platform { get; set; }
         public long CreatedAt { get; set; } = DateHelper.GetCurrentDateTimeInEpoch();
+        public long? UpdatedAt { get; set; }
+        public long? ApprovedAt { get; set; }
+        public long? RejectedAt { get; set; }
     }
 }

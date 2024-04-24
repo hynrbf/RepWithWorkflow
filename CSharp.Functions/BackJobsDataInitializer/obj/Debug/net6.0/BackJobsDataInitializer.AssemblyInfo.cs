@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BackJobsDataInitializer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.56.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a12235badce86159d70727dbc87922c0d88eb4b4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("BackJobsDataInitializer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BackJobsDataInitializer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.56.0")]

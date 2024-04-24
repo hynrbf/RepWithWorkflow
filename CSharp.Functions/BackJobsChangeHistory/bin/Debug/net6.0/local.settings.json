@@ -1,0 +1,19 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "CosmosDbAccount": "https://complydexdb.documents.azure.com:443/",
+    "CosmosDbKey": "6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==",
+    "Database": "complydexdbinstance",
+    "CustomerLogHistoryReplicaContainer": "customerLogHistoryReplica",
+    "CustomerFcaReplicaContainer": "customerFcaReplica",
+    "CosmosDbConnectionString": "AccountEndpoint=https://complydexdb.documents.azure.com:443/;AccountKey=6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==;",
+    "IsEnable": "true",
+  },
+  "Host": {
+    "LocalHttpPort": 7374,
+    "CORS": "*",
+    "CORSCredentials": false
+  }
+}

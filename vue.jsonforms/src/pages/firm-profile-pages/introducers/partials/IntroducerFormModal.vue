@@ -82,7 +82,9 @@ export default defineComponent({
         this.introducerInternal.representative.surname &&
         this.introducerInternal.representative.emailAddress &&
         this.introducerInternal.representative.contactNumber &&
-        this.introducerInternal.representative.jobTitle
+        this.introducerInternal.representative.jobTitle &&
+        this.introducerInternal.details.productType &&
+        this.introducerInternal.details.productType.length > 0
       );
     },
     allRequiredFieldsAreNotEmptyForSoleTrader() {
@@ -92,7 +94,9 @@ export default defineComponent({
         this.introducerInternal.details.homeAddress &&
         this.introducerInternal.details.tradingAddress &&
         this.isEmailValid(this.introducerInternal.details.emailAddress) &&
-        this.introducerInternal.details.contactNumber
+        this.introducerInternal.details.contactNumber &&
+        this.introducerInternal.details.productType &&
+        this.introducerInternal.details.productType.length > 0
       );
     },
   },
@@ -157,16 +161,15 @@ export default defineComponent({
       if (addressFromFca?.length > 0) {
         const selectedAddress = addressFromFca[0];
         const obj = JSON.parse(JSON.stringify(selectedAddress));
-        this.introducerContactNumber = {
-          dialCode: obj["dialCode"],
-          country: obj["country"],
-          countryCode: obj["countryCode"],
-          number: obj["Phone Number"],
-        };
 
-        if (obj["Phone Number"]) {
+        if (obj["Phone Number"] && obj["country"]) {
+          this.introducerContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              obj["Phone Number"],
+              obj["country"],
+            );
           this.introducerInternal.details.contactNumber =
-            obj["Phone Number"].substring(3);
+            this.introducerContactNumber;
         }
 
         this.introducerInternal.details.website = obj["Website Address"];
@@ -353,8 +356,8 @@ export default defineComponent({
                     :gap="20"
                     :id="setUniqueIdentifier('-introducer.soleTraderName')"
                     :isInitializing="isInitializing"
-                    :firstName="introducer?.details?.foreName"
-                    :lastName="introducer?.details?.lastName"
+                    :firstName="introducerInternal?.details?.foreName ?? ''"
+                    :lastName="introducerInternal?.details?.lastName"
                     @onFullNameChange="onFullNameValueChanged"
                     @onFinishedSearch="onSearchSoleTraderResult"
                   />
@@ -369,7 +372,7 @@ export default defineComponent({
                     :isEditable="false"
                     :value="introducerInternal?.details?.fcaFirmRefNo"
                     :maxLength="7"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
                 </div>
@@ -386,7 +389,7 @@ export default defineComponent({
                 label="Registered Address"
                 @onValueChange="onIntroducerRegisteredAddressChanged"
                 :value="introducerInternal?.details?.registeredAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -399,7 +402,7 @@ export default defineComponent({
                 label="Home Address"
                 @onValueChange="onIntroducerHomeAddressChanged"
                 :value="introducerInternal?.details?.homeAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -419,7 +422,7 @@ export default defineComponent({
                 "
                 @onValueChange="onIntroducerTradingAddressChanged"
                 @onToggle="onToggleTradingAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -443,7 +446,7 @@ export default defineComponent({
                   }
                 "
                 :value="introducerInternal?.details?.emailAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -455,10 +458,9 @@ export default defineComponent({
                 :value="introducerInternal?.details?.contactNumber"
                 @onValueChange="
                   (value: ContactNumber) =>
-                    (introducerInternal!.details.contactNumber =
-                      value as ContactNumber)
+                    (introducerInternal.details.contactNumber = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -469,10 +471,11 @@ export default defineComponent({
                 label="Website"
                 :isRequired="false"
                 @onValueChange="
-                  (value: string) => (introducer!.details.website = value)
+                  (value: string) =>
+                    (introducerInternal.details.website = value)
                 "
                 :value="introducerInternal?.details?.website"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -488,7 +491,7 @@ export default defineComponent({
                   (introducerInternal.details.productType = productTypes ?? [])
               "
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
             />
           </div>
         </PanelComponent>
@@ -510,10 +513,10 @@ export default defineComponent({
                 label="Title"
                 :id="setUniqueIdentifier('-introducer.representative.title')"
                 :is-required="false"
-                :value="introducer?.representative?.title"
+                :value="introducerInternal?.representative?.title"
                 @onValueChange="
                   (value: string) =>
-                    (introducerInternal!.representative.title = value)
+                    (introducerInternal.representative.title = value)
                 "
                 :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
@@ -605,19 +608,6 @@ export default defineComponent({
             theme-color="primary"
             fill-mode="outline"
             :disabled="
-              (isCompanySelected
-                ? !allRequiredFieldsAreNotEmptyForCompany
-                : !allRequiredFieldsAreNotEmptyForSoleTrader) || !saving
-            "
-            @click="handleSubmit"
-          >
-            Request Introducer to Complete Details
-          </KendoButton>
-
-          <KendoButton
-            type="submit"
-            theme-color="primary"
-            :disabled="
               isCompanySelected
                 ? !minimumRequiredFieldsAreNotEmptyForCompany
                 : !minimumRequiredFieldsAreNotEmptyForSoleTrader
@@ -625,6 +615,19 @@ export default defineComponent({
             @click="handleRequest"
           >
             {{ isAdd ? "Save & Add Introducer" : "Save Changes" }}
+          </KendoButton>
+
+          <KendoButton
+            type="submit"
+            theme-color="primary"
+            :disabled="
+              isCompanySelected
+                ? !allRequiredFieldsAreNotEmptyForCompany
+                : !allRequiredFieldsAreNotEmptyForSoleTrader
+            "
+            @click="handleSubmit"
+          >
+            Request Introducer to Complete Details
           </KendoButton>
         </div>
       </KendoFormElementComponent>

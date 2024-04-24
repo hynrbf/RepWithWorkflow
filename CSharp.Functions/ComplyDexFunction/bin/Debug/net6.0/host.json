@@ -139,7 +139,9 @@
     "RegisterMediaAsync",
     "GetFcaFirmDetailsAsync",
     "CleanAppointedRepresentativesContainerAsync",
-    "CleanCustomerReplicaAsync"
+    "CleanCustomerReplicaAsync",
+    // TEMP
+    "SendInviteDocumentAdobeSignAsync"
   ],
   "functionTimeout": "00:10:00",
   "logging": {

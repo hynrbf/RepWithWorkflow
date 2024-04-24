@@ -34,6 +34,7 @@ import { Emitter, EventType } from "mitt";
 import { AppointedRepresentative } from "@/entities/appointed-representatives/AppointedRepresentative";
 import { ProfileModel } from "@/pages/sign-up-pages/signup/models/ProfileModel";
 import { SignUpEventTypeModel } from "@/pages/sign-up-pages/signup/models/SignUpEventTypeModel";
+import { APP_VERSION } from "@/config";
 
 export default defineComponent({
   name: "Signup",
@@ -76,6 +77,9 @@ export default defineComponent({
     };
   },
   computed: {
+    AppVersion() {
+      return APP_VERSION;
+    },
     AppConstants() {
       return AppConstants;
     },

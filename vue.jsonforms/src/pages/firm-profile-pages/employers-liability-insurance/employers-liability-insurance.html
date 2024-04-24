@@ -64,8 +64,8 @@
     <FormElement ref="formElement">
         <ScrollableTabComponent
                 v-model:items="eliTabs"
-                addable
-                removable
+                :addable="true"
+                :removable="true"
                 @add="addEmployerLiabilityInsuranceItem"
                 @remove="removeEmployerLiabilityInsuranceItem"
         >
@@ -118,13 +118,13 @@
                                             :id="setUniqueIdentifier( `-${item.id}` +'-insurerName')"
                                             companyNameLabel="Insurer Name"
                                             companyNamePlaceholder="Insurer Name"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isInitializing="isInitializing"
                                             :company="item?.employerLiability?.insurer"
                                             :companyName="item?.employerLiability?.insurer?.firmName"
                                             :companyNumber="item?.employerLiability?.insurer?.companyNumber ?? 'NONE'"
                                             :firmReferenceNumber="item?.employerLiability?.insurer?.firmReferenceNumber"
-                                            @onCompanyDetailUpdated="((insurer) => onInsurerUpdated(item.employerLiability, insurer))"
+                                            @onCompanyDetailUpdated="((insurer) => onInsurerUpdatedAsync(item.employerLiability, insurer))"
                                     />
 
                                     <KendoPostCodeInputComponent
@@ -134,7 +134,7 @@
                                             @onValueChange="((value: string) => onEliRegisteredAddressChanged(value, item.employerLiability))"
                                             :name="`registeredAddress-${index}`"
                                             label="Registered Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -144,12 +144,12 @@
                                             :name="`tradingAddress-${index}`"
                                             label="Trading Address"
                                             :value="item.employerLiability.insurerTradingAddress"
-                                            isShowCheckBox
-                                            :isChecked="isTradingSameAsRegisteredAddress"
+                                            :isShowCheckBox="true"
+                                            :isChecked="item.employerLiability.insurerIsTradingSameAsRegisteredAddress"
                                             @onValueChange="((value: string) => onEliTradingAddressChanged(value, item.employerLiability))"
                                             @onToggle="() => { onToggleHandler(item.employerLiability); }"
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -160,7 +160,7 @@
                                             name="emailAddress"
                                             :value="item.employerLiability.insurerEmailAddress"
                                             @onValueChange="(value: string) => item.employerLiability.insurerEmailAddress = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -171,7 +171,7 @@
                                             label="Contact Number"
                                             :value="item.employerLiability.insurerContactNumber"
                                             @onValueChange="(value: ContactNumber) => item.employerLiability.insurerContactNumber = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -183,7 +183,7 @@
                                             type="url"
                                             :value="item.employerLiability.insurerWebsite"
                                             @onValueChange="(value: string) => item.employerLiability.insurerWebsite = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -238,12 +238,12 @@
                                             companyNameLabel="Broker Name"
                                             companyNamePlaceholder="Broker Name"
                                             :isInitializing="isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :company="item?.employerLiability?.broker"
                                             :companyName="item?.employerLiability?.broker?.firmName"
                                             :companyNumber="item?.employerLiability?.broker?.companyNumber"
                                             :firmReferenceNumber="item?.employerLiability?.broker?.firmReferenceNumber"
-                                            @onCompanyDetailUpdated="((broker) => onBrokerUpdated(item.employerLiability, broker))"
+                                            @onCompanyDetailUpdated="((broker) => onBrokerUpdatedAsync(item.employerLiability, broker))"
                                     />
 
                                     <KendoPostCodeInputComponent
@@ -253,7 +253,7 @@
                                             @onValueChange="(value: string) => item.employerLiability.brokerRegisteredAddress = value"
                                             :name="`brokerRegisteredAddress-${index}`"
                                             label="Registered Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -263,7 +263,7 @@
                                             name="brokerTradingAddress"
                                             label="Trading Address"
                                             :value="item.employerLiability.brokerTradingAddress"
-                                            isShowCheckBox
+                                            :isShowCheckBox="true"
                                             :isChecked="item.employerLiability.brokerIsTradingSameAsRegisteredAddress"
                                             @onValueChange="item.employerLiability.brokerTradingAddress = $event"
                                             @onToggle="
@@ -279,7 +279,7 @@
                                               }
                                             "
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -290,7 +290,7 @@
                                             name="brokerEmailAddress"
                                             :value="item.employerLiability.brokerEmailAddress"
                                             @onValueChange="(value: string) => item.employerLiability.brokerEmailAddress = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -301,7 +301,7 @@
                                             label="Contact Number"
                                             :value="item.employerLiability.brokerContactNumber"
                                             @onValueChange="(value: ContactNumber) => item.employerLiability.brokerContactNumber = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -313,7 +313,7 @@
                                             type="url"
                                             :value="item.employerLiability.brokerWebsite"
                                             @onValueChange="(value: string) => item.employerLiability.brokerWebsite = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -405,7 +405,7 @@
                                             :name="'policyNumber' + index"
                                             @onValueChange="((value) => item.employerLiability.policyNumber = value)"
                                             :value="item.employerLiability.policyNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -416,7 +416,7 @@
                                             :name="'premiumAmount' + index"
                                             @onValueChange="(value) => item.employerLiability.premiumAmount = value"
                                             :value="item.employerLiability.premiumAmount"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -427,7 +427,7 @@
                                             :name="'annualIncome' + index"
                                             @onValueChange="(value) => item.employerLiability.annualIncome = value"
                                             :value="item.employerLiability.annualIncome"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -437,7 +437,7 @@
                                             label="Retroactive Start Date (If Applicable)"
                                             :name="'employerInsurer.retroactiveStartDate' + index"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onRetroactiveStartDateChange(value, item.employerLiability))"
                                             :value="convertEpochValueToDate(item?.employerLiability?.retroactiveStartDate)"
                                     />
@@ -448,7 +448,7 @@
                                             label="Start Date"
                                             :name="'employerInsurer.startDate' + index"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onStartDateChange(value, item.employerLiability))"
                                             :value="convertEpochValueToDate(item?.employerLiability?.startDate)"
                                     />
@@ -459,7 +459,7 @@
                                             label="End Date"
                                             :name="'employerInsurer.endDate' + index"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :minDate="convertEpochValueToDate(item?.employerLiability?.startDate)"
                                             @onValueChange="((value) => onEndDateChange(value, item.employerLiability))"
                                             :value="convertEpochValueToDate(item?.employerLiability?.endDate)"
@@ -472,7 +472,7 @@
                                             label="Premium Amount"
                                             :value="item.employerLiability.premiumAmount"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onPremiumAmountChanged(item.employerLiability, value))"
                                     />
 
@@ -485,7 +485,7 @@
                                             :name="'employerInsurer.paymentFrequency' + index"
                                             :value="item?.employerLiability?.paymentFrequency"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => item.employerLiability.paymentFrequency = value)"
                                     />
 
@@ -497,7 +497,7 @@
                                             :minimumValue="new Money(AppConstants.singleIndemnityLimit, 'EUR')"
                                             :value="item.employerLiability.singleIndemnityLimit"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onSingleIndemnityLimitChanged(item.employerLiability, value))"
                                     />
 
@@ -509,7 +509,7 @@
                                             :minimumValue="new Money(AppConstants.aggregateIndemnityLimit, 'EUR')"
                                             :value="item.employerLiability.aggregateIndemnityLimit"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onAggregateIndemnityLimitChanged(item.employerLiability, value))"
                                     />
 
@@ -520,7 +520,7 @@
                                             :name="`eliPolicyExcess${index}`"
                                             :value="item.employerLiability.policyExcess"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             @onValueChange="((value) => onPolicyExcessChanged(item.employerLiability, value))"
                                     />
 
@@ -531,7 +531,7 @@
                                             placeholder="Type..."
                                             :name="`employerInsurerPolicyExclusions${index}`"
                                             :isDataLoadedCompletely="!isInitializing"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :value="item?.employerLiability?.policyExclusions"
                                             @onValueChange="((value) => item.employerLiability.policyExclusions = value)"
                                     />
@@ -647,7 +647,7 @@
                 label="Retroactive Start Date (If Applicable)"
                 :name="'employerInsurer.retroactiveStartDate' + index"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onRetroactiveStartDateChange(value, item.employerLiability))"
                 :value="convertEpochValueToDate(item?.employerLiability?.retroactiveStartDate)"
               />
@@ -658,7 +658,7 @@
                 label="Start Date"
                 :name="'employerInsurer.startDate' + index"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onStartDateChange(value, item.employerLiability))"
                 :value="convertEpochValueToDate(item?.employerLiability?.startDate)"
               />
@@ -669,7 +669,7 @@
                 label="End Date"
                 :name="'employerInsurer.endDate' + index"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 :minDate="convertEpochValueToDate(item?.employerLiability?.startDate)"
                 @onValueChange="((value) => onEndDateChange(value, item.employerLiability))"
                 :value="convertEpochValueToDate(item?.employerLiability?.endDate)"
@@ -683,7 +683,7 @@
                 label="Premium Amount"
                 :value="item.employerLiability.premiumAmount"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onPremiumAmountChanged(item.employerLiability, value))"
               />
 
@@ -695,7 +695,7 @@
                 :name="'employerInsurer.paymentFrequency' + index"
                 :value="item?.employerLiability?.paymentFrequency"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => item.employerLiability.paymentFrequency = value)"
               />
             </StackLayout>
@@ -708,7 +708,7 @@
                 :minimumValue="new Money(AppConstants.singleIndemnityLimit, 'EUR')"
                 :value="item.employerLiability.singleIndemnityLimit"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onSingleIndemnityLimitChanged(item.employerLiability, value))"
               />
 
@@ -719,7 +719,7 @@
                 :minimumValue="new Money(AppConstants.aggregateIndemnityLimit, 'EUR')"
                 :value="item.employerLiability.aggregateIndemnityLimit"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onAggregateIndemnityLimitChanged(item.employerLiability, value))"
               />
             </StackLayout>
@@ -731,7 +731,7 @@
                 :name="`eliPolicyExcess${index}`"
                 :value="item.employerLiability.policyExcess"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 @onValueChange="((value) => onPolicyExcessChanged(item.employerLiability, value))"
               />
 
@@ -742,7 +742,7 @@
                 placeholder="Type..."
                 :name="`employerInsurerPolicyExclusions${index}`"
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
                 :value="item?.employerLiability?.policyExclusions"
                 @onValueChange="((value) => item.employerLiability.policyExclusions = value)"
               />

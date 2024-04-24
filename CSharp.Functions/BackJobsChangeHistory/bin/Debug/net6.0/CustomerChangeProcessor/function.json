@@ -1,0 +1,20 @@
+{
+  "generatedBy": "Microsoft.NET.Sdk.Functions.Generator-4.1.1",
+  "configurationSource": "attributes",
+  "bindings": [
+    {
+      "type": "cosmosDBTrigger",
+      "connection": "CosmosDbConnectionString",
+      "leaseContainerName": "customerLease",
+      "createLeaseContainerIfNotExists": true,
+      "containerName": "customer",
+      "databaseName": "%Database%",
+      "leaseDatabaseName": "%Database%",
+      "startFromBeginning": false,
+      "name": "customers"
+    }
+  ],
+  "disabled": false,
+  "scriptFile": "../bin/BackJobsChangeHistory.dll",
+  "entryPoint": "BackJobsChangeHistory.CustomerChangeProcessor.Run"
+}

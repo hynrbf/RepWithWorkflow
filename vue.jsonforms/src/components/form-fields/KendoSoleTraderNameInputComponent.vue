@@ -229,7 +229,7 @@ export default defineComponent({
         :value="firstNameInternal"
         :iconPathRight="iconRight"
         @onValueChange="onFirstNameChange"
-        isValueReactive
+        :isValueReactive="true"
         :isDataLoadedCompletely="!isInitializing"
       />
 
@@ -260,7 +260,7 @@ export default defineComponent({
       :value="lastNameInternal"
       :iconPathRight="iconRight"
       @onValueChange="onLastNameChange"
-      isValueReactive
+      :isValueReactive="true"
       :isDataLoadedCompletely="!isInitializing"
     />
   </StackLayout>

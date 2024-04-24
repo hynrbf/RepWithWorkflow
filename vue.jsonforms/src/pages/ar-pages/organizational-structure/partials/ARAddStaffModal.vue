@@ -572,7 +572,7 @@ export default defineComponent({
                   (value: string) => (employeeInternal.title = value)
                 "
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
               />
 
               <KendoGenericInputComponent
@@ -586,7 +586,7 @@ export default defineComponent({
                   (value: string) => (employeeInternal.firstName = value)
                 "
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
               />
 
               <KendoGenericInputComponent
@@ -600,7 +600,7 @@ export default defineComponent({
                   (value: string) => (employeeInternal.lastName = value)
                 "
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
               />
             </div>
 
@@ -621,7 +621,7 @@ export default defineComponent({
                   onLineManagerChange(employee, lineManager)
               "
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
             >
               <template #display="{ value }">
                 <div v-if="employeeInternal?.isRoot" class="hstack gap-2">
@@ -643,7 +643,7 @@ export default defineComponent({
               "
               placeholder="Select Primary Role"
               :dataItems="primaryRolesFromStore"
-              addable
+              :addable="true"
               bypassDefaultOnSelectEvent
               @addCustom="addCustom"
               @onValueChange="
@@ -651,7 +651,7 @@ export default defineComponent({
                   onPrimaryRoleChange(employee, value)
               "
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
             >
               <template #header>
                 <ARFcaRoleHeaderTemplate />
@@ -715,9 +715,9 @@ export default defineComponent({
               :isRequired="false"
               @addCustom="addCustom"
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
               bypassDefaultOnSelectEvent
-              addable
+              :addable="true"
             >
               <template #header>
                 <ARFcaRoleHeaderTemplate is-multi-select />
@@ -787,7 +787,7 @@ export default defineComponent({
                   onProductTypesChange(employee, productTypes)
               "
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
             />
 
             <!-- Email Address, Contact Number -->
@@ -803,7 +803,7 @@ export default defineComponent({
                   (value: string) => (employeeInternal.email = value)
                 "
                 :isDataLoadedCompletely="!isInitializing"
-                isValueReactive
+                :isValueReactive="true"
               />
 
               <KendoTelInputComponent
@@ -816,7 +816,7 @@ export default defineComponent({
                   (value: ContactNumber) =>
                     (employeeInternal.contactNumber = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>

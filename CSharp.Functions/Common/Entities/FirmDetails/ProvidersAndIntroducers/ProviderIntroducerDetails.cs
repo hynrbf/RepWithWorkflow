@@ -1,6 +1,4 @@
-﻿using Common.Entities.FirmDetails;
-
-namespace Common.Entities
+﻿namespace Common.Entities
 {
     public class ProviderIntroducerDetails
     {

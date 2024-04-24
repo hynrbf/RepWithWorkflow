@@ -44,6 +44,7 @@ namespace Api
             builder.Services.AddSingleton<IWebContentsScrapping, WebContentsScrapping>();
             builder.Services.AddSingleton<IOrganizationalStructureRepository, OrganizationalStructureRepository>();
             builder.Services.AddSingleton<IProvidersRepository, ProvidersRepository>();
+            builder.Services.AddSingleton<IAffiliatesRepository, AffiliatesRepository>();
             builder.Services.AddSingleton<IIntroducersRepository, IntroducersRepository>();
             builder.Services.AddSingleton<IWebScrapsRepository, WebScrapsRepository>();
             builder.Services.AddSingleton<IFinancialPromotionRepository, FinancialPromotionRepository>();

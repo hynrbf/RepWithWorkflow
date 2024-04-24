@@ -47,8 +47,8 @@
     <FormElement ref="formElement">
         <ScrollableTabComponent
                 v-model:items="closeLinkTabs"
-                addable
-                removable
+                :addable="true"
+                :removable="true"
                 @add="addCloseLink"
                 @remove="removeCloseLink">
             <template v-for="(item, index) in collapsibleCloseLinkItems"
@@ -109,7 +109,7 @@
                                 label="Registered Address"
                                 :value="item.closeLink?.registeredAddress"
                                 @onValueChange="(value) => item.closeLink.registeredAddress = value"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"  />
 
                         <KendoPostCodeInputWithSameAsComponent
@@ -123,7 +123,7 @@
                                 @onLostFocus="(id: string, hasChanged: boolean) => onTradingAddressDoneTyping(id, hasChanged, item.closeLink)"
                                 @onToggle="onToggleTradingAddress(index)"
                                 :sameAsLabel="$t('same-as-registered-address')"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
 
@@ -139,7 +139,7 @@
                                     placeholder="0"
                                     @onValueChange="(value) => onPercentageCapitalValueChange(value, item.closeLink)"
                                     :value="item.closeLink?.percentageOfCapital"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
 
@@ -154,7 +154,7 @@
                                     placeholder="0"
                                     @onValueChange="(value: number | null) => item.closeLink.percentageOfVotingRights = value"
                                     :value="item.closeLink?.percentageOfVotingRights"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
                         </StackLayout>
@@ -167,7 +167,7 @@
                                     label="Email Address"
                                     :value="item.closeLink?.emailAddress"
                                     @onValueChange="(value) => item.closeLink.emailAddress = value"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
 
@@ -178,7 +178,7 @@
                                     class="col"
                                     :value="item.closeLink?.contactNumber"
                                     @onValueChange="(value) => item.closeLink.contactNumber = value"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
 
@@ -191,7 +191,7 @@
                                     :isRequired="false"
                                     :value="item.closeLink?.website"
                                     @onValueChange="(value) => item.closeLink.website = value"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
                         </StackLayout>

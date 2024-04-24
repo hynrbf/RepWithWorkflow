@@ -61,8 +61,8 @@ const removeTab = (index: number) => {
 <template>
   <ScrollableTabComponent
     v-model:items="tabs"
-    addable
-    removable
+    :addable="true"
+    :removable="true"
     @add="addTab"
     @remove="removeTab"
   >

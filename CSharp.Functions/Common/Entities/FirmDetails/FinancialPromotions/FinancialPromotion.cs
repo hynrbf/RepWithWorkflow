@@ -19,11 +19,13 @@ namespace Common.Entities
         public List<FileModel>? Media { get; set; }
         public string? Type { get; set; }
         public bool IsDisclosureConfirmed { get; set; }
-        public List<string> ProductType { get; set; } = new();
+        public List<ProductType> ProductType { get; set; } = new();
         public string? RemunerationMethod { get; set; }
-        public string? Provider { get; set; }
+        public List<Provider> Provider { get; set; } = new();
         public long CreatedAt { get; set; } = DateHelper.GetCurrentDateTimeInEpoch();
         public long? UpdatedAt { get; set; }
+        public long? ApprovedAt { get; set; }
+        public long? RejectedAt { get; set; }
 
         public DateTime? LastScrapeDate { get; set; }
     }

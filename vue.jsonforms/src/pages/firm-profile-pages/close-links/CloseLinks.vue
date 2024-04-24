@@ -39,13 +39,17 @@ import {
 } from "@/infra/dependency-services/mapper/IMapperService";
 import ScrollableTabComponent from "@/components/ScrollableTabComponent.vue";
 import { ScrollableTabItemModel } from "@/components/models/ScrollableTabItemModel";
+import {
+  IFcaService,
+  IFcaServiceInfo,
+} from "@/infra/dependency-services/rest/fca/IFcaService";
 
 export default defineComponent({
   name: "CloseLinks",
   components: {
     ScrollableTabComponent,
     KendoFirmFinderComponentAsync: defineAsyncComponent(
-      () => import("@/components/form-fields/KendoFirmFinderComponent.vue")
+      () => import("@/components/form-fields/KendoFirmFinderComponent.vue"),
     ),
   },
   data() {
@@ -58,11 +62,11 @@ export default defineComponent({
         Record<EventType, unknown>
       >,
       navigationService: container.resolve<INavigationService>(
-        INavigationServiceInfo.name
+        INavigationServiceInfo.name,
       ),
       isInitializing: true,
       sequenceNoKeeperService: container.resolve<ISequenceNoKeeperService>(
-        ISequenceNoKeeperServiceInfo.name
+        ISequenceNoKeeperServiceInfo.name,
       ),
       eventBusSideMenuRoute: inject("$eventBusService") as Emitter<
         Record<EventType, unknown>
@@ -75,9 +79,10 @@ export default defineComponent({
       >,
       helperService: container.resolve<IHelperService>(IHelperServiceInfo.name),
       mapperService: container.resolve<IMapperService>(IMapperServiceInfo.name),
+      fcaService: container.resolve<IFcaService>(IFcaServiceInfo.name),
       userSubmittedChangesService:
         container.resolve<IUserSubmittedChangesService>(
-          IUserSubmittedChangesServiceInfo.name
+          IUserSubmittedChangesServiceInfo.name,
         ),
       isSavingAlertOpened: false,
       collapsibleCloseLinkItems: [] as {
@@ -138,7 +143,7 @@ export default defineComponent({
   created() {
     if (this.currentCustomer?.closeLinks) {
       const closeLinks = this.mapperService.mapCloseLinkEntitiesToModels(
-        this.currentCustomer.closeLinks
+        this.currentCustomer.closeLinks,
       );
       this.collapsibleCloseLinkItems = closeLinks.map((value) => {
         return {
@@ -243,7 +248,7 @@ export default defineComponent({
 
     async saveInfoAsync(
       isShowLoader: boolean = false,
-      isAutoNext: boolean = false
+      isAutoNext: boolean = false,
     ): Promise<void> {
       if (!this.currentCustomer) {
         return;
@@ -258,7 +263,7 @@ export default defineComponent({
       this.isSavingAlertOpened = false;
 
       const closeLinks = this.collapsibleCloseLinkItems.map(
-        (item) => item.closeLink
+        (item) => item.closeLink,
       );
 
       await this.updateCustomerByEmailAsync(customerEmail, {
@@ -279,7 +284,7 @@ export default defineComponent({
           // made sure notification popup is dismissed first before auto next
           setTimeout(
             () => this.eventBus.emit(AppConstants.autoNextEvent),
-            AppConstants.notificationPopupTimeOut
+            AppConstants.notificationPopupTimeOut,
           );
         }
       });
@@ -321,7 +326,7 @@ export default defineComponent({
       this.eventBus.emit(AppConstants.formFieldPageLevelChangedEvent);
     },
 
-    onCloseLinkUpdated(updatedFirm: FirmBasicInfo, index: number) {
+    async onCloseLinkUpdated(updatedFirm: FirmBasicInfo, index: number) {
       if (!this.collapsibleCloseLinkItems[index]) {
         return;
       }
@@ -350,14 +355,36 @@ export default defineComponent({
           updatedFirm.website;
         this.collapsibleCloseLinkItems[index].closeLink.natureOfBusiness =
           StaticList.getNatureOfBusinessBySicCode(updatedFirm.sicCode);
-        this.collapsibleCloseLinkItems[index].closeLink.contactNumber = {
-          country: "GB",
-          countryCode: "",
-          dialCode: "+44",
-          number: updatedFirm.contactNumber?.replace("+44", ""),
-        };
+
+        await this.populateContactNumberAsync(
+          index,
+          updatedFirm.firmReferenceNumber,
+        );
+
         this.collapsibleCloseLinkItems[index].closeLink.countryOfIncorporation =
           updatedFirm.countryCode;
+      }
+    },
+
+    async populateContactNumberAsync(
+      index: number,
+      firmRefNo: string | undefined,
+    ) {
+      if (!firmRefNo) {
+        return;
+      }
+
+      const addressDetails = await this.fcaService.getFirmAddressesDetailsAsync(
+        firmRefNo,
+        "PPOB",
+      );
+
+      if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+        this.collapsibleCloseLinkItems[index].closeLink.contactNumber =
+          await this.helperService.convertToContactNoAsync(
+            addressDetails[0]["Phone Number"],
+            addressDetails[0]["country"],
+          );
       }
     },
 
@@ -365,14 +392,14 @@ export default defineComponent({
     async goToOwnersAndControllersAsync() {
       const activeRouteServiceRouteSequenceNo =
         this.navigationService.getActiveRouteServiceRouteSequenceNo(
-          AppConstants.ownersAndControllersRoute
+          AppConstants.ownersAndControllersRoute,
         );
       this.sequenceNoKeeperService.setSequenceNo(
-        activeRouteServiceRouteSequenceNo
+        activeRouteServiceRouteSequenceNo,
       );
       this.eventBusSideMenuRoute.emit(AppConstants.userClickSideMenuRouteEvent);
       await this.navigationService.navigateRootAsync(
-        AppConstants.ownersAndControllersRoute
+        AppConstants.ownersAndControllersRoute,
       );
     },
 
@@ -398,7 +425,7 @@ export default defineComponent({
     onTradingAddressDoneTyping(
       elementId: string,
       hasChanged: boolean,
-      closeLinkModel: CloseLinkModel
+      closeLinkModel: CloseLinkModel,
     ) {
       if (!hasChanged || this.isTradingAddressChangedAlertOpened) {
         return;
@@ -425,7 +452,7 @@ export default defineComponent({
           this.isTradingAddressChangedAlertOpened = false;
           this.eventBusControlElement.emit(
             AppConstants.updateTradingAddressControlStateEvent,
-            elementId
+            elementId,
           );
         },
         onClose: () => {
@@ -451,14 +478,14 @@ export default defineComponent({
 
     onBusinessIncorporationChange(
       businessIncorporation: { country: string; businessNature: string },
-      item: CloseLinkModel
+      item: CloseLinkModel,
     ) {
       item.countryOfIncorporation = businessIncorporation.country;
       item.natureOfBusiness = businessIncorporation.businessNature;
     },
 
     mapCountryAndNatureOfBusinessToBusinessIncorporation(
-      item: CloseLinkModel
+      item: CloseLinkModel,
     ): BusinessIncorporation {
       return {
         country: item.countryOfIncorporation ?? "",

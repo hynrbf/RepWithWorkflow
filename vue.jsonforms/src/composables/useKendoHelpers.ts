@@ -1,6 +1,8 @@
 import setWith from "lodash/setWith";
 
 export const useKendoHelpers = () => {
+  // ToDo. part of 18 IMPT errors to fix
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formValueToObject = (kendoForm: any, name: string) => {
     if (!name.includes(".")) {
       return;

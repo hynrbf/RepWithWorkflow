@@ -27,6 +27,7 @@ namespace BackJobs
         private readonly IAppointedRepresentativeRepository _appointedRepresentativeRepository;
         private readonly IOrganizationalStructureRepository _organizationalStructureRepository;
         private readonly IProvidersRepository _providersRepository;
+        private readonly IAffiliatesRepository _affiliatesRepository;
         private readonly IIntroducersRepository _introducersRepository;
         private readonly IEmailService _emailService;
         private readonly ISignatureService _signatureService;
@@ -40,6 +41,7 @@ namespace BackJobs
             IAppointedRepresentativeRepository appointedRepresentativeRepository,
             IOrganizationalStructureRepository organizationalStructureRepository,
             IProvidersRepository providersRepository,
+            IAffiliatesRepository affiliatesRepository,
             IIntroducersRepository introducersRepository,
             IEmailService emailService,
             ISignatureService signatureService,
@@ -52,6 +54,7 @@ namespace BackJobs
             _appointedRepresentativeRepository = appointedRepresentativeRepository;
             _organizationalStructureRepository = organizationalStructureRepository;
             _providersRepository = providersRepository;
+            _affiliatesRepository = affiliatesRepository;
             _introducersRepository = introducersRepository;
             _saveFieldsRepository = saveFieldsRepository;
             _settingRepository = settingRepository;
@@ -121,6 +124,7 @@ namespace BackJobs
             var sendInvitationToCustomerArTaskStatus = false;
             var sendInvitationToCustomerEmployeeTaskStatus = false;
             var sendInvitationToCustomerProviderTaskStatus = false;
+            var sendInvitationToCustomerAffiliateTaskStatus = false;
             var sendInvitationToCustomerIntroducerTaskStatus = false;
             var regenerateSigningLinkIfExpiredTaskStatus = false;
             var regenerateDirectDebitSigningLinkIfExpiredTaskStatus = false;
@@ -137,13 +141,14 @@ namespace BackJobs
                 var sendInvitationToCustomerArTask = SendInvitationToCustomerArAsync(log);
                 var sendInvitationToCustomerEmployeeTask = SendInvitationToCustomerEmployeeAsync(log);
                 var sendInvitationToProviderTask = SendInvitationToProviderAsync(log);
+                var sendInvitationToAffiliateTask = SendInvitationToAffiliateAsync(log);
                 var sendInvitationToIntroducerTask = SendInvitationToIntroducerAsync(log);
                 var regenerateSigningLinkIfExpiredTask = RegenerateSigningLinkIfExpiredAsync(log);
                 var regenerateDirectDebitSigningLinkIfExpiredTask = RegenerateDirectDebitSigningLinkIfExpiredAsync(log);
                 var fulfilledStatusTask = CheckFulfilledStatusFromDocumentAsync(log);
 
                 await Task.WhenAll(proposalTask, proposalFollowUpTask, sendInvitationToCustomerArTask,
-                    fulfilledStatusTask, sendInvitationToProviderTask, sendInvitationToIntroducerTask,
+                    fulfilledStatusTask, sendInvitationToProviderTask, sendInvitationToAffiliateTask, sendInvitationToIntroducerTask,
                     regenerateSigningLinkIfExpiredTask, regenerateDirectDebitSigningLinkIfExpiredTask);
 
                 proposalTaskStatus = await proposalTask;
@@ -151,6 +156,7 @@ namespace BackJobs
                 sendInvitationToCustomerArTaskStatus = await sendInvitationToCustomerArTask;
                 sendInvitationToCustomerEmployeeTaskStatus = await sendInvitationToCustomerEmployeeTask;
                 sendInvitationToCustomerProviderTaskStatus = await sendInvitationToProviderTask;
+                sendInvitationToCustomerAffiliateTaskStatus = await sendInvitationToAffiliateTask;
                 sendInvitationToCustomerIntroducerTaskStatus = await sendInvitationToIntroducerTask;
                 fulfilledTaskStatus = await fulfilledStatusTask;
                 regenerateSigningLinkIfExpiredTaskStatus = await regenerateSigningLinkIfExpiredTask;
@@ -172,6 +178,7 @@ namespace BackJobs
                                        sendInvitationToCustomerArTaskStatus &&
                                        sendInvitationToCustomerEmployeeTaskStatus &&
                                        sendInvitationToCustomerProviderTaskStatus &&
+                                       sendInvitationToCustomerAffiliateTaskStatus &&
                                        sendInvitationToCustomerIntroducerTaskStatus &&
                                        fulfilledTaskStatus && regenerateSigningLinkIfExpiredTaskStatus &&
                                        regenerateDirectDebitSigningLinkIfExpiredTaskStatus && directDebitTaskStatus &&
@@ -603,6 +610,59 @@ namespace BackJobs
             {
                 log.LogError("Error occured at {SendInvitationToProviderAsyncName}: {ExMessage}",
                     nameof(SendInvitationToProviderAsync), ex.Message);
+            }
+
+            return true;
+        }
+
+        private async Task<bool> SendInvitationToAffiliateAsync(ILogger log)
+        {
+            log.LogInformation("Getting recipients for 'Invitation to Affiliate' Email...");
+
+            try
+            {
+                var completeAffiliateDetailsRequestRecipients =
+                    (await _affiliatesRepository.GetAllAffiliatesNotYetFinishedSignupAsync()).ToList();
+
+                if (!completeAffiliateDetailsRequestRecipients.Any())
+                {
+                    log.LogWarning("No recipients for 'Invitation to Customer Affiliate' Email found");
+                    return true;
+                }
+
+                foreach (var recipient in completeAffiliateDetailsRequestRecipients.Where(recipient =>
+                             !string.IsNullOrEmpty(recipient.Email) &&
+                             recipient.ProfileStatus == ProfileStatuses.Full.ToString()))
+                {
+                    const string htmlFileName = "send_invitation_to_customer_affiliate.html";
+                    const string subFolder = "CustomerAffiliate";
+                    var htmlContent = await GetHtmlFullUrlPathFromStorageAsync(htmlFileName, subFolder);
+
+                    var baseUrl =
+                        Environment.GetEnvironmentVariable("BaseRedirectUrl", EnvironmentVariableTarget.Process);
+                    var invitationUrl = $"{baseUrl}/affiliate-verify/{Helpers.EncodeToBase64(recipient.Email)}";
+                    var emailAddress = recipient.Email.Split('@')[0];
+
+                    htmlContent = htmlContent.Replace("$(EmailAddress)", emailAddress);
+                    htmlContent = htmlContent.Replace("$(InvitationUrl)", invitationUrl);
+
+                    if (string.IsNullOrEmpty(recipient.Email))
+                    {
+                        throw new NullReferenceException(
+                            $"The recipient email is required in the front end. Why it is null in DB?");
+                    }
+
+                    const string subject = "Invitation to Affiliate";
+                    _emailService.SendEmail(recipient.Email, subject, htmlContent);
+
+                    recipient.IsFinishedSignUp = true;
+                    await _affiliatesRepository.SaveOrUpdateAffiliatesAsync(recipient);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogError("Error occured at {SendInvitationToAffiliateAsyncName}: {ExMessage}",
+                    nameof(SendInvitationToAffiliateAsync), ex.Message);
             }
 
             return true;

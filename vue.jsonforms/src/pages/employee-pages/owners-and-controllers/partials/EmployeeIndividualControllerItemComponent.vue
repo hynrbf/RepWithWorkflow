@@ -1305,7 +1305,7 @@ export default defineComponent({
             "
             @onValueChange="onContactNumberChange"
             :isDataLoadedCompletely="!isInitializing"
-            isValueReactive
+            :isValueReactive="true"
           />
         </StackLayout>
 
@@ -1315,8 +1315,8 @@ export default defineComponent({
               '-individualControllerModelDetail.hasBeenSubjectToComplaints',
             )
           "
-          isRequired
-          isValueReactive
+          :isRequired="true"
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           @onValueChange="
             (value: boolean) =>
@@ -1440,8 +1440,8 @@ export default defineComponent({
             (index: number) =>
               onRemoveIndividualControllerDirectorshipItem(index)
           "
-          addable
-          removable
+          :addable="true"
+          :removable="true"
         >
           <template
             v-for="directorship in individualItem.individualController
@@ -1592,8 +1592,8 @@ export default defineComponent({
           v-model:items="controllingInterestTabs"
           @add="onAddIndividualControllerControllingInterestItem"
           @remove="onRemoveIndividualControllerControllingInterestItem"
-          addable
-          removable
+          :addable="true"
+          :removable="true"
         >
           <template
             v-for="controllingInterest in individualItem.individualController
@@ -1853,7 +1853,7 @@ export default defineComponent({
                 ?.totalAmountToActAsGuarantor
             "
             :isDataLoadedCompletely="!isInitializing"
-            isValueReactive
+            :isValueReactive="true"
             @onValueChange="
               (value: Money) =>
                 ((

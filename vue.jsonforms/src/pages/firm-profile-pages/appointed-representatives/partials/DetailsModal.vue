@@ -30,6 +30,7 @@ import { useAppointedRepresentativesStore } from "@/stores/useAppointedRepresent
 import { useCustomerStore } from "@/stores/useCustomerStore";
 import { CollapsiblePanelItem } from "@/components/CollapsiblePanelComponent.vue";
 import { NavPillItem } from "@/components/NavPillComponent.vue";
+import {AppointedRepresentativeActivity} from "@/entities/appointed-representatives/AppointedRepresentativeActivity";
 
 export default defineComponent({
   name: "DetailsModal",
@@ -71,6 +72,9 @@ export default defineComponent({
     };
   },
   computed: {
+    AppointedRepresentativeActivity() {
+      return AppointedRepresentativeActivity;
+    },
     ContactNumber() {
       return ContactNumber;
     },
@@ -189,15 +193,25 @@ export default defineComponent({
 
     areAllRequiredFieldsProvided() {
       const {
+        isCompany,
         companyNumber,
         firmReferenceNumber,
         name,
+        forename,
+        surname,
         tradingNames,
         registeredAddress,
         tradingAddress,
+        homeAddress,
         email,
         contactNumber,
         proposedCommencementDate,
+        residenceStartDate,
+        dateOfBirth,
+        countryOfBirth,
+        nationalities,
+        nationalityInsuranceNumber,
+        passportNumber,
         representative,
         isBeIntroducer,
         primaryReason,
@@ -211,20 +225,28 @@ export default defineComponent({
 
       const hasCompanyOrFirmReferenceNumber: boolean =
         !!companyNumber || !!firmReferenceNumber;
+      const hasInsuranceOrPassportNumber: boolean =
+          !!nationalityInsuranceNumber || !!passportNumber;
       const hasTradingNames: boolean =
         Array.isArray(tradingNames) && tradingNames.length > 0;
       const isCommencementDateProvided: boolean =
         proposedCommencementDate != null && proposedCommencementDate !== 0;
+      const isResidenceDateProvided: boolean =
+          residenceStartDate != null && residenceStartDate !== 0;
+      const isDateOfBirthProvided: boolean =
+          dateOfBirth != null && dateOfBirth !== 0;
       const isRepresentativeProvided: boolean =
         representative &&
         representative.forename !== "" &&
         representative.surname !== "" &&
         representative.emailAddress !== "" &&
-        representative.contactNumber != null &&
+        representative.contactNumber?.number !== undefined &&
         representative.jobTitle !== "";
 
       const hasActivities: boolean =
         Array.isArray(activities) && activities.length > 0;
+      const hasNationality: boolean =
+          Array.isArray(nationalities) && nationalities.length > 0;
 
       let conditions = [
         hasCompanyOrFirmReferenceNumber,
@@ -232,18 +254,41 @@ export default defineComponent({
         hasTradingNames,
         registeredAddress !== "",
         tradingAddress !== "",
-        email !== "",
-        contactNumber != null,
+        this.helperService.checkIfEmailFormatIsValid(email ?? ""),
+        contactNumber?.number !== undefined,
         isCommencementDateProvided,
         isRepresentativeProvided,
         isBeIntroducer != null,
         primaryReason !== "",
         isPayForServices != null,
-        isActivitiesCoveredByPii != null,
         hasActivities,
       ];
 
+      if (!isCompany){
+        conditions = [
+          hasCompanyOrFirmReferenceNumber,
+          forename !== "",
+          surname !== "",
+          homeAddress !== "",
+          tradingAddress !== "",
+          this.helperService.checkIfEmailFormatIsValid(email ?? ""),
+          contactNumber?.number !== undefined,
+          isCommencementDateProvided,
+          isResidenceDateProvided,
+          isDateOfBirthProvided,
+          countryOfBirth !== "",
+          hasNationality,
+          hasInsuranceOrPassportNumber,
+          hasTradingNames,
+          isBeIntroducer != null,
+          primaryReason !== "",
+          isPayForServices != null,
+          hasActivities,
+        ];
+      }
+
       if (isPayForServices) {
+        conditions.push(isActivitiesCoveredByPii != null);
         conditions.push(serviceToPayFor !== "");
         conditions.push(!!fees && Array.isArray(fees) && fees.length > 0);
       }
@@ -458,17 +503,15 @@ export default defineComponent({
           return;
         }
 
-        // Address
-        const address = this.helperService.formatFcaAddress(addressDetails[0]);
-        this.valueInternal.tradingAddress =
-          this.valueInternal.registeredAddress = address;
-
         // Contact Number
-        const contact = new ContactNumber();
-        contact.number = this.helperService.cleanContactNumber(
-          addressDetails[0]["Phone Number"]
-        );
-        this.valueInternal.contactNumber = contact;
+        if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+          //this is format comes from fca +4402077818019"
+          this.valueInternal.contactNumber =
+            await this.helperService.convertToContactNoAsync(
+              addressDetails[0]["Phone Number"],
+              addressDetails[0]["country"],
+            );
+        }
 
         // Website Address
         this.valueInternal.website = addressDetails[0]["Website Address"];
@@ -479,26 +522,6 @@ export default defineComponent({
         this.valueInternal.tradingNames = tradingNames;
       } catch {
         throw new Error("Something went wrong. Please try again later.");
-      }
-    },
-
-    convertEpochValueToDate(input: number | undefined): Date | undefined {
-      if (!input) {
-        return undefined;
-      }
-
-      if (input === -1) {
-        return undefined;
-      }
-
-      return this.helperService.convertEpochToDateTime(input);
-    },
-
-    onProposedCommencementDateChange(value: number | undefined) {
-      if (value != undefined && value != null) {
-        const newDate = this.helperService.convertEpochToDateTime(value) as Date;
-        this.valueInternal.proposedCommencementDate =
-          this.helperService.dateStringToEpoch(newDate.toDateString());
       }
     },
 
@@ -718,7 +741,14 @@ export default defineComponent({
                   <div class="col-lg-4">
                     <dl class="DescList">
                       <dt>Nationality</dt>
-                      <dd>{{ valueInternal.nationality || "-" }}</dd>
+                      <dd v-if="valueInternal.nationalities && valueInternal.nationalities.length>0">
+                        <span v-for="(nat,key) in valueInternal.nationalities" :key="key">
+                          {{`${nat}, `}}
+                        </span>
+                      </dd>
+                      <dd v-else>
+                        -
+                      </dd>
                     </dl>
                   </div>
                   <div class="col-lg-4">
@@ -837,6 +867,10 @@ export default defineComponent({
                           firmBasicInfo.companyNumber;
                         valueInternal.firmReferenceNumber =
                           firmBasicInfo.firmReferenceNumber;
+                        valueInternal.tradingAddress =
+                          firmBasicInfo.tradingAddress;
+                        valueInternal.registeredAddress =
+                          firmBasicInfo.address;
                         populateRelatedFields(
                           valueInternal?.firmReferenceNumber?.toString() ?? ''
                         );
@@ -847,7 +881,7 @@ export default defineComponent({
                   <div class="col-lg-9">
                     <KendoTradingNameComponent
                       name="tradingNames"
-                      isValueReactive
+                      :isValueReactive="true"
                       :value="valueInternal.tradingNames"
                       :isUserModified="valueInternal.isTradingNamesChanged"
                       :isDataLoadedCompletely="!isInitializing"
@@ -857,12 +891,12 @@ export default defineComponent({
                           valueInternal.tradingNames?.splice(index, 1);
                         }
                       "
-                      isShowAllOnPopup
+                      :isShowAllOnPopup="true"
                     />
                   </div>
 
                   <KendoDatePickerInputComponent
-                    :id="setUniqueIdentifier('-soletrader-proposedCommencementDate')"
+                    :id="setUniqueIdentifier('proposedCommencementDate')"
                     class="col-lg-3"
                     :label="
                       valueInternal.firmReferenceNumber
@@ -871,16 +905,11 @@ export default defineComponent({
                     "
                     name="proposedCommencementDate"
                     :epoch="true"
-                    v-model="valueInternal.proposedCommencementDate"
-                    :value="
-                      convertEpochValueToDate(
-                        valueInternal?.proposedCommencementDate ?? undefined,
-                      )
-                    "
+                    :value="valueInternal.proposedCommencementDate"
                     :isValueReactive="true"
                     :isRequired="true"
-                    @onValueChange="
-                      (date: number) => onProposedCommencementDateChange(date)
+                    @onValueChange = "(date: number) =>
+                        valueInternal.proposedCommencementDate = date
                     "
                   />
 
@@ -890,7 +919,7 @@ export default defineComponent({
                     name="registeredAddress"
                     label="Registered Address"
                     :value="valueInternal.registeredAddress"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                     @onValueChange="valueInternal.registeredAddress = $event"
                   />
@@ -919,7 +948,7 @@ export default defineComponent({
                       }
                     "
                     :sameAsLabel="$t('same-as-registered-address')"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -942,7 +971,7 @@ export default defineComponent({
                       (contactNumber: ContactNumber) =>
                         (valueInternal.contactNumber = contactNumber)
                     "
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -965,7 +994,7 @@ export default defineComponent({
                       name="title"
                       label="Title"
                       :isRequired="false"
-                      isValueReactive
+                      :isValueReactive="true"
                       :isDataLoadedCompletely="!isInitializing"
                       :value="valueInternal.title"
                       @onValueChange="valueInternal.title = $event"
@@ -980,7 +1009,7 @@ export default defineComponent({
                     v-model="valueInternal.forename"
                     :isCapitalizeFirstLetter="true"
                     :isCheckForProfanity="true"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -990,9 +1019,9 @@ export default defineComponent({
                     name="surname"
                     label="Surname"
                     v-model="valueInternal.surname"
-                    isCapitalizeFirstLetter
-                    isCheckForProfanity
-                    isValueReactive
+                    :isCapitalizeFirstLetter="true"
+                    :isCheckForProfanity="true"
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -1002,9 +1031,9 @@ export default defineComponent({
                     name="firmReferenceNumber"
                     label="Firm Reference Number"
                     v-model="valueInternal.firmReferenceNumber"
-                    isCapitalizeFirstLetter
-                    isCheckForProfanity
-                    isValueReactive
+                    :isCapitalizeFirstLetter="true"
+                    :isCheckForProfanity="true"
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -1014,7 +1043,7 @@ export default defineComponent({
                     name="homeAddress"
                     label="Home Address"
                     :value="valueInternal.homeAddress"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                     @onValueChange="valueInternal.homeAddress = $event"
                   />
@@ -1027,7 +1056,7 @@ export default defineComponent({
                     epoch
                     @onValueChange="(val: number)=> valueInternal.residenceStartDate = val"
                     :value="valueInternal.residenceStartDate"
-                    isValueReactive
+                    :isValueReactive="true"
                   />
 
                   <KendoDatePickerInputComponent
@@ -1038,7 +1067,7 @@ export default defineComponent({
                     epoch
                     @onValueChange="(val: number)=> valueInternal.dateOfBirth = val"
                     :value="valueInternal.dateOfBirth"
-                    isValueReactive
+                    :isValueReactive="true"
                   />
 
                   <div class="col-lg-4">
@@ -1068,9 +1097,9 @@ export default defineComponent({
                     label="Nationality Insurance Number"
                     placeholder="LLLNNLLL"
                     v-model="valueInternal.nationalityInsuranceNumber"
-                    isCapitalizeFirstLetter
-                    isCheckForProfanity
-                    isValueReactive
+                    :isCapitalizeFirstLetter="true"
+                    :isCheckForProfanity="true"
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -1081,9 +1110,9 @@ export default defineComponent({
                     label="Passport Number (If National Insurance Number is not available)"
                     placeholder="NNNNNNNN"
                     v-model="valueInternal.passportNumber"
-                    isCapitalizeFirstLetter
-                    isCheckForProfanity
-                    isValueReactive
+                    :isCapitalizeFirstLetter="true"
+                    :isCheckForProfanity="true"
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -1091,7 +1120,7 @@ export default defineComponent({
                     <KendoTradingNameComponent
                       :id="setUniqueIdentifier('-tradingNames')"
                       name="tradingNames"
-                      isValueReactive
+                      :isValueReactive="true"
                       :isDataLoadedCompletely="!isInitializing"
                       :value="valueInternal.tradingNames"
                       :isUserModified="valueInternal.isTradingNamesChanged"
@@ -1101,28 +1130,25 @@ export default defineComponent({
                           valueInternal.tradingNames?.splice(index, 1);
                         }
                       "
-                      isShowAllOnPopup
+                      :isShowAllOnPopup="true"
                     />
                   </div>
 
                   <KendoDatePickerInputComponent
-                    :id="setUniqueIdentifier('-proposedCommencementDate')"
-                    class="col-lg-3"
-                    :label="
+                      :id="setUniqueIdentifier('-soletrader-proposedCommencementDate')"
+                      class="col-lg-3"
+                      :label="
                       valueInternal.firmReferenceNumber
                         ? 'Commencement Date'
                         : 'Proposed Commencement Date'
                     "
-                    name="proposedCommencementDate"
-                    :value="
-                      convertEpochValueToDate(
-                        valueInternal?.proposedCommencementDate ?? undefined,
-                      )
-                    "
-                    :isValueReactive="true"
-                    :isRequired="true"
-                    @onValueChange="
-                      (date: number) => onProposedCommencementDateChange(date)
+                      name="proposedCommencementDate"
+                      :epoch="true"
+                      :value="valueInternal.proposedCommencementDate"
+                      :isValueReactive="true"
+                      :isRequired="true"
+                      @onValueChange = "(date: number) =>
+                        valueInternal.proposedCommencementDate = date
                     "
                   />
 
@@ -1132,7 +1158,7 @@ export default defineComponent({
                     name="tradingAddress"
                     label="Trading Address"
                     :value="valueInternal.tradingAddress"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                     @onValueChange="valueInternal.tradingAddress = $event"
                   />
@@ -1156,7 +1182,7 @@ export default defineComponent({
                       (contactNumber: ContactNumber) =>
                         (valueInternal.contactNumber = contactNumber)
                     "
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -1262,7 +1288,7 @@ export default defineComponent({
                   (contactNumber: ContactNumber) =>
                     (valueInternal.representative.contactNumber = contactNumber)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -1278,8 +1304,10 @@ export default defineComponent({
 
           <template #[`content-activities`]>
             <Activities
-              v-model="valueInternal.activities"
+              :modelValue="valueInternal.activities"
               :view-mode="viewMode"
+              @update:modelValue="(val:AppointedRepresentativeActivity[]) =>
+                                  valueInternal.activities = val"
             />
           </template>
 
@@ -1477,7 +1505,7 @@ export default defineComponent({
                       :is-required="valueInternal.isPayForServices"
                       value-primitive
                       placeholder="Please Select"
-                      addable
+                      :addable="true"
                     />
                   </div>
                 </div>
@@ -1532,19 +1560,21 @@ export default defineComponent({
           type="button"
           fill-mode="outline"
           theme-color="primary"
-          :disabled="!areAllRequiredFieldsProvided"
-          @click="handleRequestToCompleteDetails"
+          @click.prevent="handleRequestToCompleteDetails"
+          :disabled="!isEmailValid || !isValidPrimaryDetails"
         >
-          Request Appointed Representative to Complete Details
+          Save & Add Appointed Representative
         </KendoButton>
 
         <KendoButton
           type="button"
           theme-color="primary"
-          @click.prevent="handleSubmit"
-          :disabled="!isEmailValid || !isValidPrimaryDetails"
+
+          :disabled="!areAllRequiredFieldsProvided"
+          @click="handleSubmit"
         >
-          Save & Add Appointed Representative
+
+          Request Appointed Representative to Complete Details
         </KendoButton>
       </div>
     </template>

@@ -200,11 +200,11 @@
                             name="firmdetails.tradingNames"
                             :value="firmDetails.tradingNames"
                             :isUserModified="firmDetails.isTradingNamesChanged"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"
                             @onRemoveItem="onRemoveItem"
                             @onValueChange="onTrandingNamesChanged"
-                            isShowAllOnPopup/>
+                            :isShowAllOnPopup="true"/>
 
                     <KendoPostCodeInputComponent
                             v-if="!this.isSoleTrader"
@@ -215,7 +215,7 @@
                             @onValueChange="onFirmRegisteredAddressChanged"
                             :value="firmDetails.registeredAddress"
                             :isDataLoadedCompletely="!isInitializing"
-                            isValueReactive/>
+                            :isValueReactive="true"/>
 
                     <KendoPostCodeInputWithSameAsComponent
                             :name="'firmdetails.tradingAddress'"
@@ -230,7 +230,7 @@
                             @onLostFocus="onTradingAddressDoneTyping"
                             :sameAsLabel="$t('same-as-registered-address')"
                             :isDataLoadedCompletely="!isInitializing"
-                            isValueReactive/>
+                            :isValueReactive="true"/>
 
                     <KendoPostCodeInputWithSameAsComponent
                             :name="'firmdetails.headOfficeAddress'"
@@ -243,7 +243,7 @@
                             @onValueChange="((value) => firmDetails.headOfficeAddress = value)"
                             :value="firmDetails.headOfficeAddress"
                             :sameAsLabel="$t('same-as-trading-address')"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"/>
 
                     <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'stretch'}">
@@ -255,7 +255,7 @@
                                 :value="firmDetails.emailAddress"
                                 :isEditable="false"
                                 @onAttemptEdit="attemptEditEmailAddress"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoTelInputComponent
@@ -276,7 +276,7 @@
                                 :isRequired="false"
                                 type="url"
                                 :value="firmDetails.website"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
                     </StackLayout>
                 </StackLayout>
@@ -303,7 +303,7 @@
                                 class="col"
                                 :value="representative.title"
                                 @onValueChange="((value) => representative.title = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                                 :isRequired="false"
                         />
@@ -317,7 +317,7 @@
                                 label="Forename(s)"
                                 :isCapitalizeFirstLetter="true"
                                 :isCheckForProfanity="true"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
 
@@ -330,7 +330,7 @@
                                 label="Surname"
                                 :isCapitalizeFirstLetter="true"
                                 :isCheckForProfanity="true"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
                     </StackLayout>
@@ -344,7 +344,7 @@
                                 :placeholder="'Type'"
                                 :value="representative.emailAddress"
                                 @onValueChange="((value) => representative.emailAddress = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoTelInputComponent
@@ -354,7 +354,7 @@
                                 class="col"
                                 :value="representative.contactNumber"
                                 @onValueChange="((value) => representative.contactNumber = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoGenericInputComponent
@@ -365,7 +365,7 @@
                                 :value="representative.jobTitle"
                                 @onValueChange="((value) => representative.jobTitle = value)"
                                 label="Job Title"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
                     </StackLayout>
                 </StackLayout>
@@ -389,8 +389,8 @@
                             @onValueChange="toggleLocumYesOrNo"
                             :value="isFirmDependentOnSingleKeyIndividual"
                             :isDataLoadedCompletely="!isInitializing"
-                            isValueReactive
-                            isRequired="true"/>
+                            :isValueReactive="true"
+                            :isRequired="true"/>
 
                     <KendoYesOrNoQuestionInputComponent
                             v-if="isFirmDependentOnSingleKeyIndividual"
@@ -400,8 +400,8 @@
                             @onValueChange="toggleHasAppointedLocumYesOrNo"
                             :value="hasAppointedLocum"
                             :isDataLoadedCompletely="!isInitializing"
-                            isValueReactive
-                            isRequired="true"/>
+                            :isValueReactive="true"
+                            :isRequired="true"/>
 
                     <KendoCompanyOrSoleTraderQuestionInputComponent
                             v-if="hasAppointedLocum"
@@ -411,8 +411,8 @@
                             @onValueChange="toggleIsLocumCompanyOrSoleTrader"
                             :value="isLocumCompany"
                             :isDataLoadedCompletely="!isInitializing"
-                            isValueReactive
-                            isRequired="true"/>
+                            :isValueReactive="true"
+                            :isRequired="true"/>
 
                     <!-- Has Single Key Individual and has no Appointed Locum Section -->
                     <StackLayout v-if="isFirmDependentOnSingleKeyIndividual && hasAppointedLocum === false"
@@ -433,7 +433,7 @@
                                 :value="hasNoAppointedLocumInfo"
                                 labelForErrorMessage="Additional Information"
                                 :isDataLoadedCompletely="!isInitializing"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isRequired="true"/>
                     </StackLayout>
 
@@ -465,7 +465,7 @@
                                 :isUserModified="locumCompanyDetail.isRegisteredAddressChanged"
                                 @onValueChange="onLocumRegisteredAddressChanged"
                                 :value="locumCompanyDetail.registeredAddress"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
 
@@ -483,7 +483,7 @@
                                 @onLostFocus="onLocumTradingAddressDoneTyping"
                                 @onToggle="onToggleTradingAddress(locumDetailKey)"
                                 :sameAsLabel="$t('same-as-registered-address')"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <StackLayout
@@ -495,7 +495,7 @@
                                     :name="'locumDetail.locumCompanyDetail.emailAddress'" class="col"
                                     @onValueChange="((value) => locumCompanyDetail.emailAddress = value)"
                                     :value="locumCompanyDetail.emailAddress"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
 
                             <KendoTelInputComponent
@@ -505,7 +505,7 @@
                                     class="col"
                                     :value="locumCompanyDetail.contactNumber"
                                     @onValueChange="((value) => locumCompanyDetail.contactNumber = value)"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
 
                             <KendoGenericInputComponent
@@ -516,7 +516,7 @@
                                     :isRequired="false"
                                     @onValueChange="((value) => locumCompanyDetail.website = value)"
                                     :value="locumCompanyDetail.website"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
                         </StackLayout>
                     </StackLayout>
@@ -544,7 +544,7 @@
                                 label="Title"
                                 class="col"
                                 :value="locumCompanyDetail.representativeTitle"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                                 @onValueChange="((value) => locumCompanyDetail.representativeTitle = value)"
                         />
@@ -558,7 +558,7 @@
                                 @onValueChange="((value) => locumCompanyDetail.representativeForename = value)"
                                 :value="locumCompanyDetail.representativeForename"
                                 :isCheckForProfanity="true"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
 
@@ -571,7 +571,7 @@
                                 @onValueChange="((value) => locumCompanyDetail.representativeSurname = value)"
                                 :value="locumCompanyDetail.representativeSurname"
                                 :isCheckForProfanity="true"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"
                         />
                     </StackLayout>
@@ -586,7 +586,7 @@
                                 class="col"
                                 @onValueChange="((value) => locumCompanyDetail.representativeEmailAddress = value)"
                                 :value="locumCompanyDetail.representativeEmailAddress"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoTelInputComponent
@@ -596,7 +596,7 @@
                                 @onValueChange="((value) => locumCompanyDetail.representativeMobileNumber = value)"
                                 :value="locumCompanyDetail.representativeMobileNumber"
                                 label="Contact Number"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoRoleComponent
@@ -608,7 +608,7 @@
                                 @onValueChange="((value) => locumCompanyDetail.representativeRole = value)"
                                 :value="locumCompanyDetail.representativeRole"
                                 placeholder="Please select"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
                     </StackLayout>
                 </StackLayout>
@@ -624,7 +624,7 @@
                                 :name="'locumSoleTraderDetail.foreName'"
                                 class="col" label="Forename(s)"
                                 :isRequired="true"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :value="locumSoleTraderDetail?.foreName"
                                 @onValueChange="((value) => locumSoleTraderDetail.foreName = value)"
                                 :isDataLoadedCompletely="!isInitializing"/>
@@ -636,19 +636,20 @@
                                 :isRequired="true"
                                 :value="locumSoleTraderDetail?.surName"
                                 @onValueChange="((value) => locumSoleTraderDetail.surName = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoGenericInputComponent
                                 :id="setUniqueIdentifier( '-locumSoleTraderDetail.firmReferenceNumber')"
                                 :name="'locumSoleTraderDetail.firmReferenceNumber'"
-                                class="col" label="Firm Reference Number" :isCheckForProfanity="false"
+                                class="col" label="Firm Reference Number"
+                                :isCheckForProfanity="false"
                                 :isRequired="true"
                                 :isByPassGenericPlaceHolder="true"
                                 placeholder="123456"
                                 :value="locumSoleTraderDetail?.firmReferenceNumber"
                                 @onValueChange="((value) => locumSoleTraderDetail.firmReferenceNumber = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
                     </StackLayout>
 
@@ -661,7 +662,7 @@
                             @onValueChange="onLocumSoleTradingAddressChanged"
                             @onLostFocus="onLocumSoleTraderTradingAddressDoneTyping"
                             :value="locumSoleTraderDetail?.tradingAddress"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"/>
 
                     <StackLayout orientation="horizontal" :gap="15" :align="{horizontal: 'start'}">
@@ -670,7 +671,7 @@
                                 :name="'locumSoleTraderDetail.emailAddress'" class="col"
                                 :value="locumSoleTraderDetail?.emailAddress"
                                 @onValueChange="((value) => locumSoleTraderDetail.emailAddress = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoTelInputComponent
@@ -680,17 +681,18 @@
                                 class="col"
                                 :value="locumSoleTraderDetail?.contactNumber"
                                 @onValueChange="((value) => locumSoleTraderDetail.contactNumber = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoGenericInputComponent
                                 :id="setUniqueIdentifier( '-locumSoleTraderDetail.website')"
                                 :name="'locumSoleTraderDetail.website'"
-                                class="col" label="Website" :isCheckForProfanity="false"
+                                class="col" label="Website"
+                                :isCheckForProfanity="false"
                                 :isRequired="false"
                                 :value="locumSoleTraderDetail?.website"
                                 @onValueChange="((value) => locumSoleTraderDetail.website = value)"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
                     </StackLayout>
                 </StackLayout>
@@ -712,7 +714,7 @@
                             @onValueChange="((value) => bankAccountDetails.bankName = value)"
                             :value="bankAccountDetails?.bankName"
                             :isCheckForProfanity="true"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"/>
 
                     <KendoGenericInputComponent
@@ -724,7 +726,7 @@
                             @onValueChange="((value) => bankAccountDetails.accountName = value)"
                             :value="bankAccountDetails?.accountName"
                             :isCheckForProfanity="true"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"/>
                 </StackLayout>
 
@@ -737,7 +739,7 @@
                             :placeholder="'00-00-00'"
                             @onValueChange="((value) => bankAccountDetails.sortCode = value)"
                             :value="bankAccountDetails?.sortCode"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"
                             :acceptDash="true"
                             :mask="'00-00-00'"
@@ -751,7 +753,7 @@
                             :placeholder="'12345678'"
                             @onValueChange="((value) => bankAccountDetails.accountNumber = value)"
                             :value="bankAccountDetails?.accountNumber"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"
                     />
                 </StackLayout>
@@ -816,7 +818,7 @@
                                     label="Title"
                                     class="col"
                                     :value="accountDepartmentDetail.title"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     @onValueChange="((value) => accountDepartmentDetail.title = value)"/>
 
@@ -840,7 +842,7 @@
                                     :isCheckForProfanity="true"
                                     @onValueChange="((value) => accountDepartmentDetail.surname = value)"
                                     :value="accountDepartmentDetail.surname"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
                         </StackLayout>
 
@@ -854,7 +856,7 @@
                                     :placeholder="'Type'"
                                     @onValueChange="((value) => accountDepartmentDetail.emailAddress = value)"
                                     :value="accountDepartmentDetail.emailAddress"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
 
                             <KendoTelInputComponent
@@ -864,7 +866,7 @@
                                     @onValueChange="((value) => accountDepartmentDetail.contactNumber = value)"
                                     :value="accountDepartmentDetail.contactNumber"
                                     label="Contact Number"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
 
                             <KendoGenericInputComponent
@@ -874,7 +876,7 @@
                                     :isCheckForProfanity="false"
                                     @onValueChange="((value) => accountDepartmentDetail.jobTitle = value)"
                                     :value="accountDepartmentDetail.jobTitle" label="Job Title"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"/>
                         </StackLayout>
                     </StackLayout>
@@ -896,7 +898,7 @@
                             :questionText="$t('arDetailsPage-additional-hasAnyInsurerEverDeclined', { firmName })"
                             :value="additionalInformation?.hasAnyInsurerEverDeclined"
                             :isRequired="true"
-                            isValueReactive
+                            :isValueReactive="true"
                             :isDataLoadedCompletely="!isInitializing"
                             @onValueChange="(selected) => toggleAdditionalInformation(selected, 'hasAnyInsurerEverDeclined')"/>
 
@@ -914,7 +916,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.declinedInfo  = value)"
                                 :value="additionalInformation?.declinedInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent
@@ -976,7 +978,7 @@
                                         :value="additionalInformation?.primaryMarketCovered"
                                         @onValueChange="(value: array) => updatePrimaryMarketCovered(value)"
                                         :isRequired="true"
-                                        isValueReactive
+                                        :isValueReactive="true"
                                         :isDataLoadedCompletely="isInitializing"
                                         value-primitive
                                 />
@@ -1003,7 +1005,7 @@
                                         v-model="additionalInformation.permittedToUndertakeRegulatedActivities"
                                         value-primitive
                                         placeholder="Please Select"
-                                        isValueReactive
+                                        :isValueReactive="true"
                                         :isDataLoadedCompletely="!isInitializing"
                                 />
                             </div>
@@ -1032,7 +1034,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.portfolioManagementInfo  = value)"
                                 :value="additionalInformation.portfolioManagementInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent
@@ -1071,7 +1073,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.willBeTiedAgentInfo  = value)"
                                 :value="additionalInformation?.willBeTiedAgentInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent
@@ -1109,7 +1111,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.provideAnyRegulatedServicesInfo  = value)"
                                 :value="additionalInformation?.provideAnyRegulatedServicesInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent
@@ -1147,7 +1149,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.conductAnyNonRegulatedActivitiesInfo  = value)"
                                 :value="additionalInformation?.conductAnyNonRegulatedActivitiesInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent
@@ -1185,7 +1187,7 @@
                                 :placeholder="inputType"
                                 @onValueChange="((value: string) => additionalInformation.nonRegulatedFinancialServicesInfo  = value)"
                                 :value="additionalInformation?.nonRegulatedFinancialServicesInfo"
-                                isValueReactive
+                                :isValueReactive="true"
                                 :isDataLoadedCompletely="!isInitializing"/>
 
                         <KendoUploadInputComponent

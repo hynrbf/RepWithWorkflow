@@ -73,6 +73,8 @@ export const useAlert = (config: Partial<AlertConfig> = {}) => {
     }
   };
 
+  // ToDo. part of 18 IMPT errors to fix
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getActionButtons = (type: AlertType): any => {
     const ConfirmButton = h(
       Button,

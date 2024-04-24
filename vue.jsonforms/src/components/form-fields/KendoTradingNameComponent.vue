@@ -236,7 +236,7 @@ export default defineComponent({
               :id="props.id"
               :name="props.name"
               :placeholder="placeholder"
-              :value="valuesInternal"
+              :value="valuesInternal.sort((a, b) => a.localeCompare(b))"
               :opened="isDropdownOpened"
               size="small"
               :tag-render="'myTag'"

@@ -1,0 +1,5 @@
+{
+  "extensions":[
+    { "name": "Startup", "typeName":"Api.Startup, Api, Version=1.0.175.0, Culture=neutral, PublicKeyToken=null"}
+  ]
+}

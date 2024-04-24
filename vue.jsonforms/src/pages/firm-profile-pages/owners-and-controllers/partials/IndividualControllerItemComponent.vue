@@ -1303,12 +1303,12 @@ export default defineComponent({
             "
             @onValueChange="onContactNumberChange"
             :isDataLoadedCompletely="!isInitializing"
-            isValueReactive
+            :isValueReactive="true"
           />
         </StackLayout>
 
         <KendoYesOrNoQuestionInputComponent
-          isRequired="true"
+          :isRequired="true"
           :id="
             setUniqueIdentifier(
               '-individualControllerDetail.hasBeenSubjectToAnyMaterialComplaints',
@@ -1332,7 +1332,7 @@ export default defineComponent({
             individualItem.individualController?.detail
               ?.hasBeenSubjectToAnyMaterialComplaints
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -1407,7 +1407,7 @@ export default defineComponent({
           :questionText="`Does ${individualItem.individualController?.detail?.forename} ${individualItem.individualController?.detail?.surname} have any Directorship in the UK or overseas?`"
           :value="hasDirectorship"
           @onValueChange="onHasDirectorshipChange"
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -1438,8 +1438,8 @@ export default defineComponent({
             (index: number) =>
               onRemoveIndividualControllerDirectorshipItem(index)
           "
-          addable
-          removable
+          :addable="true"
+          :removable="true"
         >
           <template
             v-for="directorship in individualItem.individualController
@@ -1580,7 +1580,7 @@ export default defineComponent({
           :questionText="`Does ${individualItem.individualController?.detail?.forename} ${individualItem.individualController?.detail?.surname} have Other Controlling Interests?`"
           :value="hasControllingInterests"
           @onValueChange="onHasControllingInterests"
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -1589,8 +1589,8 @@ export default defineComponent({
           v-model:items="controllingInterestTabs"
           @add="onAddIndividualControllerControllingInterestItem"
           @remove="onRemoveIndividualControllerControllingInterestItem"
-          addable
-          removable
+          :addable="true"
+          :removable="true"
         >
           <template
             v-for="controllingInterest in individualItem.individualController
@@ -1849,7 +1849,7 @@ export default defineComponent({
                 ?.totalAmountToActAsGuarantor
             "
             :isDataLoadedCompletely="!isInitializing"
-            isValueReactive
+            :isValueReactive="true"
             @onValueChange="
               (value: Money) =>
                 ((

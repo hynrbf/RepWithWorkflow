@@ -80,6 +80,19 @@ export default defineComponent({
       );
     },
     allRequiredFieldsAreNotEmpty() {
+      if (
+        this.affiliateInternal.isAffiliateMarketingProvider &&
+        (!this.affiliateInternal.marketingProviderDetails.name ||
+          !this.affiliateInternal.marketingProviderDetails.companyNumber ||
+          !this.affiliateInternal.marketingProviderDetails
+            .firmReferenceNumber ||
+          !this.affiliateInternal.marketingProviderDetails.registeredAddress ||
+          !this.affiliateInternal.marketingProviderDetails.tradingAddress ||
+          !this.affiliateInternal.marketingProviderDetails.emailAddress ||
+          !this.affiliateInternal.marketingProviderDetails.contactNumber)
+      ) {
+        return false;
+      }
       return (
         this.affiliateInternal.details.name &&
         this.affiliateInternal.details.companyNumber &&
@@ -91,10 +104,9 @@ export default defineComponent({
         this.affiliateInternal.representative.forename &&
         this.affiliateInternal.representative.surname &&
         this.affiliateInternal.representative.emailAddress &&
-        this.affiliateInternal.representative.contactNumber &&
-        this.affiliateInternal.representative.jobTitle
+        this.affiliateInternal.representative.contactNumber
       );
-    },  
+    },
     isEmailValid() {
       if (!this.affiliateInternal.details.emailAddress) {
         return false;
@@ -103,7 +115,7 @@ export default defineComponent({
       return this.helperService.checkIfEmailFormatIsValid(
         this.affiliateInternal.details.emailAddress,
       );
-    },       
+    },
   },
 
   mounted() {
@@ -154,6 +166,12 @@ export default defineComponent({
           addressFromFca,
         );
         this.isSwitchAdjustMarginTop = true;
+
+        if (addressFromFca) {
+          this.affiliateInternal.details.website = this.websiteAddress;
+          this.affiliateInternal.details.contactNumber =
+            this.affiliateContactNumber;
+        }
       }
     },
 
@@ -184,6 +202,10 @@ export default defineComponent({
               .registeredAddress as string,
             addressFromFca,
           );
+        this.affiliateInternal.marketingProviderDetails.website =
+          this.websiteAddress;
+        this.affiliateInternal.marketingProviderDetails.contactNumber =
+          this.affiliateContactNumber;
       }
     },
 
@@ -335,18 +357,18 @@ export default defineComponent({
     onToggleTradingAddress() {
       this.isTradingSameAsRegisteredAddress =
         !this.isTradingSameAsRegisteredAddress;
-      this.affiliate!.details.tradingAddress = this
+      this.affiliateInternal.details.tradingAddress = this
         .isTradingSameAsRegisteredAddress
-        ? this.affiliate?.details.registeredAddress
+        ? this.affiliateInternal.details.registeredAddress
         : "";
     },
 
     onToggleTradingAddressForMarketing() {
       this.isTradingSameAsRegisteredAddressForMarketing =
         !this.isTradingSameAsRegisteredAddressForMarketing;
-      this.affiliate!.marketingProviderDetails.tradingAddress = this
+      this.affiliateInternal.marketingProviderDetails.tradingAddress = this
         .isTradingSameAsRegisteredAddressForMarketing
-        ? this.affiliate?.marketingProviderDetails.registeredAddress
+        ? this.affiliateInternal.marketingProviderDetails.registeredAddress
         : "";
     },
 
@@ -396,13 +418,20 @@ export default defineComponent({
         firmRefNo,
         "PPOB",
       );
+
       if (addressFromFca?.length > 0) {
-        const selectedAddress = addressFromFca;
-        const obj = JSON.parse(JSON.stringify(selectedAddress));
+        const obj = JSON.parse(JSON.stringify(addressFromFca[0]));
         this.websiteAddress = obj["Website Address"];
-        //const formattedNumber = obj["Phone Number"].substring(3);
-        //this.affiliateContactNumber = formattedNumber;
+
+        if (obj["Phone Number"] && obj["country"]) {
+          this.affiliateContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              obj["Phone Number"],
+              obj["country"],
+            );
+        }
       }
+
       return addressFromFca[0];
     },
 
@@ -486,7 +515,7 @@ export default defineComponent({
               @onValueChange="onAffliateTradingAddressChanged"
               @onLostFocus="onAffiliateTradingAddressDoneTyping"
               :sameAsLabel="$t('same-as-registered-address')"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -526,7 +555,7 @@ export default defineComponent({
                 style="margin-left: 15px"
                 class="col"
                 name="website"
-                label="Website (Optional)"
+                label="Website"
                 placeholder=""
                 :isRequired="false"
                 :value="affiliateInternal!.details.website"
@@ -545,14 +574,15 @@ export default defineComponent({
                 text="Does Affiliate have a Marketing Provider"
                 reverse
                 wide
-                :model-value="isAffiliateMarketingProvider"
+                :model-value="affiliateInternal.isAffiliateMarketingProvider"
                 @update:model-value="
-                  (value: boolean) => (isAffiliateMarketingProvider = value)
+                  (value: boolean) =>
+                    (affiliateInternal.isAffiliateMarketingProvider = value)
                 "
               />
             </div>
 
-            <div v-if="isAffiliateMarketingProvider">
+            <div v-if="affiliateInternal.isAffiliateMarketingProvider">
               <StackLayout
                 class="my-3"
                 orientation="vertical"
@@ -594,7 +624,7 @@ export default defineComponent({
                   label="Registered Address"
                   @onValueChange="
                     (value: string) =>
-                      (affiliate!.marketingProviderDetails!.registeredAddress =
+                      (affiliateInternal.marketingProviderDetails!.registeredAddress =
                         value)
                   "
                   :value="
@@ -667,7 +697,7 @@ export default defineComponent({
                     "
                     @onValueChange="
                       (value: ContactNumber) =>
-                        (affiliate!.marketingProviderDetails!.contactNumber =
+                        (affiliateInternal.marketingProviderDetails.contactNumber =
                           value)
                     "
                     :isValueReactive="true"
@@ -680,7 +710,7 @@ export default defineComponent({
                     style="margin-left: 15px"
                     class="col"
                     name="website"
-                    label="Website (Optional)"
+                    label="Website"
                     placeholder=""
                     :isRequired="false"
                     :value="
@@ -714,12 +744,12 @@ export default defineComponent({
                 class="col"
                 label="Title"
                 :is-required="false"
-                :value="affiliate?.representative.title"
+                :value="affiliateInternal.representative.title"
                 :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
                 @onValueChange="
                   (value: string) =>
-                    (affiliateInternal!.representative.title = value)
+                    (affiliateInternal.representative.title = value)
                 "
               />
               <KendoGenericInputComponent
@@ -731,10 +761,10 @@ export default defineComponent({
                 name="forename"
                 label="Forename(s) "
                 placeholder="12345678"
-                :value="affiliate?.representative.forename"
+                :value="affiliateInternal.representative.forename"
                 @onValueChange="
                   (value: string) =>
-                    (affiliateInternal!.representative.forename = value)
+                    (affiliateInternal.representative.forename = value)
                 "
               />
               <KendoGenericInputComponent
@@ -744,10 +774,10 @@ export default defineComponent({
                 name="surname"
                 label="Surname"
                 placeholder="123456"
-                :value="affiliate?.representative.surname"
+                :value="affiliateInternal.representative.surname"
                 @onValueChange="
                   (value: string) =>
-                    (affiliateInternal!.representative.surname = value)
+                    (affiliateInternal.representative.surname = value)
                 "
               />
             </div>
@@ -797,7 +827,7 @@ export default defineComponent({
                 style="margin-left: 15px"
                 class="col"
                 name="jobTitle"
-                label="Job Title (Optional)"
+                label="Job Title"
                 :isRequired="false"
                 :value="affiliateInternal?.representative.jobTitle"
                 @onValueChange="
@@ -819,19 +849,19 @@ export default defineComponent({
           type="button"
           fill-mode="outline"
           theme-color="primary"
-          :disabled="!allRequiredFieldsAreNotEmpty"
+          :disabled="!minimumRequiredFieldsAreNotEmpty || !isEmailValid"
           @click="handleRequestToComplete"
         >
-          Request Affiliate to Complete Details
+          {{ isAdd ? "Save & Add Affiliate" : "Save Changes" }}
         </KendoButton>
 
         <KendoButton
           type="submit"
           theme-color="primary"
-          :disabled="(!minimumRequiredFieldsAreNotEmpty || saving) || !isEmailValid"
+          :disabled="!allRequiredFieldsAreNotEmpty"
           @click="handleSubmit"
         >
-          {{ isAdd ? "Save & Add Affiliate" : "Save Changes" }}
+          Request Affiliate to Complete Details
         </KendoButton>
       </div>
     </template>

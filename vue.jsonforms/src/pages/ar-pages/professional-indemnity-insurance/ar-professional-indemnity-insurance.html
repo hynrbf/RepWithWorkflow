@@ -48,8 +48,8 @@
     <KendoFormElementComponent ref="formElement">
         <ScrollableTabComponent
                 v-model:items="piiTabs"
-                addable
-                removable
+                :addable="true"
+                :removable="true"
                 @add="addInitialProfessionalIndemnityItem"
                 @remove="removeProfessionalIndemnityItem">
             <template
@@ -107,7 +107,7 @@
                                             v-model="item.pii.insurerRegisteredAddress"
                                             :name="`registeredAddress-${index}`"
                                             label="Registered Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoPostCodeInputWithSameAsComponent
@@ -132,7 +132,7 @@
                                               }
                                             "
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoEmailAddressInputComponent
@@ -141,7 +141,7 @@
                                             label="Email Address"
                                             name="emailAddress"
                                             v-model="item.pii.insurerEmailAddress"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoTelInputComponent
@@ -150,7 +150,7 @@
                                             name="contactNumber"
                                             label="Contact Number"
                                             v-model="item.pii.insurerContactNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoGenericInputComponent
@@ -160,7 +160,7 @@
                                             name="website"
                                             :isRequired="false"
                                             v-model="item.pii.insurerWebsite"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
                                 </div>
                             </template>
@@ -223,7 +223,7 @@
                                             v-model="item.pii.brokerRegisteredAddress"
                                             :name="`brokerRegisteredAddress-${index}`"
                                             label="Registered Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoPostCodeInputWithSameAsComponent
@@ -249,7 +249,7 @@
                                               }
                                             "
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoEmailAddressInputComponent
@@ -258,7 +258,7 @@
                                             label="Email Address"
                                             name="brokerEmailAddress"
                                             v-model="item.pii.brokerEmailAddress"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoTelInputComponent
@@ -267,7 +267,7 @@
                                             name="brokerContactNumber"
                                             label="Contact Number"
                                             v-model="item.pii.brokerContactNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoGenericInputComponent
@@ -277,7 +277,7 @@
                                             name="brokerWebsite"
                                             :isRequired="false"
                                             v-model="item.pii.brokerWebsite"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
                                 </div>
 
@@ -291,7 +291,7 @@
                                             v-model="item.pii.forename"
                                             :isCapitalizeFirstLetter="true"
                                             :isCheckForProfanity="true"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoGenericInputComponent
@@ -302,7 +302,7 @@
                                             v-model="item.pii.surname"
                                             :isCapitalizeFirstLetter="true"
                                             :isCheckForProfanity="true"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoGenericInputComponent
@@ -313,7 +313,7 @@
                                             v-model="item.pii.firmReferenceNumber"
                                             :isCapitalizeFirstLetter="true"
                                             :isCheckForProfanity="true"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoPostCodeInputComponent
@@ -322,7 +322,7 @@
                                             v-model="item.pii.brokerTradingAddress"
                                             :name="`brokerTradingAddress-${index}`"
                                             label="Trading Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoEmailAddressInputComponent
@@ -331,7 +331,7 @@
                                             label="Email Address"
                                             name="brokerEmailAddress"
                                             v-model="item.pii.brokerEmailAddress"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoTelInputComponent
@@ -340,7 +340,7 @@
                                             name="brokerContactNumber"
                                             label="Contact Number"
                                             v-model="item.pii.brokerContactNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoGenericInputComponent
@@ -350,7 +350,7 @@
                                             name="brokerWebsite"
                                             :isRequired="false"
                                             v-model="item.pii.brokerWebsite"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
                                 </div>
                             </template>
@@ -373,7 +373,7 @@
                                             :name="'policyNumber' + index"
                                             @onValueChange="((value) => item.pii.policyNumber = value)"
                                             :value="item.pii.policyNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoCurrencyInputComponent
@@ -383,7 +383,7 @@
                                             :name="'premiumAmount' + index"
                                             @onValueChange="(value) => item.pii.premiumAmount = value"
                                             :value="item.pii.premiumAmount"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoCurrencyInputComponent
@@ -393,7 +393,7 @@
                                             :name="'annualIncome' + index"
                                             @onValueChange="(value) => item.pii.annualIncome = value"
                                             :value="item.pii.annualIncome"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoDatePickerInputComponent
@@ -404,7 +404,7 @@
                                             @onValueChange="((value) => onRetroactiveStartDateChange(value, item.pii))"
                                             :value="convertEpochValueToDate(item?.pii?.retroactiveStartDate)"
                                             :isRequired="false"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoDatePickerInputComponent
@@ -414,7 +414,7 @@
                                             :name="'startDate' + index"
                                             @onValueChange="((value) => onPiiStartDateChange(value, item.pii))"
                                             :value="convertEpochValueToDate(item?.pii?.startDate)"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoDatePickerInputComponent
@@ -425,7 +425,7 @@
                                             @onValueChange="((value) => onPiiEndDateChange(value, item.pii))"
                                             :minDate="convertEpochValueToDate(item?.pii?.startDate )"
                                             :value="convertEpochValueToDate(item?.pii?.endDate )"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoMultiSelectInputComponent
@@ -438,7 +438,7 @@
                                             :dataItems="businessLinesCoveredItems"
                                             :value="item.pii?.businessLinesCovered ?? []"
                                             checkbox
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoMultiSelectInputComponent
@@ -451,7 +451,7 @@
                                             :id="setUniqueIdentifier(`-[${item.id}]-coveredUnderPolicyTemp`)"
                                             :value="item.pii?.appointedRepresentatives ?? []"
                                             @onValueChange="((value: string[]) => item.pii.appointedRepresentatives = value)"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
                                 </div>
                             </template>
@@ -495,7 +495,7 @@
                                                     :value="singleIndemnityLimit?.limitIndemnityValue"
                                                     @onValueChange="((value) => singleIndemnityLimit.limitIndemnityValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"/>
 
                                             <div class="container-pii">
@@ -508,7 +508,7 @@
                                                         :value="singleIndemnityLimit?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsSingle"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"/>
 
                                                 <div class="flex-grow-0 ps-2 pb-2"
@@ -544,7 +544,7 @@
                                                     :value="aggregateIndemnityLimit?.limitIndemnityValue"
                                                     @onValueChange="((value) => aggregateIndemnityLimit.limitIndemnityValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"/>
 
                                             <div class="container-pii">
@@ -557,7 +557,7 @@
                                                         :value="aggregateIndemnityLimit?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsAggregate"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"/>
 
                                                 <div class="flex-grow-0 ps-2 pb-2"
@@ -599,7 +599,7 @@
                                                     :value="policyExcess?.policyExcessValue"
                                                     @onValueChange="((value) => policyExcess.policyExcessValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"/>
 
                                             <div class="container-pii">
@@ -612,7 +612,7 @@
                                                         :value="policyExcess?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExcess"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"/>
 
                                                 <div class="flex-grow-0 ps-2 pb-2"
@@ -656,7 +656,7 @@
                                                     :value="policyExclusion?.businessLineCategorySubject"
                                                     :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExclusions"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"/>
 
                                             <KendoDropDownInputComponent
@@ -667,7 +667,7 @@
                                                     :name="'subjectToPolicyExclusion.typesOfExclusionTemp' + index + '-' +idx"
                                                     :value="policyExclusion?.exclusionType"
                                                     @onValueChange="((value) => policyExclusion.exclusionType = value)"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"/>
 
                                             <div class="container-pii">

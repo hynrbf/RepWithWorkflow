@@ -41,6 +41,10 @@ import {
   IMapperServiceInfo,
 } from "@/infra/dependency-services/mapper/IMapperService";
 import { ContactNumber } from "@/entities/ContactNumber";
+import {
+  IFcaService,
+  IFcaServiceInfo,
+} from "@/infra/dependency-services/rest/fca/IFcaService";
 
 export default defineComponent({
   name: "ProfessionalIndemnityInsurance",
@@ -56,6 +60,7 @@ export default defineComponent({
       ),
       helperService: container.resolve<IHelperService>(IHelperServiceInfo.name),
       appService: container.resolve<IAppService>(IAppServiceInfo.name),
+      fcaService: container.resolve<IFcaService>(IFcaServiceInfo.name),
       isLoading: true,
       isShowSavingText: false,
       firmName: "<Firm Name>",
@@ -293,7 +298,10 @@ export default defineComponent({
       item.endDate = this.helperService.dateStringToEpoch(value.toDateString());
     },
 
-    onPiiInsurerDetailUpdated(piiInsurer: FirmBasicInfo, index: number) {
+    async onPiiInsurerDetailUpdatedAsync(
+      piiInsurer: FirmBasicInfo,
+      index: number,
+    ) {
       if (!this.professionalIndemnityItems[index]) {
         return;
       }
@@ -320,16 +328,24 @@ export default defineComponent({
         this.professionalIndemnityItems[index].piiInsurerInputFirm = piiInsurer;
       }
 
-      //ToDo. TEMP. To get back
-      this.professionalIndemnityItems[index].pii.insurerContactNumber = {
-        country: "GB",
-        countryCode: "",
-        dialCode: "+44",
-        number: piiInsurer.contactNumber?.replace("+44", ""),
-      };
+      if (piiInsurer.firmReferenceNumber) {
+        const addressDetails =
+          await this.fcaService.getFirmAddressesDetailsAsync(
+            piiInsurer.firmReferenceNumber,
+            "PPOB",
+          );
+
+        if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+          this.professionalIndemnityItems[index].pii.insurerContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              addressDetails[0]["Phone Number"],
+              addressDetails[0]["country"],
+            );
+        }
+      }
     },
 
-    onPiiBrokerDetailUpdated(piiBroker: FirmBasicInfo, index: number) {
+    async onPiiBrokerDetailUpdated(piiBroker: FirmBasicInfo, index: number) {
       this.professionalIndemnityItems[index].pii.piiBrokerName =
         piiBroker?.firmName ?? "";
 
@@ -353,13 +369,21 @@ export default defineComponent({
         this.professionalIndemnityItems[index].piiBrokerInputFirm = piiBroker;
       }
 
-      //ToDo. TEMP. To get back
-      this.professionalIndemnityItems[index].pii.brokerContactNumber = {
-        country: "GB",
-        countryCode: "",
-        dialCode: "+44",
-        number: piiBroker.contactNumber?.replace("+44", ""),
-      };
+      if (piiBroker.firmReferenceNumber) {
+        const addressDetails =
+          await this.fcaService.getFirmAddressesDetailsAsync(
+            piiBroker.firmReferenceNumber,
+            "PPOB",
+          );
+
+        if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+          this.professionalIndemnityItems[index].pii.brokerContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              addressDetails[0]["Phone Number"],
+              addressDetails[0]["country"],
+            );
+        }
+      }
     },
 
     handleSubmit(isAutoNext: boolean) {

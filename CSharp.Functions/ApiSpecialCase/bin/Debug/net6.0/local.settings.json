@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureAccount": "Alfonchito Azure",
+    "CosmosDbAccount": "https://complydexdb.documents.azure.com:443/",
+    "CosmosDbKey": "6aNmZkcXGtZQ9LpjOTn2cImhHBqkDKNa5YOpsyQWR0Oye5775VmbMoIjXPMpgae6UzQN96QHWLJJACDbNFPBMw==",
+    "Database": "complydexdbinstance",
+    "MeetingRequestContainer": "meetingRequestSchedule"
+  }
+}

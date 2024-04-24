@@ -256,7 +256,7 @@ export default defineComponent({
               "
               name="introducerFormModal.chooseOneCompanyOrSoleTrader"
               :isRequired="true"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
               :value="isCompanySelected"
               @onValueChange="
@@ -298,7 +298,7 @@ export default defineComponent({
                   <KendoSoleTraderNameInputComponent
                     :gap="20"
                     :id="setUniqueIdentifier('-introducer-soleTraderName')"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                     :firstName="introducer?.details?.foreName"
                     :lastName="introducer?.details?.lastName"
@@ -335,7 +335,7 @@ export default defineComponent({
                     (introducerInternal!.details.registeredAddress = value)
                 "
                 :value="introducerInternal?.details?.registeredAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -351,7 +351,7 @@ export default defineComponent({
                     (introducerInternal!.details.homeAddress = value)
                 "
                 :value="introducerInternal?.details?.homeAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -370,7 +370,7 @@ export default defineComponent({
                     (introducerInternal!.details.tradingAddress = value)
                 "
                 @onToggle="onToggleTradingAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -392,7 +392,7 @@ export default defineComponent({
                     (introducerInternal!.details.emailAddress = value)
                 "
                 :value="introducerInternal?.details?.emailAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -407,7 +407,7 @@ export default defineComponent({
                     (introducerInternal!.details.contactNumber =
                       value as ContactNumber)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -421,7 +421,7 @@ export default defineComponent({
                   (value: string) => (introducer!.details.website = value)
                 "
                 :value="introducerInternal?.details?.website"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -450,7 +450,7 @@ export default defineComponent({
                   (value: string) =>
                     (introducerInternal!.representative.title = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -465,7 +465,7 @@ export default defineComponent({
                 "
                 :isCapitalizeFirstLetter="true"
                 :value="introducerInternal?.representative?.forename"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -480,7 +480,7 @@ export default defineComponent({
                 "
                 :isCapitalizeFirstLetter="true"
                 :value="introducerInternal?.representative?.surname"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -502,7 +502,7 @@ export default defineComponent({
                     (introducerInternal!.representative.emailAddress = value)
                 "
                 :value="introducerInternal?.representative?.emailAddress"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -521,7 +521,7 @@ export default defineComponent({
                     (introducerInternal!.representative.contactNumber =
                       value as ContactNumber)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -535,7 +535,7 @@ export default defineComponent({
                     (introducerInternal!.representative.jobTitle = value)
                 "
                 :value="introducerInternal?.representative?.jobTitle"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>

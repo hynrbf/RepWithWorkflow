@@ -95,7 +95,7 @@
                     item-render="itemTemplate"
                     @select="onSelectAsync"
                     @change="onInput"
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing">
                 <template v-slot:itemTemplate="{props}">
                     <li :class="['k-item', props.class, props.dataItem.class && props.dataItem.class]"
@@ -159,7 +159,7 @@
                                     :id="setUniqueIdentifier('-rolesFilter')"
                                     :value="selectedRolesForFilter"
                                     @onValueChange="handleRolesChange"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     class="mb-3"
                                     label="Role(s)">
@@ -198,7 +198,7 @@
                                     class="mb-3"
                                     :value="selectedStatusForFilter"
                                     @onValueChange="handleStatusChange"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                             />
                         </slot>

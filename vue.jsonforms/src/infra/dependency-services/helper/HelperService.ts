@@ -14,7 +14,7 @@ import { isFinite, isNaN } from "lodash";
 export default class HelperService implements IHelperService {
   //ToDo. to clean up base by what it does soon, read the IHelperService interface
   dateStringToEpoch(dateString: string): number {
-    if (dateString === new Date(0).toDateString()){
+    if (dateString === new Date(0).toDateString()) {
       return 0;
     }
 
@@ -99,7 +99,7 @@ export default class HelperService implements IHelperService {
     //e.g. +4402077818019
     const found = await this.getCountryDialCodeAsync(country);
 
-    if (!found) {
+    if (!found?.dial_code) {
       return new ContactNumber();
     }
 

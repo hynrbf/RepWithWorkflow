@@ -39,8 +39,10 @@
             </div>
 
             <!-- Right side -->
-            <div class="is-scrollable-y" :class="stepIndex===3 ? 'col-sm-8' : 'col-sm-6'" style="position: relative">
-                <StackLayout class="centered-container center-padding" v-if="!selectedSigningType"
+            <div class="is-scrollable-y  d-flex align-items-center justify-content-stretch"
+                 :class="stepIndex===3 ? 'col-sm-8' : 'col-sm-6'" style="position: relative">
+                <StackLayout v-if="!selectedSigningType"
+                             class="pl-20px pr-20px w-100"
                              orientation="vertical"
                              :align="{horizontal: 'center'}"
                              :gap="20">
@@ -66,7 +68,7 @@
                     </StackLayout>
                 </StackLayout>
 
-                <StackLayout v-else :class="layoutAlignment" orientation="vertical"
+                <StackLayout v-else class="w-100 pl-20px pr-20px" orientation="vertical"
                              :align="{horizontal: 'stretch', vertical:'stretch'}">
                     <Label v-if="!isProposalReady" class="h4-figtree-bold">{{
                             $t(`signUpPageAR-formHeader${stepIndex}`)
@@ -76,7 +78,8 @@
                             $t(`signUpPageAR-formHeader${stepIndex}-subtitle`)
                         }}</Label>
                     <!-- Dots -->
-                    <div class="form-padding shepherd-dots justify-content-center" v-if="!isProposalReady">
+                    <div class="pl-20px pr-20px shepherd-dots justify-content-center mt-15px mb-15px"
+                         v-if="!isProposalReady">
                         <span v-for="step in steps"
                               :style="{
                                 backgroundColor: step === steps[stepIndex] ? '#3FC6EB' : undefined,
@@ -86,7 +89,7 @@
                     <!-- Basic Information Step -->
                     <Form v-if="!isProposalReady" @submit="onNextStep">
                         <FormElement>
-                            <StackLayout orientation="vertical" v-if="stepIndex === 0">
+                            <StackLayout class="w-100" orientation="vertical" v-if="stepIndex === 0">
                                 <!-- Company -->
                                 <StackLayout v-if="selectedSigningType === AppConstants.signInTypeCompany"
                                              orientation="vertical" :gap="20">
@@ -99,7 +102,7 @@
                                                 label="Forename(s)" placeholder="John"
                                                 :value="profile.foreName"
                                                 @onValueChange="((value) => profile.foreName = value)"
-                                                isCapitalizeFirstLetter/>
+                                                :isCapitalizeFirstLetter="true"/>
 
                                         <KendoGenericInputComponent
                                                 :id="setIdentifier('profile.lastname')"
@@ -107,7 +110,7 @@
                                                 label="Last Name" placeholder="Smith"
                                                 :value="profile.lastName"
                                                 @onValueChange="((value) => profile.lastName = value)"
-                                                isCapitalizeFirstLetter/>
+                                                :isCapitalizeFirstLetter="true"/>
                                     </StackLayout>
 
                                     <KendoCompaniesAutoCompleteComponent
@@ -120,8 +123,8 @@
                                             @onInput="onCompanyInput"
                                             @onClear="onClearCompany"
                                             @onValueChange="onCompanyValueChanged"
-                                            isShowBottomResults
-                                            isShowStatus/>
+                                            :isShowBottomResults="true"
+                                            :isShowStatus="true"/>
 
                                     <StackLayout orientation="horizontal"
                                                  :gap="15"
@@ -386,30 +389,30 @@
                     <Form v-if="!isProposalReady && stepIndex === 2">
                         <FormElement>
                             <StackLayout orientation="vertical" :gap="20">
-                                <label style="padding-left: 20px" class="paragraph-m-figtree-medium">How will the
+                                <label class="paragraph-m-figtree-medium">How will the
                                     activities be undertaken?</label>
 
                                 <KendoChooseOneQuestionInputComponent
-                                        class="d-flex justify-content-center"
+                                        class="d-flex justify-content-stretch"
                                         :id="setIdentifier('isAdvisorDriven')"
                                         :name="setIdentifier('isAdvisorDriven')"
                                         :align="{horizontal: 'center'}"
                                         firstOptionText="Advisor Driven"
                                         secondOptionText="Tech Driven"
-                                        width="245.5px"
+                                        width="280px"
                                         @onValueChange="(value: boolean | undefined) => isAdvisorDriven = value"
                                         :value="isAdvisorDriven"
                                 />
 
-                                <label style="padding-left: 20px" class="paragraph-m-figtree-medium">Will
+                                <label class="paragraph-m-figtree-medium">Will
                                     {{ profile.foreName }} be providing any Additional Services?</label>
 
                                 <KendoChooseOneQuestionInputComponent
-                                        class="d-flex justify-content-center"
+                                        class="d-flex justify-content-stretch"
                                         :id="setIdentifier('hasAdditionalServices')"
                                         :name="setIdentifier('hasAdditionalServices')"
                                         :align="{horizontal: 'center'}"
-                                        width="245.5px"
+                                        width="280px"
                                         firstOptionText="Yes"
                                         secondOptionText="No"
                                         @onValueChange="(value)=>hasAdditionalServices=value"
@@ -419,7 +422,6 @@
                                 <KendoCurrencyInputComponent
                                         :id="setIdentifier('forecastedAnnualRevenueActivities')"
                                         :name="setIdentifier('forecastedAnnualRevenueActivities')"
-                                        style="padding: 0px 20px"
                                         label="Forecasted Annual Revenue from Activities"
                                         placeholder="Amount"
                                         @onValueChange="(value: Money) => forecastedAnnualRevenueActivities = value"
@@ -428,7 +430,6 @@
                                 <KendoCurrencyInputComponent
                                         :id="setIdentifier('forecastedAnnualRevenueServices')"
                                         :name="setIdentifier('forecastedAnnualRevenueServices')"
-                                        style="padding: 0px 20px"
                                         label="Forecasted Annual Revenue from Additional Services"
                                         placeholder="Amount"
                                         @onValueChange="(value)=>forecastedAnnualRevenueServices=value"
@@ -437,7 +438,6 @@
                                 <KendoDatePickerInputComponent
                                         :id="setIdentifier('preferredCommencementDate')"
                                         :name="setIdentifier('preferredCommencementDate')"
-                                        style="padding: 0px 20px"
                                         :min-date="new Date()"
                                         label="Preferred Commencement Date"
                                         @onValueChange="(value: Date) => preferredCommencementDate = value"
@@ -545,7 +545,7 @@
                 </StackLayout>
 
                 <div v-if="isProcessingProposal" class="page-overlay">
-                    <StackLayout class="centered-container center-padding" orientation="vertical"
+                    <StackLayout class="pl-20px pr-20px" orientation="vertical"
                                  :align="{horizontal:'center'}">
                         <img :src="isSoleTrader ? '/loader-soletrader.gif' : '/outlining-loader.gif'"
                              alt="loader" :style="{width: isSoleTrader ? '150px' : '60px'}"/>

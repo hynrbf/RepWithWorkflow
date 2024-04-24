@@ -10,6 +10,8 @@ export default class FormValidatorService implements IFormValidatorService {
     constructor(@injectAll(ValidatorToken) private validators: IValidator[]) {
     }
 
+    // ToDo. part of 18 IMPT errors to fix
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public validate<T>(value: T, rules: Record<string, any> = {}) {
         const validatorsObject: Record<string, IValidator> = this.validators.reduce(
             (accumulator, validator) => ({

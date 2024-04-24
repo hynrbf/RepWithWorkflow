@@ -59,7 +59,7 @@ export default defineComponent({
       :id="id"
       :data-items="options"
       value-primitive
-      addable
+      :addable="true"
       @add-custom="addCustom"
   />
 </template>

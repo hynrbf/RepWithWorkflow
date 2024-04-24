@@ -389,7 +389,7 @@ export default defineComponent({
             selectedProducts = value;
           }
         "
-        isValueReactive
+        :isValueReactive="true"
         :isDataLoadedCompletely="!isInitializing"
       />
 
@@ -401,7 +401,7 @@ export default defineComponent({
         class="mb-3"
         :value="selectedStatus"
         @onValueChange="handleStatusChange"
-        isValueReactive
+        :isValueReactive="true"
         :isDataLoadedCompletely="!isInitializing"
       />
     </template>

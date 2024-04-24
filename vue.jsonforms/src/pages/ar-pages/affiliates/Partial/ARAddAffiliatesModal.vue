@@ -449,7 +449,7 @@ export default defineComponent({
                 name="praAuthorised"
                 label="PRA Authorized"
                 :isSwitchAdjustMarginTop="isSwitchAdjustMarginTop"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing" />
             </StackLayout>
 
@@ -463,7 +463,7 @@ export default defineComponent({
                   (affiliateInternal!.details.registeredAddress = value)
               "
               :value="affiliateInternal?.details?.registeredAddress"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -481,7 +481,7 @@ export default defineComponent({
               @onValueChange="onAffliateTradingAddressChanged"
               @onLostFocus="onAffiliateTradingAddressDoneTyping"
               :sameAsLabel="$t('same-as-registered-address')"
-              isValueReactive
+              :isValueReactive="true"
               :isDataLoadedCompletely="!isInitializing"
             />
 
@@ -500,7 +500,7 @@ export default defineComponent({
                 "
                 name="details.emailAddress"
                 label="Email Address"
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -515,7 +515,7 @@ export default defineComponent({
                     (affiliateInternal!.details.contactNumber =
                       value as ContactNumber)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -532,7 +532,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.details.website = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>
@@ -595,7 +595,7 @@ export default defineComponent({
                     affiliateInternal?.marketingProviderDetails
                       ?.registeredAddress
                   "
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
 
@@ -616,7 +616,7 @@ export default defineComponent({
                     affiliateInternal?.marketingProviderDetails?.tradingAddress
                   "
                   :sameAsLabel="$t('same-as-registered-address')"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
 
@@ -638,7 +638,7 @@ export default defineComponent({
                         (affiliateInternal!.marketingProviderDetails.emailAddress =
                           value)
                     "
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -654,7 +654,7 @@ export default defineComponent({
                         (affiliate!.marketingProviderDetails!.contactNumber =
                           value)
                     "
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
 
@@ -674,7 +674,7 @@ export default defineComponent({
                         (affiliateInternal!.marketingProviderDetails.website =
                           value)
                     "
-                    isValueReactive
+                    :isValueReactive="true"
                     :isDataLoadedCompletely="!isInitializing"
                   />
                 </StackLayout>
@@ -704,7 +704,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.representative.title = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -720,7 +720,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.representative.forename = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -736,7 +736,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.representative.surname = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </div>
@@ -756,7 +756,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.representative.emailAddress = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -770,7 +770,7 @@ export default defineComponent({
                   (value: ContactNumber) =>
                     (affiliateInternal!.representative.contactNumber = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
 
@@ -786,7 +786,7 @@ export default defineComponent({
                   (value: string) =>
                     (affiliateInternal!.representative.jobTitle = value)
                 "
-                isValueReactive
+                :isValueReactive="true"
                 :isDataLoadedCompletely="!isInitializing"
               />
             </StackLayout>

@@ -113,6 +113,8 @@ export const useNotification = (config: Partial<NotificationConfig>) => {
                   Notification,
                   {
                     class: "Notification",
+                    // ToDo. part of 18 IMPT errors to fix
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     type: { style: item.type as any, icon: true },
                     closable: item.closeable,
                     onClose() {

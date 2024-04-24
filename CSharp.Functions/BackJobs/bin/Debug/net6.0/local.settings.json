@@ -10,6 +10,7 @@
     "AppointedRepresentativesContainer": "appointedRepresentatives",
     "OrganizationalEmployeesContainer": "organizationEmployees",
     "ProvidersContainer": "providers",
+    "AffiliatesContainer": "affiliates",
     "IntroducersContainer": "introducers",
     "SaveFieldsContainer": "savefields",
     "SettingsContainer": "settings",

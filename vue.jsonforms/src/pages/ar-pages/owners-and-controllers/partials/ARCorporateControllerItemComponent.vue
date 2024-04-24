@@ -827,7 +827,7 @@ export default defineComponent({
             :value="corporateItem?.corporateController?.firmType"
             placeholder="Please select ..."
             :data-items="firmTypes"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -848,7 +848,7 @@ export default defineComponent({
             "
             :dataItems="financialSolvencies"
             :value="corporateItem?.corporateController?.financialSolvency"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
         </StackLayout>
@@ -867,7 +867,7 @@ export default defineComponent({
               onCorporateControllerRegisteredAddressChange(value)
           "
           :value="corporateItem?.corporateController?.registeredAddress"
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -877,7 +877,7 @@ export default defineComponent({
           "
           name="corporateControllerDetails.tradingAddress"
           label="Trading Address"
-          isRequired
+          :isRequired="true"
           :sameAsLabel="$t('same-as-registered-address')"
           :isChecked="
             corporateItem.corporateController
@@ -892,7 +892,7 @@ export default defineComponent({
             (value: string) => onCorporateControllerTradingAddressChange(value)
           "
           @onLostFocus="onCorporateControllerTradingAddressDoneTyping"
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -918,7 +918,7 @@ export default defineComponent({
                 corporateItem as CorporateControllerCollapsibleItem
               ).corporateController.headOfficeAddress = value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
         />
 
@@ -947,7 +947,7 @@ export default defineComponent({
                 )
             "
             :value="corporateItem?.corporateController?.percentageOfCapital"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -972,7 +972,7 @@ export default defineComponent({
             :value="
               corporateItem?.corporateController?.percentageOfVotingRights
             "
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
         </StackLayout>
@@ -996,7 +996,7 @@ export default defineComponent({
                 ).corporateController.emailAddress = value)
             "
             :value="corporateItem?.corporateController?.emailAddress"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1012,7 +1012,7 @@ export default defineComponent({
               new ContactNumber()
             "
             @onValueChange="onContactNumberChange"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
         </StackLayout>
@@ -1045,7 +1045,7 @@ export default defineComponent({
               ).corporateController.isSubjectToRegulationByAnotherRegulator =
                 value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Is ${corporateItem.corporateController?.companyName} subject to regulation by another regulator? `"
         />
@@ -1070,7 +1070,7 @@ export default defineComponent({
                 corporateItem as CorporateControllerCollapsibleItem
               ).corporateController.isThirdCountryFirm = value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Is ${corporateItem.corporateController?.companyName} a third country investment firm, a third country credit institution, a third country insurance undertaking or a third country management company? `"
         />
@@ -1099,7 +1099,7 @@ export default defineComponent({
                 ).corporateController.thirdCountryFirmInfo = value)
             "
             :value="corporateItem?.corporateController?.thirdCountryFirmInfo"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1145,7 +1145,7 @@ export default defineComponent({
                 corporateItem as CorporateControllerCollapsibleItem
               ).corporateController.isMemberOfFinancialConglomerate = value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Is ${corporateItem.corporateController?.companyName} a member of a financial conglomerate? `"
         />
@@ -1180,7 +1180,7 @@ export default defineComponent({
               corporateItem.corporateController
                 ?.memberOfFinancialConglomerateInfo
             "
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1228,7 +1228,7 @@ export default defineComponent({
               ).corporateController.isMemberOfThirdCountryFinancialConglomerate =
                 value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Is ${corporateItem.corporateController?.companyName} a member of a third-country financial conglomerate? `"
         />
@@ -1264,7 +1264,7 @@ export default defineComponent({
               corporateItem.corporateController
                 .memberOfThirdCountryFinancialConglomerateInfo
             "
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1310,7 +1310,7 @@ export default defineComponent({
                 corporateItem as CorporateControllerCollapsibleItem
               ).corporateController.isMemberOfThirdCountryBanking = value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Is ${corporateItem.corporateController?.companyName} a member of a third-country banking and investment group? `"
         />
@@ -1344,7 +1344,7 @@ export default defineComponent({
             :value="
               corporateItem.corporateController.memberOfThirdCountryBankingInfo
             "
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1392,7 +1392,7 @@ export default defineComponent({
               ).corporateController.hasBeenSubjectToAnyMaterialComplaints =
                 value)
           "
-          isValueReactive
+          :isValueReactive="true"
           :isDataLoadedCompletely="!isInitializing"
           :questionText="`Has ${corporateItem.corporateController?.companyName} or any persons with a position of influence or who effectively run the business of ${corporateItem.corporateController?.companyName}, been subject to any material complaints made against them by their customers or former customers in the last 5 years, which are awaiting determination by, or have been upheld by, an ombudsman? `"
         />
@@ -1428,7 +1428,7 @@ export default defineComponent({
               corporateItem.corporateController
                 .beenSubjectToAnyMaterialComplaintsInfo
             "
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="!isInitializing"
           />
 
@@ -1464,9 +1464,9 @@ export default defineComponent({
       <StackLayout orientation="vertical" class="with-vertical-gap">
         <ScrollableTabComponent
           v-model:items="directorsTab"
-          addable
+          :addable="true"
           @add="onAddDirector"
-          removable
+          :removable="true"
           @remove="onRemoveDirector"
         >
           <template
@@ -1495,7 +1495,7 @@ export default defineComponent({
                   label="Title"
                   :isRequired="false"
                   :value="director.title"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                   @onValueChange="(value: string) => (director.title = value)"
                 />
@@ -1515,7 +1515,7 @@ export default defineComponent({
                     (value: string) => (director.forename = value)
                   "
                   :value="director.forename"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
 
@@ -1532,7 +1532,7 @@ export default defineComponent({
                   :isCapitalizeFirstLetter="true"
                   @onValueChange="(value: string) => (director.surname = value)"
                   :value="director.surname"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
               </StackLayout>
@@ -1556,7 +1556,7 @@ export default defineComponent({
                     (value: Date) => onDateOfBirthChange(value, director)
                   "
                   :value="convertEpochValueToDate(director.dateOfBirth)"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
 
@@ -1574,7 +1574,7 @@ export default defineComponent({
                     (value: string) => (director.position = value)
                   "
                   :value="director.position"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
               </StackLayout>
@@ -1637,7 +1637,7 @@ export default defineComponent({
                   "
                   :value="hasIndividualControllers"
                   @onValueChange="toggleHasIndividualController"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
               </KendoCardBody>
@@ -1646,9 +1646,9 @@ export default defineComponent({
             <ScrollableTabComponent
               v-if="hasIndividualControllers"
               v-model:items="individualControllersTab"
-              addable
+              :addable="true"
               @add="addNewIndividualControllerItem"
-              removable
+              :removable="true"
               @remove="removeIndividualControllerItem"
             >
               <template
@@ -1704,7 +1704,7 @@ export default defineComponent({
                   "
                   :value="hasCorporateController"
                   @onValueChange="toggleHasCorporateController"
-                  isValueReactive
+                  :isValueReactive="true"
                   :isDataLoadedCompletely="!isInitializing"
                 />
               </KendoCardBody>
@@ -1713,9 +1713,9 @@ export default defineComponent({
             <ScrollableTabComponent
               v-if="hasCorporateController"
               v-model:items="corporateControllersTab"
-              addable
+              :addable="true"
               @add="addNewCorporateControllerItem"
-              removable
+              :removable="true"
               @remove="removeCorporateControllerItem"
             >
               <template

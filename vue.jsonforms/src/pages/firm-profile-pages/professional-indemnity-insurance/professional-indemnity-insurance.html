@@ -16,8 +16,8 @@
     <KendoFormElementComponent ref="formElement">
         <ScrollableTabComponent
                 v-model:items="piiTabs"
-                addable
-                removable
+                :addable="true"
+                :removable="true"
                 @add="addInitialProfessionalIndemnityItem"
                 @remove="removeProfessionalIndemnityItem">
             <template
@@ -67,7 +67,7 @@
                                             :companyName="item.pii.insurerName"
                                             :companyNumber="item.pii.companyNumber"
                                             :firmReferenceNumber="item.pii.firmReferenceNumber"
-                                            @onCompanyDetailUpdated="(value) => onPiiInsurerDetailUpdated(value, index)"
+                                            @onCompanyDetailUpdated="(value) => onPiiInsurerDetailUpdatedAsync(value, index)"
                                             :isInitializing="isInitializing"
                                     />
 
@@ -82,7 +82,7 @@
                                                     item.pii.insurerRegisteredAddress = value;
                                                 }
                                               "
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -91,8 +91,8 @@
                                             :id="setUniqueIdentifier( `[${item.id}]` + '-tradingAddress')"
                                             :name="`tradingAddress-${index}`"
                                             label="Trading Address"
-                                            isRequired
-                                            isShowCheckBox
+                                            :isRequired="true"
+                                            :isShowCheckBox="true"
                                             :isChecked="item.pii.insurerIsTradingSameAsRegisteredAddress"
                                             :value="item.pii.insurerTradingAddress"
                                             @onValueChange="item.pii.insurerTradingAddress = $event"
@@ -109,7 +109,7 @@
                                               }
                                             "
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -120,7 +120,7 @@
                                             name="emailAddress"
                                             :value="item.pii.insurerEmailAddress"
                                             @onValueChange="(value: string) => item.pii.insurerEmailAddress = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -131,7 +131,7 @@
                                             label="Contact Number"
                                             :value="item.pii.insurerContactNumber"
                                             @onValueChange="(value: ContactNumber) => item.pii.insurerContactNumber = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -143,7 +143,7 @@
                                             type="url"
                                             :value="item.pii.insurerWebsite"
                                             @onValueChange="(value: string) => item.pii.insurerWebsite = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -214,7 +214,7 @@
                                               "
                                             :name="`brokerRegisteredAddress-${index}`"
                                             label="Registered Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"/>
 
                                     <KendoPostCodeInputWithSameAsComponent
@@ -223,7 +223,7 @@
                                             name="brokerTradingAddress"
                                             label="Trading Address"
                                             :value="item.pii.brokerTradingAddress"
-                                            isShowCheckBox
+                                            :isShowCheckBox="true"
                                             :isChecked="item.pii.brokerIsTradingSameAsRegisteredAddress"
                                             @onValueChange="item.pii.brokerTradingAddress = $event"
                                             @onToggle="
@@ -239,7 +239,7 @@
                                               }
                                             "
                                             :sameAsLabel="$t('same-as-registered-address')"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -250,7 +250,7 @@
                                             name="brokerEmailAddress"
                                             :value="item.pii.brokerEmailAddress"
                                             @onValueChange="(value: string) => item.pii.brokerEmailAddress = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -261,7 +261,7 @@
                                             label="Contact Number"
                                             :value="item.pii.brokerContactNumber"
                                             @onValueChange="(value: ContactNumber) => item.pii.brokerContactNumber = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -273,7 +273,7 @@
                                             type="url"
                                             :value="item.pii.brokerWebsite"
                                             @onValueChange="(value: string) => item.pii.brokerWebsite = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -287,9 +287,9 @@
                                             label="Forename(s)"
                                             :value="item.pii.forename"
                                             @onValueChange="(value: string) => item.pii.forename = value"
-                                            isCapitalizeFirstLetter
-                                            isCheckForProfanity
-                                            isValueReactive
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -300,9 +300,9 @@
                                             label="Surname"
                                             :value="item.pii.surname"
                                             @onValueChange="(value: string) => item.pii.surname = value"
-                                            isCapitalizeFirstLetter
-                                            isCheckForProfanity
-                                            isValueReactive
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -313,9 +313,9 @@
                                             label="Firm Reference Number"
                                             :value="item.pii.firmReferenceNumber"
                                             @onValueChange="(value: string) => item.pii.firmReferenceNumber = value"
-                                            isCapitalizeFirstLetter
-                                            isCheckForProfanity
-                                            isValueReactive
+                                            :isCapitalizeFirstLetter="true"
+                                            :isCheckForProfanity="true"
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -326,7 +326,7 @@
                                             @onValueChange="(value: string) => item.pii.brokerTradingAddress = value"
                                             :name="`brokerTradingAddress-${index}`"
                                             label="Trading Address"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -337,7 +337,7 @@
                                             name="brokerEmailAddress"
                                             :value="item.pii.brokerEmailAddress"
                                             @onValueChange="(value: string) => item.pii.brokerEmailAddress = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -348,7 +348,7 @@
                                             label="Contact Number"
                                             :value="item.pii.brokerContactNumber"
                                             @onValueChange="(value: ContactNumber) => item.pii.brokerContactNumber = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -360,7 +360,7 @@
                                             type="url"
                                             :value="item.pii.brokerWebsite"
                                             @onValueChange="(value: string) => item.pii.brokerWebsite = value"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -385,7 +385,7 @@
                                             :name="'policyNumber' + index"
                                             @onValueChange="((value) => item.pii.policyNumber = value)"
                                             :value="item.pii.policyNumber"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -396,7 +396,7 @@
                                             :name="'premiumAmount' + index"
                                             @onValueChange="(value) => item.pii.premiumAmount = value"
                                             :value="item.pii.premiumAmount"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -407,7 +407,7 @@
                                             :name="'annualIncome' + index"
                                             @onValueChange="(value) => item.pii.annualIncome = value"
                                             :value="item.pii.annualIncome"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -419,7 +419,7 @@
                                             @onValueChange="((value) => onRetroactiveStartDateChange(value, item.pii))"
                                             :value="convertEpochValueToDate(item?.pii?.retroactiveStartDate)"
                                             :isRequired="false"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -430,7 +430,7 @@
                                             :name="'startDate' + index"
                                             @onValueChange="((value) => onPiiStartDateChange(value, item.pii))"
                                             :value="convertEpochValueToDate(item?.pii?.startDate)"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -442,7 +442,7 @@
                                             @onValueChange="((value) => onPiiEndDateChange(value, item.pii))"
                                             :minDate="convertEpochValueToDate(item?.pii?.startDate )"
                                             :value="convertEpochValueToDate(item?.pii?.endDate )"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -456,7 +456,7 @@
                                             :dataItems="businessLinesCoveredItems"
                                             :value="item.pii?.businessLinesCovered ?? []"
                                             checkbox
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
 
@@ -470,7 +470,7 @@
                                             :id="setUniqueIdentifier( `[${item.id}]` + '-coveredUnderPolicyTemp')"
                                             :value="item.pii?.appointedRepresentatives ?? []"
                                             @onValueChange="((value: string[]) => item.pii.appointedRepresentatives = value)"
-                                            isValueReactive
+                                            :isValueReactive="true"
                                             :isDataLoadedCompletely="!isInitializing"
                                     />
                                 </div>
@@ -515,7 +515,7 @@
                                                     :value="singleIndemnityLimit?.limitIndemnityValue"
                                                     @onValueChange="((value) => singleIndemnityLimit.limitIndemnityValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"
                                             />
 
@@ -529,7 +529,7 @@
                                                         :value="singleIndemnityLimit?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsSingle"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"
                                                 />
 
@@ -567,7 +567,7 @@
                                                     :value="aggregateIndemnityLimit?.limitIndemnityValue"
                                                     @onValueChange="((value) => aggregateIndemnityLimit.limitIndemnityValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"
                                             />
 
@@ -581,7 +581,7 @@
                                                         :value="aggregateIndemnityLimit?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineSubjectToLimitOfIndemnityItemsAggregate"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"
                                                 />
 
@@ -624,7 +624,7 @@
                                                     :value="policyExcess?.policyExcessValue"
                                                     @onValueChange="((value) => policyExcess.policyExcessValue = value)"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"
                                             />
 
@@ -638,7 +638,7 @@
                                                         :value="policyExcess?.businessLineSubject"
                                                         :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExcess"
                                                         class="flex-grow-1"
-                                                        isValueReactive
+                                                        :isValueReactive="true"
                                                         :isDataLoadedCompletely="!isInitializing"
                                                 />
 
@@ -683,7 +683,7 @@
                                                     :value="policyExclusion?.businessLineCategorySubject"
                                                     :dataItems="item.pii.businessLineCategoriesSubjectToPolicyExclusions"
                                                     class="first-child"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"
                                             />
 
@@ -695,7 +695,7 @@
                                                     :name="'subjectToPolicyExclusion.typesOfExclusionTemp' + index + '-' +idx"
                                                     :value="policyExclusion?.exclusionType"
                                                     @onValueChange="((value) => policyExclusion.exclusionType = value)"
-                                                    isValueReactive
+                                                    :isValueReactive="true"
                                                     :isDataLoadedCompletely="!isInitializing"
                                             />
 

@@ -17,8 +17,8 @@
   <KendoFormElementComponent ref="formElement" v-slot="{ form }">
     <ScrollableTabComponent
       v-model:items="providersTabs"
-      addable
-      removable
+      :addable="true"
+      :removable="true"
       @add="addProvider"
       @remove="removeProvider"
     >
@@ -224,7 +224,7 @@
                             ? disabledAccountTypes
                             : []
                         "
-                          addable
+                          :addable="true"
                           value-primitive
                           @add-custom="addCustomAccountTypeOption"
                         >

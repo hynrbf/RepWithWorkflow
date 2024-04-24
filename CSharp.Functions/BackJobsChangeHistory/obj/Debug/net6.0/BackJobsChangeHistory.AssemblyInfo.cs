@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BackJobsChangeHistory")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.36.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ee1891ec564eb3fd0555827b3882b9449bb629f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("BackJobsChangeHistory")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BackJobsChangeHistory")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.36.0")]

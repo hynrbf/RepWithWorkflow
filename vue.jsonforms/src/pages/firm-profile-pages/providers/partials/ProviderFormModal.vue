@@ -40,7 +40,7 @@ const emits = defineEmits<{
   (event: "submit", value: Partial<ProvidersEntity>): void;
   (event: "requestToComplete", value: Partial<ProvidersEntity>): void;
 }>();
-const { provider, isEditMode, saving } = toRefs(props);
+const { provider, isEditMode } = toRefs(props);
 const isInitializing = false;
 const formElement = ref();
 
@@ -134,7 +134,7 @@ const mapProviderToProviderFirm = () => {
   }
 };
 
-const onCompanyDetailUpdated = async (company: FirmBasicInfo) => {
+const onCompanyDetailUpdatedAsync = async (company: FirmBasicInfo) => {
   if (!provider?.value?.details) {
     return;
   }
@@ -146,17 +146,36 @@ const onCompanyDetailUpdated = async (company: FirmBasicInfo) => {
   provider.value.details.tradingAddress = company.tradingAddress;
   provider.value.details.website = company.website;
 
-  provider.value.details.contactNumber = {
-    country: "GB",
-    countryCode: "",
-    dialCode: "+44",
-    number: company.contactNumber?.replace("+44", ""),
-  };
+  await getFcsDetailsAsync(provider.value.details.fcaFirmRefNo);
 
   providerFirm = company;
   isSwitchAdjustMarginTop.value = true;
 
   await isPraAuthorised(provider.value.details.fcaFirmRefNo ?? "");
+};
+
+const getFcsDetailsAsync = async (fcaFirmRefNo: string | undefined) => {
+  if (!fcaFirmRefNo) {
+    return;
+  }
+
+  const addressFromFca = await fcaService.getFirmAddressesDetailsAsync(
+    fcaFirmRefNo,
+    "PPOB",
+  );
+
+  if (addressFromFca?.length > 0) {
+    const selectedAddress = addressFromFca[0];
+    const obj = JSON.parse(JSON.stringify(selectedAddress));
+
+    if (obj["Phone Number"] && obj["country"] && provider?.value?.details) {
+      provider.value.details.contactNumber =
+        await helperService.convertToContactNoAsync(
+          obj["Phone Number"],
+          obj["country"],
+        );
+    }
+  }
 };
 
 const KendoFirmFinderComponentAsync = defineAsyncComponent(
@@ -193,7 +212,9 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
       provider.value.representative.surname &&
       provider.value.representative.emailAddress &&
       provider.value.representative.contactNumber &&
-      provider.value.representative.jobTitle
+      provider.value.representative.jobTitle &&
+      provider.value.details.productType &&
+      provider.value.details.productType.length > 0
     );
   }
 
@@ -228,7 +249,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                 :companyName="provider?.details?.name"
                 :companyNumber="provider?.details?.companyNumber"
                 :firmReferenceNumber="provider?.details?.fcaFirmRefNo"
-                @onCompanyDetailUpdated="onCompanyDetailUpdated"
+                @onCompanyDetailUpdated="onCompanyDetailUpdatedAsync"
               />
 
               <KendoSwitchToggleComponent
@@ -351,7 +372,7 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
                 }
               "
               :isDataLoadedCompletely="!isInitializing"
-              isValueReactive
+              :isValueReactive="true"
             />
           </PanelComponent>
 
@@ -467,21 +488,20 @@ const allRequiredFieldsAreNotEmpty = computed(() => {
               style="margin-right: 10px; font-weight: 600"
               type="button"
               theme-color="primary"
-              @click="handleSubmit"
-              :disabled="!allRequiredFieldsAreNotEmpty || !saving"
-              fill-mode="outline"
-            >
-              Request Provider to Complete Details
-            </KendoButton>
-
-            <KendoButton
-              type="button"
-              theme-color="primary"
               @click="handleRequestToComplete"
               :disabled="!minimumRequiredFieldsAreNotEmpty"
               fill-mode="outline"
             >
               {{ isEditMode ? "Save Changes" : "Save & Add Provider" }}
+            </KendoButton>
+
+            <KendoButton
+              type="submit"
+              theme-color="primary"
+              @click="handleSubmit"
+              :disabled="!allRequiredFieldsAreNotEmpty"
+            >
+              Request Provider to Complete Details
             </KendoButton>
           </div>
         </StackLayout>

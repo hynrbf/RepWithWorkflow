@@ -248,13 +248,14 @@ export default defineComponent({
   <div class="BottomBar">
     <StackLayout
       class="BottomBar-container"
-      :align="{ horizontal: 'start', vertical: 'middle' }"
+      :align="{ horizontal: 'stretch', vertical: 'middle' }"
     >
-      <div class="flex-grow-1 align-self-stretch">
-        <div class="BottomBar-note">
+      <!-- TO BE REMOVED -->
+      <!-- <div class="flex-grow-1 align-self-stretch">
+        <div class="BottomBar-note"> -->
           <!-- @TODO Save time note here -->
-        </div>
-      </div>
+        <!-- </div>
+      </div> -->
 
       <StackLayout :gap="10">
         <span
@@ -263,8 +264,9 @@ export default defineComponent({
           >Saved!</span
         >
 
-        <div class="BottomBar-saveAction">
+        <div class="BottomBar-saveAction d-flex justify-content-start align-items-center">
           <Button
+            class="ps-0"
             type="button"
             theme-color="primary"
             fill-mode="flat"
@@ -276,7 +278,7 @@ export default defineComponent({
           </Button>
         </div>
 
-        <div v-if="isNextButtonVisible" class="BottomBar-nextAction">
+        <div v-if="isNextButtonVisible" class="BottomBar-nextAction d-flex justify-content-end">
           <Button
             type="button"
             theme-color="primary"
@@ -285,7 +287,7 @@ export default defineComponent({
           >
             {{
               nextPageTitleComputed
-                ? `Next: ${$t(nextPageTitleComputed)}`
+                ? `Save & Next: ${$t(nextPageTitleComputed)}`
                 : "Next"
             }}
             <IconComponent symbol="arrow-right-1-50" size="24" class="ms-1" />
@@ -303,19 +305,14 @@ export default defineComponent({
   padding: 0 10px;
 
   &-container {
-    max-width: 1280px;
+    max-width: 1440px;
+    padding: 0 35px;
     margin: 0 auto;
   }
 
   &-note {
     width: 218px;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  &-saveAction {
     display: flex;
     justify-content: center;
     align-items: center;

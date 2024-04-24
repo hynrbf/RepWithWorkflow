@@ -29,6 +29,10 @@ import {
 import { useAutoSaveStore } from "@/stores/useAutoSaveStore";
 import { EmployersLiabilityModel } from "@/pages/models/employers-liability-insurance/EmployersLiabilityModel";
 import { ContactNumber } from "@/entities/ContactNumber";
+import {
+  IFcaService,
+  IFcaServiceInfo,
+} from "@/infra/dependency-services/rest/fca/IFcaService";
 
 export default defineComponent({
   name: "EmployersLiabilityInsurance",
@@ -44,6 +48,7 @@ export default defineComponent({
       ),
       helperService: container.resolve<IHelperService>(IHelperServiceInfo.name),
       appService: container.resolve<IAppService>(IAppServiceInfo.name),
+      fcaService: container.resolve<IFcaService>(IFcaServiceInfo.name),
       kendoAlertDialogInstance: null as KendoAlertDialogComponent | null,
       customer: new CustomerEntity(),
       firmName: "<Firm Name>",
@@ -295,7 +300,7 @@ export default defineComponent({
       this.helperService.resizeExpander();
     },
 
-    onInsurerUpdated(item: EmployersLiability, firm: FirmBasicInfo) {
+    async onInsurerUpdatedAsync(item: EmployersLiability, firm: FirmBasicInfo) {
       if (!item) {
         return;
       }
@@ -305,16 +310,24 @@ export default defineComponent({
       item.insurerTradingAddress = item.insurer.tradingAddress;
       item.insurerWebsite = item.insurer.website;
 
-      //ToDo. TEMP. To get back
-      item.insurerContactNumber = {
-        country: "GB",
-        countryCode: "",
-        dialCode: "+44",
-        number: item.insurer.contactNumber?.replace("+44", ""),
-      };
+      if (firm.firmReferenceNumber) {
+        const addressDetails =
+          await this.fcaService.getFirmAddressesDetailsAsync(
+            firm.firmReferenceNumber,
+            "PPOB",
+          );
+
+        if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+          item.insurerContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              addressDetails[0]["Phone Number"],
+              addressDetails[0]["country"],
+            );
+        }
+      }
     },
 
-    onBrokerUpdated(item: EmployersLiability, firm: FirmBasicInfo) {
+    async onBrokerUpdatedAsync(item: EmployersLiability, firm: FirmBasicInfo) {
       if (!item) {
         return;
       }
@@ -324,13 +337,21 @@ export default defineComponent({
       item.brokerTradingAddress = item.broker.tradingAddress;
       item.brokerWebsite = item.broker.website;
 
-      //ToDo. TEMP. To get back
-      item.brokerContactNumber = {
-        country: "GB",
-        countryCode: "",
-        dialCode: "+44",
-        number: item.broker.contactNumber?.replace("+44", ""),
-      };
+      if (firm.firmReferenceNumber) {
+        const addressDetails =
+          await this.fcaService.getFirmAddressesDetailsAsync(
+            firm.firmReferenceNumber,
+            "PPOB",
+          );
+
+        if (addressDetails[0]["Phone Number"] && addressDetails[0]["country"]) {
+          item.brokerContactNumber =
+            await this.helperService.convertToContactNoAsync(
+              addressDetails[0]["Phone Number"],
+              addressDetails[0]["country"],
+            );
+        }
+      }
     },
 
     onPremiumAmountChanged(item: EmployersLiability, value: Money) {
@@ -414,18 +435,25 @@ export default defineComponent({
 
     onEliRegisteredAddressChanged(value: string, item: EmployersLiability) {
       item.insurerRegisteredAddress = value;
-      this.isTradingSameAsRegisteredAddress = item.insurerRegisteredAddress?.toLowerCase() === item.insurerTradingAddress?.toLowerCase();
+      item.insurerIsTradingSameAsRegisteredAddress =
+        item.insurerRegisteredAddress?.toLowerCase() ===
+        item.insurerTradingAddress?.toLowerCase();
     },
 
     onEliTradingAddressChanged(value: string, item: EmployersLiability) {
       item.insurerTradingAddress = value;
-      this.isTradingSameAsRegisteredAddress = item.insurerRegisteredAddress?.toLowerCase() === item.insurerTradingAddress?.toLowerCase();
+      item.insurerIsTradingSameAsRegisteredAddress =
+        item.insurerRegisteredAddress?.toLowerCase() ===
+        item.insurerTradingAddress?.toLowerCase();
     },
 
     onToggleHandler(item: EmployersLiability) {
-      this.isTradingSameAsRegisteredAddress = !this.isTradingSameAsRegisteredAddress;
-      item.insurerTradingAddress = this.isTradingSameAsRegisteredAddress ? item.insurerRegisteredAddress : "";  
-    }
+      item.insurerTradingAddress = item.insurerIsTradingSameAsRegisteredAddress
+        ? item.insurerRegisteredAddress
+        : "";
+      item.insurerIsTradingSameAsRegisteredAddress =
+        !item.insurerIsTradingSameAsRegisteredAddress;
+    },
   },
 });
 </script>

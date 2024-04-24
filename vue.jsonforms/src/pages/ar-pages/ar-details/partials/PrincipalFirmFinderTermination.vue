@@ -164,7 +164,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             "
             @onInput="(value: string) => onCompanyNameInput(value, index)"
             :isShowHighLightColor="false"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
           />
           <KendoGenericInputComponent
@@ -181,7 +181,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             :value="item?.principalFirmName"
             :isCapitalizeFirstLetter="true"
             :isCheckForProfanity="true"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
           />
         </div>
@@ -199,7 +199,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             "
             :placeholder="'1234567'"
             :value="item?.firmReferenceNumber"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :maxlength="'7'"
           />
@@ -224,7 +224,7 @@ const onCompanyNameInput = (value: string, index: number) => {
                 ))
             "
             :value="convertEpochValueToDate(item.startDate ?? undefined)"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :isRequired="true"
           />
@@ -249,7 +249,7 @@ const onCompanyNameInput = (value: string, index: number) => {
                 ))
             "
             :value="convertEpochValueToDate(item.endDate ?? undefined)"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :isRequired="true"
           />
@@ -269,7 +269,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             class="HasPreviouslyBeenAnARItems-dropdown"
             :data-items="terminationOptions"
             value-primitive
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             placeholder="Please Select"
             :is-required="false"
@@ -306,7 +306,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             class="HasPreviouslyBeenAnARItems-input"
             :value="newItem?.principalFirmName"
             :isShowBottomResults="false"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :isEditable="true"
             @onValueChange="onCompanyValueChanged"
@@ -327,7 +327,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             "
             :placeholder="'1234567'"
             :value="newItem?.firmReferenceNumber"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :maxlength="'7'"
             :isRequired="true"
@@ -353,7 +353,7 @@ const onCompanyNameInput = (value: string, index: number) => {
                 ))
             "
             :value="convertEpochValueToDate(newItem.startDate ?? undefined)"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :isRequired="true"
             :internalModel="'Start Date'"
@@ -379,7 +379,7 @@ const onCompanyNameInput = (value: string, index: number) => {
                 ))
             "
             :value="convertEpochValueToDate(newItem.endDate ?? undefined)"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
             :isRequired="true"
             :internalModel="'End Date'"
@@ -400,7 +400,7 @@ const onCompanyNameInput = (value: string, index: number) => {
             :model-value="newItem.reasonForTermination"
             @update:model-value="newItem.reasonForTermination = $event"
             :isRequired="true"
-            isValueReactive
+            :isValueReactive="true"
             :isDataLoadedCompletely="true"
           />
         </div>

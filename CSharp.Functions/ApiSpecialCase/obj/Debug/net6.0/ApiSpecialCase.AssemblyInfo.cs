@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiSpecialCase")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.11.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ee1891ec564eb3fd0555827b3882b9449bb629f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiSpecialCase")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiSpecialCase")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.11.0")]

@@ -124,7 +124,7 @@
                                     :hasLabel="false"
                                     :value="newItems[id]?.annualFeeIncome"
                                     :minimumValue="new Money(0, 'EUR')"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     @onValueChange="
                                         attachNewItem(id, {
@@ -140,7 +140,7 @@
                                     :disabled="!activityValues[product]?.isAppointed && !activityValues[product]?.isNewProduct"
                                     :value="activityValues[product]?.annualFeeIncome"
                                     :minimumValue="new Money(0, 'EUR')"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     @onValueChange="
                                         updateValue(product, {
@@ -157,7 +157,7 @@
                                     :hasLabel="false"
                                     :value="newItems[id]?.annualCommissionIncome"
                                     :minimumValue="new Money(0, 'EUR')"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     @onValueChange="
                                     attachNewItem(id, {
@@ -174,7 +174,7 @@
                                     :disabled="!activityValues[product]?.isAppointed && !activityValues[product]?.isNewProduct"
                                     :value="activityValues[product]?.annualCommissionIncome"
                                     :minimumValue="new Money(0, 'EUR')"
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     @onValueChange="
                                         updateValue(product, {
@@ -190,7 +190,7 @@
                                     :name="`limitation-${product}`"
                                     :is-required="false"
                                     no-text
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     :value="newItems[id]?.hasLimitation ?? false"
                                     @onValueChange="attachNewItem(id, { hasLimitation: $event })"
@@ -203,7 +203,7 @@
                                     :is-required="false"
                                     :disabled="!activityValues[product]?.isAppointed"
                                     no-text
-                                    isValueReactive
+                                    :isValueReactive="true"
                                     :isDataLoadedCompletely="!isInitializing"
                                     :value="activityValues[product]?.hasLimitation ?? false"
                                     @onValueChange="
@@ -222,7 +222,7 @@
                                         :placeholder="'Please Type Limitations'"
                                         :value="newItems[id]?.limitations"
                                         :isRequired="false"
-                                        isValueReactive
+                                        :isValueReactive="true"
                                         :isDataLoadedCompletely="!isInitializing"
                                         :model-value="newItems[id]?.limitations ?? ''"
                                         @update:model-value="attachNewItem(id, { limitations: $event })"

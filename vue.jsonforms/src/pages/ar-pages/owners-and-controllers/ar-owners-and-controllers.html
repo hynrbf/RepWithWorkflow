@@ -27,7 +27,7 @@
                                         :questionText="$t('arOwnersAndControllersPage-hasIndividualControllerText', {firmName: firmName})"
                                         @onValueChange="toggleHasIndividualControllers"
                                         :value="hasIndividualControllers"
-                                        isValueReactive
+                                        :isValueReactive="true"
                                         :isDataLoadedCompletely="!isInitializing"/>
                             </KendoCardBody>
                         </KendoCard>
@@ -35,8 +35,8 @@
                         <ScrollableTabComponent
                                 v-if="hasIndividualControllers"
                                 v-model:items="individualControllerTabs"
-                                addable
-                                removable
+                                :addable="true"
+                                :removable="true"
                                 @add="addNewIndividualControllerItem"
                                 @remove="removeIndividualControllerItem">
                             <template
@@ -76,7 +76,7 @@
                                         :questionText="$t('arOwnersAndControllersPage-hasCorporateControllerText', {firmName: firmName})"
                                         @onValueChange="toggleHasCorporateControllers"
                                         :value="hasCorporateControllers"
-                                        isValueReactive
+                                        :isValueReactive="true"
                                         :isDataLoadedCompletely="!isInitializing"/>
                             </KendoCardBody>
                         </KendoCard>
@@ -84,8 +84,8 @@
                         <ScrollableTabComponent
                                 v-if="corporateControllersCount > 0 && selectedControllerTabIndex === 1"
                                 v-model:items="corporateControllerTabs"
-                                addable @add="addNewCorporateControllerItem"
-                                removable @remove="removeCorporateControllerItem">
+                                :addable="true" @add="addNewCorporateControllerItem"
+                                :removable="true" @remove="removeCorporateControllerItem">
                             <template v-for="item in corporateControllerItems"
                                       :key="`tab-content-${item.corporateController.id}`"
                                       #[`content(corporate-controller-${item.corporateController.id})`]="{ index }">

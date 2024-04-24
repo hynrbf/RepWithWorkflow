@@ -30,6 +30,7 @@
     "CommentsContainer": "comments",
     "OrganizationalEmployeesContainer": "organizationEmployees",
     "ProvidersContainer": "providers",
+    "AffiliatesContainer": "affiliates",
     "IntroducersContainer": "introducers",
     "WebScrapsContainer": "webScraps",
     "FinancialPromotionsContainer": "financialPromotions",
@@ -61,7 +62,10 @@
     "GetAddressApiKey": "k0if-AVkWk6hrja3KITFtg39952",
     "IsGetFrnForDirectorships": "true",
     "IsDisabledCheckingForMultipleSignUpsForSingleCompany": "false",
-    "FixerApiKey": "e40003ed7037c29c2d2afd3832699363"
+    "FixerApiKey": "e40003ed7037c29c2d2afd3832699363",
+    "AdobeSignApiEmail": "tech@suntech.gi",
+    "AdobeSignApiServer": "https://api.sg1.adobesign.com:443",
+    "AdobeSignApiIntegrationKey": "3AAABLblqZhDoFoDALLCZkhLvtxLP8qudLU6oKxpdwp2U2wZXKCzfzLN9iS8YBxzCWxa5038adW0XNLRyjn4nlyWSOfwiFJYR"
   },
   "Host": {
     "LocalHttpPort": 7172,
