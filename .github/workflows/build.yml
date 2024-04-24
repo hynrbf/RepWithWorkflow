@@ -9,7 +9,12 @@ on:
     types: [closed]
     branches:
       - main
-      
+
+env:
+  AZURE_FUNCTIONAPP_NAME: 'az-func-api-sun'   # set this to your function app name on Azure
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './CSharp.Functions/ComplyDexFunction'       # set this to the path to your function app project, defaults to the repository root
+  DOTNET_VERSION: '6.0.x'                   # set this to the dotnet version to use (e.g. '2.1.x', '3.1.x', '5.0.x')
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -45,27 +50,30 @@ jobs:
         api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
         azure_static_web_apps_api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
 
-  build_and_deploy_backend:
+  build-and-deploy:
     runs-on: windows-latest
-    # Deploy the Back End
+    environment: dev
     steps:
-    - name: Setup .NET 6.0
-      uses: actions/setup-dotnet@v1
+    - name: 'Checkout GitHub Action'
+      uses: actions/checkout@v3
+
+    - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '6.0.x'
+        dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Restore dependencies
-      run: dotnet restore ./CSharp.Functions/Api.sln
+    - name: 'Resolve Project Dependencies Using Dotnet'
+      shell: pwsh
+      run: |
+        pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+        dotnet build --configuration Release --output ./output
+        popd
 
-    - name: Build
-      run: dotnet build ./CSharp.Functions/Api.sln --configuration Release --no-restore
-
-    - name: Publish
-      run:  dotnet publish ./CSharp.Functions/ComplyDexFunction/Api.csproj --configuration Release --output ./publish
-
-    - name: Deploy to Azure Function App Api
-      uses: azure/functions-action@v1
+    - name: 'Run Azure Functions Action'
+      uses: Azure/functions-action@v1
+      id: fa
       with:
-        app-name: 'az-func-api-sun'
-        package: ./publish
+        app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
+        slot-name: 'production'
+        package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_API }}
