@@ -25,7 +25,7 @@ jobs:
         node-version: '18.16.0'
 
     - name: Clean dist folder
-      run: rm -rf RepWithWorkflow/vue.jsonforms/dist/*
+      run: rm -rf /vue.jsonforms/dist/*
       working-directory: ${{ github.workspace }}
 
     - name: npm install and build
@@ -33,7 +33,7 @@ jobs:
         npm install
         npm i --save-dev @types/uuid
         npm run build
-      working-directory: RepWithWorkflow/vue.jsonforms
+      working-directory: /vue.jsonforms
 
     - name: Deploy to Azure Static Web App
       uses: Azure/static-web-apps-deploy@v1
@@ -52,13 +52,13 @@ jobs:
         dotnet-version: '6.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore ./RepWithWorkflow/CSharp.Functions/Api.sln
+      run: dotnet restore ./CSharp.Functions/Api.sln
 
     - name: Build
-      run: dotnet build ./RepWithWorkflow/CSharp.Functions/Api.sln --configuration Release --no-restore
+      run: dotnet build ./CSharp.Functions/Api.sln --configuration Release --no-restore
 
     - name: Publish
-      run:  dotnet publish ./RepWithWorkflow/CSharp.Functions/ComplyDexFunction/Api.csproj --configuration Release --output ./publish
+      run:  dotnet publish ./CSharp.Functions/ComplyDexFunction/Api.csproj --configuration Release --output ./publish
 
     #- name: Deploy to Azure Function App Api
     #  uses: azure/functions-action@v1
