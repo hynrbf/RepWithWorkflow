@@ -45,14 +45,7 @@ jobs:
         api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
         azure_static_web_apps_api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
 
-  build_and_deploy_backend:
-    runs-on: windows-latest
-
-    steps:
-    - name: 'Checkout GitHub Action'
-      uses: actions/checkout@v4
-      
-      # Deploy the Back End
+    # Deploy the Back End
     - name: Setup .NET 6.0
       uses: actions/setup-dotnet@v1
       with:
@@ -73,6 +66,3 @@ jobs:
         app-name: API
         package: ./publish
         publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_API }}
-  
-  
-  
