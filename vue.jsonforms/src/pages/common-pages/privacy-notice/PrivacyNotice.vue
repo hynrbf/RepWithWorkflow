@@ -5,6 +5,7 @@ import {
   INavigationService,
   INavigationServiceInfo,
 } from "@/infra/dependency-services/navigation/INavigationService";
+import {APP_VERSION} from "./config";
 
 export default defineComponent({
   name: "PrivacyNotice",
@@ -17,6 +18,10 @@ export default defineComponent({
   },
 
   methods: {
+    APP_VERSION() {
+      return APP_VERSION;
+    },
+
     async showPrivacyNotice() {
       await this.navigationService.navigateAsync("/privacy-notice");
     },
