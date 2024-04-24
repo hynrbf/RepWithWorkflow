@@ -1,24 +1,71 @@
-on: push
-  # push:
-  #   paths:
-  #     - vue.jsonforms/**
-jobs:
-  run-lint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: vue.jsonforms
-    steps:
-      - uses: actions/checkout@v4
-      - run: npm install eslint
-      - run: npm run lint
+name: Build and Deploy
 
-  run-build:
+on:
+  push:
+    branches:
+      - main
+      
+  pull_request_target:
+    types: [closed]
+    branches:
+      - main
+      
+jobs:
+  build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: vue.jsonforms
+
     steps:
-      - uses: actions/checkout@v4
-      - run: npm install vite vue-tsc
-      - run: npm run build
+    - uses: actions/checkout@v4
+      name: Checkout code
+
+    # Deploy the Front End  
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.16.0'
+
+    - name: Clean dist folder
+      run: rm -rf Source/vue.jsonforms/dist/*
+      working-directory: ${{ github.workspace }}
+
+    - name: npm install and build
+      run: |
+        npm install
+        npm i --save-dev @types/uuid
+        npm run build
+      working-directory: Source/vue.jsonforms
+
+    - name: Deploy to Azure Static Web App
+      uses: Azure/static-web-apps-deploy@v1
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        action: "upload"
+        app_location: "/Source/vue.jsonforms"
+        output_location: "dist"
+        api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
+        azure_static_web_apps_api_token: '004f197aa05e11bf5748a5f0625388173d73e84313df2dab88e89927d4f4495e3-1e51d804-2793-4cf7-8ab7-56222d2748c900066332' #${{ secrets.DEPLOYMENT_TOKEN }}
+
+    # Deploy the Back End
+    - name: Setup .NET 6.0
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore ./Source/CSharp.Functions/Api.sln
+
+    - name: Build
+      run: dotnet build ./Source/CSharp.Functions/Api.sln --configuration Release --no-restore
+
+    - name: Publish
+      run:  dotnet publish ./Source/CSharp.Functions/ComplyDexFunction/Api.csproj --configuration Release --output ./publish
+
+    #- name: Deploy to Azure Function App Api
+    #  uses: azure/functions-action@v1
+    #  with:
+    #    app-name: API
+    #    package: ./publish
+    #    publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE_API }}
+  
+  
+  
