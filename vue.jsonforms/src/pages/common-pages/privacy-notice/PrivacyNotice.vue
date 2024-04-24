@@ -5,6 +5,7 @@ import {
   INavigationService,
   INavigationServiceInfo,
 } from "@/infra/dependency-services/navigation/INavigationService";
+import {APP_VERSION} from "@/config";
 
 export default defineComponent({
   name: "PrivacyNotice",
@@ -13,7 +14,12 @@ export default defineComponent({
       navigationService: container.resolve<INavigationService>(
         INavigationServiceInfo.name,
       ),
+      appVersion: ""
     };
+  },
+
+  mounted() {
+    this.appVersion = APP_VERSION;
   },
 
   methods: {
