@@ -5,7 +5,7 @@ import {
   INavigationService,
   INavigationServiceInfo,
 } from "@/infra/dependency-services/navigation/INavigationService";
-import {APP_VERSION} from "./config";
+import {APP_VERSION} from "@/config";
 
 export default defineComponent({
   name: "PrivacyNotice",
