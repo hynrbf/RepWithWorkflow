@@ -2,8 +2,8 @@
 		<PropertyGroup>
 				<TargetFramework>net6.0</TargetFramework>
 				<AzureFunctionsVersion>v4</AzureFunctionsVersion>
-				<AssemblyVersion>1.0.175.2</AssemblyVersion>
-				<FileVersion>1.0.175.2</FileVersion>
+				<AssemblyVersion>1.0.175.3</AssemblyVersion>
+				<FileVersion>1.0.175.3</FileVersion>
 		</PropertyGroup>
 		<ItemGroup>
 				<None Remove="Aspose.Total.NET.lic" />
